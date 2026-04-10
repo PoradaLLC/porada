@@ -120,7 +120,7 @@ export async function createOneTimeCharge(formData: FormData) {
 
   revalidatePath("/admin/payments");
   revalidatePath("/admin/customers");
-  return { success: true };
+  return { success: true, invoiceId: invoice.id };
 }
 
 export async function createSubscription(formData: FormData) {

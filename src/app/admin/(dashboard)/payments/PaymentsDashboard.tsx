@@ -81,6 +81,7 @@ export function PaymentsDashboard({ payments }: { payments: Payment[] }) {
               <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-white/30">Customer</th>
               <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-white/30">Amount</th>
               <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-white/30">Description</th>
+              <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-white/30">Invoice ID</th>
               <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-white/30">Type</th>
               <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-white/30">Status</th>
               <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-white/30">Date</th>
@@ -89,7 +90,7 @@ export function PaymentsDashboard({ payments }: { payments: Payment[] }) {
           <tbody className="divide-y divide-white/5">
             {payments.length === 0 ? (
               <tr>
-                <td colSpan={6} className="px-6 py-12 text-center font-mono text-sm text-white/20">
+                <td colSpan={7} className="px-6 py-12 text-center font-mono text-sm text-white/20">
                   No payments recorded yet.
                 </td>
               </tr>
@@ -101,6 +102,9 @@ export function PaymentsDashboard({ payments }: { payments: Payment[] }) {
                     {formatCurrency(payment.amount)}
                   </td>
                   <td className="px-6 py-4 font-mono text-sm text-white/50">{payment.description ?? "—"}</td>
+                  <td className="px-6 py-4 font-mono text-xs text-white/30">
+                    {payment.stripe_session_id ?? "—"}
+                  </td>
                   <td className="px-6 py-4">
                     <span
                       className={`inline-flex rounded-full px-2 py-1 font-mono text-[10px] ${
