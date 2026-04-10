@@ -75,8 +75,8 @@ export function Footer() {
           <p className="font-mono text-xs text-brand-text/60">
             &copy; {new Date().getFullYear()} Sierra-117. All rights reserved.
           </p>
-          <p className="font-mono text-xs text-brand-text/40">
-            Built with precision.
+          <p className="font-mono text-xs text-brand-text/30">
+            A product of Schtubbs LLC
           </p>
         </div>
       </div>
