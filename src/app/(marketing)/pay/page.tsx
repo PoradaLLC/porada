@@ -15,14 +15,14 @@ export default function PayPage() {
         <div className="absolute top-1/3 left-1/4 w-72 h-72 bg-brand-accent/5 rounded-full blur-[100px]" />
         <div className="relative mx-auto max-w-7xl">
           <p className="font-mono text-xs font-semibold uppercase tracking-widest text-brand-accent mb-2">
-            // Payment Terminal
+            // Payment
           </p>
           <h1 className="font-mono text-4xl font-bold text-foreground md:text-6xl">
-            Secure <span className="text-brand-accent text-glow">Payment</span>
+            Pay Your <span className="text-brand-accent text-glow">Invoice</span>
           </h1>
           <p className="mt-6 max-w-2xl text-lg text-brand-text">
-            Pay for services securely via Stripe. All transactions are encrypted
-            and PCI-compliant.
+            Use the invoice code we sent you to pull up your payment, or enter a
+            custom amount if we agreed on a price over email or call.
           </p>
         </div>
       </section>
