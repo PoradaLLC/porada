@@ -17,7 +17,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-sm text-brand-text leading-relaxed">
-              Building cutting-edge digital experiences and tech solutions that propel businesses forward.
+              Web development and tech solutions for businesses that need reliable, well-built software.
             </p>
           </div>
 
@@ -76,7 +76,7 @@ export function Footer() {
             &copy; {new Date().getFullYear()} Sierra-117. All rights reserved.
           </p>
           <p className="font-mono text-xs text-brand-text/40">
-            &gt; system.status: <span className="text-brand-accent">operational</span>
+            Built with precision.
           </p>
         </div>
       </div>

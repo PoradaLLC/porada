@@ -35,7 +35,7 @@ export function AdminSidebar({ userEmail }: { userEmail: string }) {
   }
 
   return (
-    <aside className="flex h-screen w-64 flex-col border-r border-white/5 bg-[#070d07]">
+    <aside className="flex h-screen w-64 flex-col border-r border-white/5 bg-[#060a0e]">
       {/* Logo */}
       <div className="flex items-center gap-2 px-6 py-5 border-b border-white/5">
         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-accent/10 border border-brand-accent/20">

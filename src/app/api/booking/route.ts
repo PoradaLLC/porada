@@ -51,11 +51,11 @@ export async function POST(req: Request) {
           to: data.email,
           subject: "Consultation Confirmed — Sierra-117",
           html: `
-            <div style="font-family: monospace; background: #0a0f0a; color: #e0e8e0; padding: 40px;">
-              <h1 style="color: #00ff41;">Consultation Confirmed</h1>
+            <div style="font-family: monospace; background: #080c10; color: #dce4ec; padding: 40px;">
+              <h1 style="color: #34d399;">Consultation Confirmed</h1>
               <p>Hey ${data.name},</p>
               <p>Your consultation has been booked. Here are the details:</p>
-              <div style="background: #141f14; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 3px solid #00ff41;">
+              <div style="background: #161e27; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 3px solid #34d399;">
                 <p><strong>Service:</strong> ${data.service}</p>
                 <p><strong>Date:</strong> ${data.date}</p>
                 <p><strong>Time:</strong> ${data.time} EST</p>

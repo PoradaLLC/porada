@@ -44,14 +44,14 @@ export default function AboutPage() {
             // About
           </p>
           <h1 className="font-mono text-4xl font-bold text-foreground md:text-6xl">
-            The Team Behind
+            Who We
             <br />
-            <span className="text-brand-accent text-glow">the Code</span>
+            <span className="text-brand-accent text-glow">Are</span>
           </h1>
           <p className="mt-6 max-w-2xl text-lg text-brand-text leading-relaxed">
-            Sierra-117 is a technology firm obsessed with building digital
-            products that perform. We combine deep technical expertise with a
-            relentless focus on results.
+            Sierra-117 is a small technology firm focused on building digital
+            products that work well. Deep technical expertise, straightforward
+            communication, and reliable delivery.
           </p>
         </div>
       </section>
@@ -68,10 +68,10 @@ export default function AboutPage() {
                 Building Technology That Matters
               </h2>
               <p className="mt-6 text-brand-text leading-relaxed">
-                We started Sierra-117 because we saw too many businesses
-                struggling with technology that held them back instead of
-                propelling them forward. Slow sites, fragile infrastructure,
-                and outdated stacks were costing companies real revenue.
+                We started Sierra-117 because we kept seeing businesses
+                stuck with technology that didn&apos;t work for them. Slow
+                sites, fragile infrastructure, and outdated stacks were
+                costing companies real money.
               </p>
               <p className="mt-4 text-brand-text leading-relaxed">
                 Our mission is simple: deliver technology solutions that are

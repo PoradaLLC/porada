@@ -75,28 +75,28 @@ export default function HomePage() {
             <div className="animate-fade-up mb-6 inline-flex items-center gap-2 rounded-full border border-brand-accent/20 bg-brand-accent/5 px-4 py-1.5">
               <span className="h-2 w-2 rounded-full bg-brand-accent animate-glow-pulse" />
               <span className="font-mono text-xs text-brand-accent">
-                Systems Online — Ready to Deploy
+                Now Accepting New Projects
               </span>
             </div>
 
             <h1 className="animate-fade-up delay-100 font-mono text-5xl font-bold leading-tight tracking-tight md:text-7xl">
-              We Build
+              Websites & Tech
               <br />
               <span className="text-glow text-brand-accent">
-                Digital Weapons
+                That Actually Work
               </span>
             </h1>
 
             <p className="animate-fade-up delay-200 mt-6 max-w-xl text-lg text-brand-text leading-relaxed">
-              Sierra-117 is a web development and technology firm that
-              engineers high-performance digital solutions. From concept to
-              deployment, we deliver code that conquers.
+              We design, build, and ship web applications and infrastructure
+              for businesses that need things done right. No fluff — just
+              solid engineering.
             </p>
 
             <div className="animate-fade-up delay-300 mt-10 flex flex-wrap gap-4">
               <Link
                 href="/book"
-                className="inline-flex items-center gap-2 rounded-lg bg-brand-accent px-8 py-3.5 font-mono text-sm font-bold text-brand-bg hover:bg-brand-accent-light transition-all hover:shadow-[0_0_30px_rgba(0,255,65,0.3)]"
+                className="inline-flex items-center gap-2 rounded-lg bg-brand-accent px-8 py-3.5 font-mono text-sm font-bold text-brand-bg hover:bg-brand-accent-light transition-all hover:shadow-[0_0_20px_rgba(52,211,153,0.15)]"
               >
                 Book a Consultation
                 <ArrowRight className="h-4 w-4" />
@@ -109,38 +109,28 @@ export default function HomePage() {
               </Link>
             </div>
 
-            {/* Terminal Preview */}
-            <div className="animate-fade-up delay-400 mt-16 rounded-xl border border-brand-accent/10 bg-brand-primary/80 p-1 backdrop-blur">
-              <div className="flex items-center gap-2 px-4 py-2 border-b border-brand-accent/10">
-                <div className="h-3 w-3 rounded-full bg-red-500/60" />
-                <div className="h-3 w-3 rounded-full bg-yellow-500/60" />
-                <div className="h-3 w-3 rounded-full bg-green-500/60" />
-                <span className="ml-2 font-mono text-xs text-brand-text/60">
-                  sierra-117 — bash
-                </span>
-              </div>
-              <div className="p-4 font-mono text-sm">
-                <p className="text-brand-text/60">
-                  $ <span className="text-brand-accent">sierra</span> deploy
-                  --target production
-                </p>
-                <p className="mt-1 text-brand-text/40">
-                  ✓ Building optimized bundle...
-                </p>
-                <p className="text-brand-text/40">
-                  ✓ Running security audit...
-                </p>
-                <p className="text-brand-text/40">
-                  ✓ Performance benchmarks passed
-                </p>
-                <p className="text-brand-accent mt-1">
-                  ✓ Deployed successfully to production
-                </p>
-                <p className="mt-2 text-brand-text/60">
-                  ${" "}
-                  <span className="animate-blink text-brand-accent">_</span>
-                </p>
-              </div>
+            {/* Process Preview */}
+            <div className="animate-fade-up delay-400 mt-16 grid grid-cols-3 gap-4">
+              {[
+                { step: "01", label: "Discover", desc: "Understand your goals" },
+                { step: "02", label: "Build", desc: "Ship production code" },
+                { step: "03", label: "Scale", desc: "Grow without limits" },
+              ].map((item) => (
+                <div
+                  key={item.step}
+                  className="rounded-xl border border-brand-accent/10 bg-brand-primary/50 p-5 backdrop-blur"
+                >
+                  <span className="font-mono text-xs text-brand-accent/50">
+                    {item.step}
+                  </span>
+                  <p className="mt-1 font-mono text-sm font-bold text-foreground">
+                    {item.label}
+                  </p>
+                  <p className="mt-1 text-xs text-brand-text">
+                    {item.desc}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -212,7 +202,7 @@ export default function HomePage() {
             // Why Us
           </p>
           <h2 className="font-mono text-3xl font-bold text-foreground md:text-4xl">
-            Built Different
+            Why Sierra-117
           </h2>
 
           <div className="mt-12 grid gap-8 md:grid-cols-3">
@@ -257,7 +247,7 @@ export default function HomePage() {
             // Our Stack
           </p>
           <h2 className="font-mono text-3xl font-bold text-foreground md:text-4xl">
-            Technology Arsenal
+            Our Stack
           </h2>
 
           <div className="mt-12 flex flex-wrap gap-3">
@@ -285,7 +275,7 @@ export default function HomePage() {
           <h2 className="font-mono text-3xl font-bold text-white md:text-5xl">
             Let&apos;s Build Something
             <br />
-            <span className="text-brand-accent text-glow">Extraordinary</span>
+            <span className="text-brand-accent text-glow">Great</span>
           </h2>
           <p className="mx-auto mt-6 max-w-xl text-brand-text">
             Book a free consultation and let&apos;s discuss how Sierra-117 can
@@ -294,7 +284,7 @@ export default function HomePage() {
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <Link
               href="/book"
-              className="inline-flex items-center gap-2 rounded-lg bg-brand-accent px-10 py-4 font-mono text-sm font-bold text-brand-bg hover:bg-brand-accent-light transition-all hover:shadow-[0_0_30px_rgba(0,255,65,0.3)]"
+              className="inline-flex items-center gap-2 rounded-lg bg-brand-accent px-10 py-4 font-mono text-sm font-bold text-brand-bg hover:bg-brand-accent-light transition-all hover:shadow-[0_0_20px_rgba(52,211,153,0.15)]"
             >
               Book a Consultation
               <ArrowRight className="h-4 w-4" />

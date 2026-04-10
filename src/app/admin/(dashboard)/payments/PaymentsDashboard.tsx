@@ -138,7 +138,7 @@ export function PaymentsDashboard({ payments }: { payments: Payment[] }) {
       {/* Create Product Modal */}
       {showCreateProduct && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-xl border border-white/10 bg-[#0a0f0a] p-8">
+          <div className="w-full max-w-md rounded-xl border border-white/10 bg-[#080c10] p-8">
             <div className="flex items-center justify-between mb-6">
               <h3 className="font-mono text-lg font-bold text-white">Create Stripe Product</h3>
               <button

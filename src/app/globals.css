@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  --brand-primary:       #0a0f0a;
-  --brand-primary-light: #141f14;
-  --brand-accent:        #00ff41;
-  --brand-accent-light:  #33ff6b;
-  --brand-bg:            #060906;
-  --brand-bg-alt:        #0d1210;
-  --brand-text:          #8b9a8b;
+  --brand-primary:       #0c1117;
+  --brand-primary-light: #161e27;
+  --brand-accent:        #34d399;
+  --brand-accent-light:  #5eead4;
+  --brand-bg:            #080c10;
+  --brand-bg-alt:        #0e1319;
+  --brand-text:          #7c8a9a;
   --background:          var(--brand-bg);
-  --foreground:          #e0e8e0;
+  --foreground:          #dce4ec;
 }
 
 @theme inline {
@@ -29,14 +29,14 @@
 /* Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--brand-bg); }
-::-webkit-scrollbar-thumb { background: #1a2f1a; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--brand-accent); }
+::-webkit-scrollbar-thumb { background: #1c2633; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #2a3a4a; }
 
-::selection { background: rgba(0, 255, 65, 0.2); color: #e0e8e0; }
+::selection { background: rgba(52, 211, 153, 0.15); color: #dce4ec; }
 
 /* Animations */
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(28px); }
+  from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 @keyframes fade-in {
@@ -44,8 +44,8 @@
   to   { opacity: 1; }
 }
 @keyframes glow-pulse {
-  0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 65, 0.1); }
-  50%      { box-shadow: 0 0 40px rgba(0, 255, 65, 0.25); }
+  0%, 100% { box-shadow: 0 0 12px rgba(52, 211, 153, 0.06); }
+  50%      { box-shadow: 0 0 24px rgba(52, 211, 153, 0.12); }
 }
 @keyframes terminal-blink {
   0%, 100% { opacity: 1; }
@@ -53,12 +53,12 @@
 }
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
-  50%      { transform: translateY(-10px); }
+  50%      { transform: translateY(-8px); }
 }
 
-.animate-fade-up    { animation: fade-up 0.75s cubic-bezier(0.22, 1, 0.36, 1) both; }
-.animate-fade-in    { animation: fade-in 0.6s ease both; }
-.animate-glow-pulse { animation: glow-pulse 3s ease-in-out infinite; }
+.animate-fade-up    { animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.animate-fade-in    { animation: fade-in 0.5s ease both; }
+.animate-glow-pulse { animation: glow-pulse 4s ease-in-out infinite; }
 .animate-blink      { animation: terminal-blink 1s step-end infinite; }
 .animate-float      { animation: float 6s ease-in-out infinite; }
 
@@ -74,7 +74,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.02'/%3E%3C/svg%3E");
   background-repeat: repeat;
   pointer-events: none;
   z-index: 1;
@@ -83,24 +83,23 @@
 /* Grid pattern background */
 .grid-bg {
   background-image:
-    linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
-  background-size: 50px 50px;
+    linear-gradient(rgba(52, 211, 153, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(52, 211, 153, 0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
 }
 
 /* Glow effects */
 .glow-border {
-  border: 1px solid rgba(0, 255, 65, 0.15);
-  box-shadow: 0 0 15px rgba(0, 255, 65, 0.05), inset 0 0 15px rgba(0, 255, 65, 0.02);
+  border: 1px solid rgba(52, 211, 153, 0.08);
+  box-shadow: 0 0 10px rgba(52, 211, 153, 0.03);
 }
 
 .text-glow {
-  text-shadow: 0 0 20px rgba(0, 255, 65, 0.5), 0 0 40px rgba(0, 255, 65, 0.2);
+  text-shadow: 0 0 30px rgba(52, 211, 153, 0.25);
 }
 
 .cursor::after {
   content: '|';
   animation: terminal-blink 1s step-end infinite;
   color: var(--brand-accent);
-  font-weight: bold;
 }

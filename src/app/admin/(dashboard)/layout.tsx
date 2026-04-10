@@ -11,7 +11,7 @@ export default async function DashboardLayout({
     !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
   ) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#060906]">
+      <div className="flex min-h-screen items-center justify-center bg-[#080c10]">
         <div className="text-center">
           <p className="font-mono text-brand-accent text-lg">Supabase Not Configured</p>
           <p className="mt-2 font-mono text-sm text-brand-text">
@@ -33,7 +33,7 @@ export default async function DashboardLayout({
   if (role !== "admin") redirect("/admin/login");
 
   return (
-    <div className="flex min-h-screen bg-[#060906]">
+    <div className="flex min-h-screen bg-[#080c10]">
       <AdminSidebar userEmail={user.email ?? ""} />
       <main className="flex-1 overflow-auto">{children}</main>
     </div>
