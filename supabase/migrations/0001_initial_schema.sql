@@ -1,4 +1,4 @@
--- Sierra-117: Initial Schema
+-- Schtubbs: Initial Schema
 
 -- Customers
 CREATE TABLE customers (

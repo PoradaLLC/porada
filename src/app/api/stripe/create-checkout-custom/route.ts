@@ -27,7 +27,7 @@ export async function POST(req: Request) {
           price_data: {
             currency: "usd",
             product_data: {
-              name: description || "Sierra-117 Payment",
+              name: description || "Schtubbs Payment",
             },
             unit_amount: Math.round(amount),
           },

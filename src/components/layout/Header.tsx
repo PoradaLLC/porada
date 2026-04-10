@@ -47,7 +47,7 @@ export function Header() {
             <Terminal className="h-5 w-5 text-brand-accent" />
           </motion.div>
           <span className="font-mono text-lg font-bold tracking-tight text-foreground">
-            SIERRA<span className="text-brand-accent">-117</span>
+            SCHTUBBS
           </span>
         </Link>
 

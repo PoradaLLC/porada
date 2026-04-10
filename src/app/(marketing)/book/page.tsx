@@ -4,7 +4,7 @@ import { Video, Clock, Shield } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Book a Consultation",
-  description: "Schedule a free consultation with Sierra-117 to discuss your project.",
+  description: "Schedule a free consultation with Schtubbs to discuss your project.",
 };
 
 const benefits = [

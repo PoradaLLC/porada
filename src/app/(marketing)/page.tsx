@@ -220,7 +220,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Why Sierra-117 */}
+      {/* Why Schtubbs */}
       <section className="border-y border-brand-accent/10 bg-brand-bg-alt px-6 py-24 grid-bg">
         <div className="mx-auto max-w-7xl">
           <Reveal>
@@ -228,7 +228,7 @@ export default function HomePage() {
               // Why Us
             </p>
             <h2 className="font-mono text-3xl font-bold text-foreground md:text-4xl">
-              Why Sierra-117
+              Why Schtubbs
             </h2>
           </Reveal>
 
@@ -387,7 +387,7 @@ export default function HomePage() {
               <span className="text-brand-accent text-glow">Great</span>
             </h2>
             <p className="mx-auto mt-6 max-w-xl text-brand-text">
-              Book a free consultation and let&apos;s discuss how Sierra-117 can
+              Book a free consultation and let&apos;s discuss how Schtubbs can
               help with your next project.
             </p>
             <div className="mt-10 flex flex-wrap justify-center gap-4">

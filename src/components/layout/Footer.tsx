@@ -13,7 +13,7 @@ export function Footer() {
                 <Terminal className="h-4 w-4 text-brand-accent" />
               </div>
               <span className="font-mono text-base font-bold text-foreground">
-                SIERRA<span className="text-brand-accent">-117</span>
+                SCHTUBBS
               </span>
             </Link>
             <p className="text-sm text-brand-text leading-relaxed">
@@ -56,7 +56,7 @@ export function Footer() {
                 { icon: GitBranch, href: "#", label: "GitHub" },
                 { icon: Globe, href: "#", label: "Twitter" },
                 { icon: ExternalLink, href: "#", label: "LinkedIn" },
-                { icon: Mail, href: "mailto:hello@sierra-117.dev", label: "Email" },
+                { icon: Mail, href: "mailto:hello@schtubbs.dev", label: "Email" },
               ].map(({ icon: Icon, href, label }) => (
                 <a
                   key={label}
@@ -73,7 +73,7 @@ export function Footer() {
 
         <div className="mt-12 border-t border-brand-accent/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="font-mono text-xs text-brand-text/60">
-            &copy; {new Date().getFullYear()} Sierra-117. All rights reserved.
+            &copy; {new Date().getFullYear()} Schtubbs. All rights reserved.
           </p>
           <p className="font-mono text-xs text-brand-text/30">
             A product of Schtubbs LLC

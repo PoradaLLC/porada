@@ -72,7 +72,7 @@ export default async function AdminDashboard() {
         </div>
         <div className="font-mono text-sm space-y-1">
           <p className="text-white/30">
-            <span className="text-brand-accent">$</span> sierra status
+            <span className="text-brand-accent">$</span> schtubbs status
           </p>
           <p className="text-white/20">
             ✓ Database: connected

@@ -5,7 +5,7 @@ import { ArrowRight, Target, Eye, Rocket, Terminal } from "lucide-react";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Learn about Sierra-117 — a technology firm dedicated to building high-performance digital solutions.",
+    "Learn about Schtubbs — a technology firm dedicated to building high-performance digital solutions.",
 };
 
 const values = [
@@ -49,7 +49,7 @@ export default function AboutPage() {
             <span className="text-brand-accent text-glow">Are</span>
           </h1>
           <p className="mt-6 max-w-2xl text-lg text-brand-text leading-relaxed">
-            Sierra-117 is a small technology firm focused on building digital
+            Schtubbs is a small technology firm focused on building digital
             products that work well. Deep technical expertise, straightforward
             communication, and reliable delivery.
           </p>
@@ -68,7 +68,7 @@ export default function AboutPage() {
                 Building Technology That Matters
               </h2>
               <p className="mt-6 text-brand-text leading-relaxed">
-                We started Sierra-117 because we kept seeing businesses
+                We started Schtubbs because we kept seeing businesses
                 stuck with technology that didn&apos;t work for them. Slow
                 sites, fragile infrastructure, and outdated stacks were
                 costing companies real money.

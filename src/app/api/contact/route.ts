@@ -23,9 +23,9 @@ export async function POST(req: Request) {
     if (process.env.RESEND_API_KEY) {
       const { Resend } = await import("resend");
       const resend = new Resend(process.env.RESEND_API_KEY);
-      const from = process.env.RESEND_FROM_EMAIL ?? "noreply@sierra-117.dev";
+      const from = process.env.RESEND_FROM_EMAIL ?? "noreply@schtubbs.dev";
       await resend.emails.send({
-        from: `Sierra-117 <${from}>`,
+        from: `Schtubbs <${from}>`,
         to: from,
         subject: `New Contact: ${data.subject} from ${data.name}`,
         html: `

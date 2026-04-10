@@ -46,7 +46,7 @@ export default function AdminLoginPage() {
             <Terminal className="h-7 w-7 text-brand-accent" />
           </div>
           <h1 className="font-mono text-2xl font-bold text-foreground">
-            SIERRA<span className="text-brand-accent">-117</span>
+            SCHTUBBS
           </h1>
           <p className="mt-2 font-mono text-xs text-brand-text">
             Admin Access Required
@@ -67,7 +67,7 @@ export default function AdminLoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full rounded-lg border border-brand-accent/10 bg-brand-bg/50 px-4 py-3 font-mono text-sm text-foreground placeholder:text-brand-text/40 focus:border-brand-accent/30 focus:outline-none focus:ring-1 focus:ring-brand-accent/20 transition-colors"
-              placeholder="admin@sierra-117.dev"
+              placeholder="admin@schtubbs.dev"
               required
             />
           </div>
