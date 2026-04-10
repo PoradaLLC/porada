@@ -268,8 +268,87 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Tech Stack */}
+      {/* Portfolio */}
       <section className="bg-brand-bg px-6 py-24">
+        <div className="mx-auto max-w-7xl">
+          <Reveal>
+            <p className="font-mono text-xs font-semibold uppercase tracking-widest text-brand-accent mb-2">
+              // Our Work
+            </p>
+            <h2 className="font-mono text-3xl font-bold text-foreground md:text-4xl">
+              Portfolio
+            </h2>
+            <p className="mt-4 max-w-2xl text-brand-text">
+              A few projects we&apos;ve shipped recently.
+            </p>
+          </Reveal>
+
+          <Stagger className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3" stagger={0.1}>
+            <StaggerItem>
+              <HoverCard className="h-full">
+                <a
+                  href="https://poconopropertycare.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group block h-full rounded-xl border border-brand-accent/10 bg-brand-primary/40 overflow-hidden hover:border-brand-accent/25 transition-all"
+                >
+                  <div className="aspect-[16/9] bg-brand-bg-alt flex items-center justify-center border-b border-brand-accent/10 overflow-hidden">
+                    <div className="text-center px-6">
+                      <p className="font-mono text-lg font-bold text-foreground group-hover:text-brand-accent transition-colors">
+                        Pocono Property Care
+                      </p>
+                      <p className="mt-1 font-mono text-xs text-brand-text/50">
+                        poconopropertycare.com
+                      </p>
+                    </div>
+                  </div>
+                  <div className="p-6">
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {["Next.js", "Tailwind", "Vercel"].map((tag) => (
+                        <span
+                          key={tag}
+                          className="rounded-full bg-brand-accent/5 border border-brand-accent/10 px-2.5 py-0.5 font-mono text-[10px] text-brand-accent"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                    <p className="text-sm text-brand-text leading-relaxed">
+                      Full website for a Pocono Mountains property maintenance company.
+                      Before/after galleries, service pages, testimonials, and a
+                      lead-generation contact flow.
+                    </p>
+                    <p className="mt-3 inline-flex items-center gap-1 font-mono text-xs text-brand-accent group-hover:text-brand-accent-light transition-colors">
+                      Visit site <ArrowRight className="h-3 w-3" />
+                    </p>
+                  </div>
+                </a>
+              </HoverCard>
+            </StaggerItem>
+
+            {/* Placeholder for future projects */}
+            <StaggerItem>
+              <div className="h-full rounded-xl border border-dashed border-brand-accent/10 bg-brand-primary/20 p-8 flex flex-col items-center justify-center text-center min-h-[280px]">
+                <p className="font-mono text-sm text-brand-text/30">
+                  More projects coming soon
+                </p>
+                <p className="mt-2 font-mono text-xs text-brand-text/20">
+                  Want to be featured here?
+                </p>
+                <Link
+                  href="/book"
+                  className="mt-4 font-mono text-xs text-brand-accent hover:text-brand-accent-light transition-colors"
+                >
+                  Let&apos;s talk
+                </Link>
+              </div>
+            </StaggerItem>
+          </Stagger>
+        </div>
+      </section>
+
+      {/* Tech Stack */}
+      <section className="border-t border-brand-accent/10 bg-brand-bg-alt px-6 py-24">
         <div className="mx-auto max-w-7xl">
           <Reveal>
             <p className="font-mono text-xs font-semibold uppercase tracking-widest text-brand-accent mb-2">
