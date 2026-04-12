@@ -41,7 +41,7 @@ export default function ContactPage() {
           <h1 className="font-mono text-4xl font-bold text-foreground md:text-6xl">
             Get In <span className="text-brand-accent text-glow">Touch</span>
           </h1>
-          <p className="mt-6 max-w-2xl text-lg text-brand-text">
+          <p className="mt-6 max-w-2xl text-lg text-brand-text leading-relaxed">
             Have a project in mind? Need technical guidance? Drop us a line and
             we&apos;ll get back to you within 24 hours.
           </p>
@@ -49,14 +49,16 @@ export default function ContactPage() {
       </section>
 
       {/* Form + Info */}
-      <section className="bg-brand-bg px-6 py-24">
+      <section className="border-t border-white/5 bg-brand-bg px-6 py-24">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-16 lg:grid-cols-3">
             {/* Contact Info */}
             <div className="lg:col-span-1 space-y-6">
-              {contactInfo.map((info) => (
+              {contactInfo.map((info, i) => (
                 <div
                   key={info.label}
+                  data-reveal
+                  data-reveal-delay={String(i + 1)}
                   className="glow-border rounded-xl bg-brand-primary/30 p-6"
                 >
                   <div className="flex items-center gap-3 mb-2">
@@ -81,8 +83,8 @@ export default function ContactPage() {
               ))}
 
               {/* Terminal decoration */}
-              <div className="rounded-xl border border-brand-accent/10 bg-brand-primary/20 p-6">
-                <div className="font-mono text-xs space-y-1.5 text-brand-text/50">
+              <div data-reveal data-reveal-delay="4" className="rounded-xl border border-white/[0.08] bg-brand-primary/20 p-6">
+                <div className="font-mono text-xs space-y-1.5 text-brand-text/70">
                   <p>
                     <span className="text-brand-accent">$</span> ping
                     schtubbs.dev
@@ -97,7 +99,7 @@ export default function ContactPage() {
             </div>
 
             {/* Form */}
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-2" data-reveal data-reveal-delay="2">
               <div className="glow-border rounded-xl bg-brand-primary/30 p-8 md:p-10 backdrop-blur">
                 <h2 className="font-mono text-xl font-bold text-foreground mb-8">
                   Send Us a Message

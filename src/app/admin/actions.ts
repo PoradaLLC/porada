@@ -357,3 +357,62 @@ export async function updateLeadStatus(leadId: string, status: string) {
   revalidatePath("/admin/leads");
   return { success: true };
 }
+
+export async function createLead(data: {
+  business_name: string;
+  contact_email?: string;
+  phone?: string;
+  current_website?: string;
+  summary: string;
+  status?: string;
+}) {
+  await requireAdmin();
+
+  const validStatuses = ["new", "pitched", "converted", "dismissed"];
+  const status = data.status && validStatuses.includes(data.status) ? data.status : "new";
+
+  const { createServiceClient } = await import("@/lib/supabase/server");
+  const supabase = await createServiceClient();
+
+  const { error } = await supabase.from("leads").insert({
+    business_name: data.business_name,
+    contact_email: data.contact_email || null,
+    phone: data.phone || null,
+    current_website: data.current_website || null,
+    summary: data.summary,
+    status,
+  });
+
+  if (error) throw new Error(error.message);
+
+  revalidatePath("/admin/leads");
+  return { success: true };
+}
+
+export async function updateLead(
+  leadId: string,
+  data: {
+    business_name?: string;
+    contact_email?: string | null;
+    phone?: string | null;
+    current_website?: string | null;
+    summary?: string;
+    status?: string;
+  }
+) {
+  await requireAdmin();
+
+  const validStatuses = ["new", "pitched", "converted", "dismissed"];
+  if (data.status && !validStatuses.includes(data.status)) {
+    throw new Error("Invalid status");
+  }
+
+  const { createServiceClient } = await import("@/lib/supabase/server");
+  const supabase = await createServiceClient();
+
+  const { error } = await supabase.from("leads").update(data).eq("id", leadId);
+  if (error) throw new Error(error.message);
+
+  revalidatePath("/admin/leads");
+  return { success: true };
+}

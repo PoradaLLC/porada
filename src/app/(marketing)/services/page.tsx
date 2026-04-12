@@ -100,7 +100,7 @@ export default function ServicesPage() {
           <h1 className="font-mono text-4xl font-bold text-foreground md:text-6xl">
             What We <span className="text-brand-accent text-glow">Build</span>
           </h1>
-          <p className="mt-6 max-w-2xl text-lg text-brand-text">
+          <p className="mt-6 max-w-2xl text-lg text-brand-text leading-relaxed">
             Full-spectrum technology services from concept to deployment and
             beyond. Every solution is engineered for performance, security, and
             scale.
@@ -109,11 +109,14 @@ export default function ServicesPage() {
       </section>
 
       {/* Services Detail */}
-      <section className="bg-brand-bg px-6 py-24">
+      <section className="border-t border-white/5 bg-brand-bg px-6 py-24">
         <div className="mx-auto max-w-7xl space-y-16">
           {services.map((service, i) => (
             <div
               key={service.title}
+              data-reveal
+              data-reveal-delay={String(i + 1)}
+              data-spotlight
               className="glow-border rounded-2xl bg-brand-primary/30 p-8 md:p-12 backdrop-blur"
             >
               <div className="flex flex-col md:flex-row gap-8 md:gap-16">
@@ -154,20 +157,24 @@ export default function ServicesPage() {
       </section>
 
       {/* Capabilities Grid */}
-      <section className="border-y border-brand-accent/10 bg-brand-bg-alt px-6 py-24">
+      <section className="border-y border-white/5 bg-brand-bg-alt px-6 py-24">
         <div className="mx-auto max-w-7xl">
-          <p className="font-mono text-xs font-semibold uppercase tracking-widest text-brand-accent mb-2">
-            // Standards
-          </p>
-          <h2 className="font-mono text-3xl font-bold text-foreground">
-            Every Project Includes
-          </h2>
+          <div data-reveal>
+            <p className="font-mono text-xs font-semibold uppercase tracking-widest text-brand-accent mb-2">
+              // Standards
+            </p>
+            <h2 className="font-mono text-3xl font-bold text-foreground">
+              Every Project Includes
+            </h2>
+          </div>
 
           <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4">
-            {capabilities.map((cap) => (
+            {capabilities.map((cap, i) => (
               <div
                 key={cap.label}
-                className="flex flex-col items-center gap-3 rounded-xl border border-brand-accent/10 bg-brand-bg/50 p-6 text-center hover:border-brand-accent/30 transition-colors"
+                data-reveal
+                data-reveal-delay={String(i + 1)}
+                className="flex flex-col items-center gap-3 rounded-xl border border-white/[0.08] bg-brand-bg/50 p-6 text-center hover:border-white/[0.15] hover:-translate-y-0.5 transition-all hover:shadow-[0_0_15px_rgba(34,211,238,0.06)]"
               >
                 <cap.icon className="h-6 w-6 text-brand-accent" />
                 <span className="font-mono text-xs text-brand-text">
@@ -180,8 +187,8 @@ export default function ServicesPage() {
       </section>
 
       {/* CTA */}
-      <section className="grain bg-brand-primary px-6 py-24">
-        <div className="relative z-10 mx-auto max-w-4xl text-center">
+      <section className="grain border-t border-white/5 bg-brand-primary px-6 py-24">
+        <div className="relative z-10 mx-auto max-w-4xl text-center" data-reveal>
           <h2 className="font-mono text-3xl font-bold text-white md:text-4xl">
             Ready to Start Your{" "}
             <span className="text-brand-accent text-glow">Project</span>?
@@ -193,14 +200,14 @@ export default function ServicesPage() {
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link
               href="/book"
-              className="inline-flex items-center gap-2 rounded-lg bg-brand-accent px-8 py-3.5 font-mono text-sm font-bold text-brand-bg hover:bg-brand-accent-light transition-all"
+              className="inline-flex items-center gap-2 rounded-lg bg-brand-accent px-8 py-3.5 font-mono text-sm font-bold text-brand-bg hover:bg-brand-accent-light transition-all hover:shadow-[0_0_20px_rgba(34,211,238,0.2)]"
             >
               Book a Consultation
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 rounded-lg border border-white/20 px-8 py-3.5 font-mono text-sm font-bold text-white hover:bg-white/5 transition-all"
+              className="inline-flex items-center gap-2 rounded-lg border border-brand-accent/30 px-8 py-3.5 font-mono text-sm font-bold text-brand-accent hover:bg-brand-accent/5 transition-all"
             >
               Send a Message
             </Link>

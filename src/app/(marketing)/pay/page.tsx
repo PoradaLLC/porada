@@ -20,7 +20,7 @@ export default function PayPage() {
           <h1 className="font-mono text-4xl font-bold text-foreground md:text-6xl">
             Pay Your <span className="text-brand-accent text-glow">Invoice</span>
           </h1>
-          <p className="mt-6 max-w-2xl text-lg text-brand-text">
+          <p className="mt-6 max-w-2xl text-lg text-brand-text leading-relaxed">
             Use the invoice code we sent you to pull up your payment, or enter a
             custom amount if we agreed on a price over email or call.
           </p>
@@ -28,7 +28,7 @@ export default function PayPage() {
       </section>
 
       {/* Trust Badges */}
-      <section className="border-y border-brand-accent/10 bg-brand-primary/50 px-6 py-8">
+      <section className="border-y border-white/5 bg-brand-primary/50 px-6 py-8">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-wrap justify-center gap-8 md:gap-16">
             {[
@@ -48,8 +48,8 @@ export default function PayPage() {
       </section>
 
       {/* Payment Form */}
-      <section className="bg-brand-bg px-6 py-24">
-        <div className="mx-auto max-w-xl">
+      <section className="border-t border-white/5 bg-brand-bg px-6 py-24">
+        <div className="mx-auto max-w-xl" data-reveal>
           <PaymentTerminal />
         </div>
       </section>

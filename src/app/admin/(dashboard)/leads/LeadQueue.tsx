@@ -9,11 +9,16 @@ import {
   ExternalLink,
   XCircle,
   CheckCircle2,
+  Plus,
+  Pencil,
+  Save,
 } from "lucide-react";
 import {
   generatePitchEmail,
   sendPitchEmail,
   updateLeadStatus,
+  createLead,
+  updateLead,
 } from "@/app/admin/actions";
 
 interface Lead {
@@ -48,12 +53,31 @@ const statusConfig: Record<string, { label: string; classes: string }> = {
   },
 };
 
+const emptyForm = {
+  business_name: "",
+  contact_email: "",
+  phone: "",
+  current_website: "",
+  summary: "",
+  status: "new",
+};
+
 export function LeadQueue({ leads }: { leads: Lead[] }) {
   const [pitchModal, setPitchModal] = useState<Lead | null>(null);
   const [pitchText, setPitchText] = useState("");
   const [generating, setGenerating] = useState(false);
   const [sending, setSending] = useState(false);
   const [sendSuccess, setSendSuccess] = useState(false);
+
+  // Add lead modal state
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [addForm, setAddForm] = useState(emptyForm);
+  const [addSaving, setAddSaving] = useState(false);
+
+  // Edit lead state
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editForm, setEditForm] = useState(emptyForm);
+  const [editSaving, setEditSaving] = useState(false);
 
   async function handleGeneratePitch(lead: Lead) {
     setPitchModal(lead);
@@ -95,8 +119,73 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
     await updateLeadStatus(leadId, "converted");
   }
 
+  async function handleAddLead() {
+    if (!addForm.business_name || !addForm.summary) return;
+    setAddSaving(true);
+    try {
+      await createLead({
+        business_name: addForm.business_name,
+        contact_email: addForm.contact_email || undefined,
+        phone: addForm.phone || undefined,
+        current_website: addForm.current_website || undefined,
+        summary: addForm.summary,
+        status: addForm.status,
+      });
+      setShowAddModal(false);
+      setAddForm(emptyForm);
+    } catch (err) {
+      console.error(err);
+    }
+    setAddSaving(false);
+  }
+
+  function startEdit(lead: Lead) {
+    setEditingId(lead.id);
+    setEditForm({
+      business_name: lead.business_name,
+      contact_email: lead.contact_email ?? "",
+      phone: lead.phone ?? "",
+      current_website: lead.current_website ?? "",
+      summary: lead.summary,
+      status: lead.status,
+    });
+  }
+
+  async function handleSaveEdit() {
+    if (!editingId || !editForm.business_name || !editForm.summary) return;
+    setEditSaving(true);
+    try {
+      await updateLead(editingId, {
+        business_name: editForm.business_name,
+        contact_email: editForm.contact_email || null,
+        phone: editForm.phone || null,
+        current_website: editForm.current_website || null,
+        summary: editForm.summary,
+        status: editForm.status,
+      });
+      setEditingId(null);
+    } catch (err) {
+      console.error(err);
+    }
+    setEditSaving(false);
+  }
+
+  const inputClasses =
+    "w-full rounded border border-white/10 bg-white/5 px-2 py-1 font-mono text-sm text-white placeholder:text-white/20 focus:border-brand-accent/30 focus:outline-none transition-colors";
+
   return (
     <>
+      {/* Add Lead Button */}
+      <div className="mb-4 flex justify-end">
+        <button
+          onClick={() => setShowAddModal(true)}
+          className="inline-flex items-center gap-2 rounded-lg bg-brand-accent px-4 py-2 font-mono text-sm font-bold text-brand-bg hover:bg-brand-accent-light transition-all"
+        >
+          <Plus className="h-4 w-4" />
+          Add Lead
+        </button>
+      </div>
+
       {/* Lead Table */}
       <div className="rounded-xl border border-white/5 bg-white/5 overflow-hidden">
         <table className="w-full">
@@ -135,6 +224,101 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
             ) : (
               leads.map((lead) => {
                 const status = statusConfig[lead.status] ?? statusConfig.new;
+                const isEditing = editingId === lead.id;
+
+                if (isEditing) {
+                  return (
+                    <tr key={lead.id} className="bg-white/5">
+                      <td className="px-6 py-3">
+                        <input
+                          value={editForm.business_name}
+                          onChange={(e) =>
+                            setEditForm({ ...editForm, business_name: e.target.value })
+                          }
+                          className={inputClasses}
+                          placeholder="Business name"
+                        />
+                        <textarea
+                          value={editForm.summary}
+                          onChange={(e) =>
+                            setEditForm({ ...editForm, summary: e.target.value })
+                          }
+                          rows={2}
+                          className={`${inputClasses} mt-1 resize-none`}
+                          placeholder="Summary"
+                        />
+                      </td>
+                      <td className="px-6 py-3">
+                        <input
+                          value={editForm.contact_email}
+                          onChange={(e) =>
+                            setEditForm({ ...editForm, contact_email: e.target.value })
+                          }
+                          className={inputClasses}
+                          placeholder="Email"
+                        />
+                      </td>
+                      <td className="px-6 py-3">
+                        <input
+                          value={editForm.phone}
+                          onChange={(e) =>
+                            setEditForm({ ...editForm, phone: e.target.value })
+                          }
+                          className={inputClasses}
+                          placeholder="Phone"
+                        />
+                      </td>
+                      <td className="px-6 py-3">
+                        <input
+                          value={editForm.current_website}
+                          onChange={(e) =>
+                            setEditForm({ ...editForm, current_website: e.target.value })
+                          }
+                          className={inputClasses}
+                          placeholder="Website URL"
+                        />
+                      </td>
+                      <td className="px-6 py-3">
+                        <select
+                          value={editForm.status}
+                          onChange={(e) =>
+                            setEditForm({ ...editForm, status: e.target.value })
+                          }
+                          className={inputClasses}
+                        >
+                          <option value="new">New</option>
+                          <option value="pitched">Pitched</option>
+                          <option value="converted">Converted</option>
+                          <option value="dismissed">Dismissed</option>
+                        </select>
+                      </td>
+                      <td className="px-6 py-3 text-right">
+                        <div className="flex items-center justify-end gap-2">
+                          <button
+                            onClick={handleSaveEdit}
+                            disabled={editSaving || !editForm.business_name || !editForm.summary}
+                            title="Save"
+                            className="rounded-lg border border-brand-accent/20 p-2 text-brand-accent hover:bg-brand-accent/10 transition-colors disabled:opacity-50"
+                          >
+                            {editSaving ? (
+                              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                            ) : (
+                              <Save className="h-3.5 w-3.5" />
+                            )}
+                          </button>
+                          <button
+                            onClick={() => setEditingId(null)}
+                            title="Cancel"
+                            className="rounded-lg border border-white/5 p-2 text-white/30 hover:text-white hover:border-white/20 transition-colors"
+                          >
+                            <X className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                }
+
                 return (
                   <tr
                     key={lead.id}
@@ -182,6 +366,13 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
+                        <button
+                          onClick={() => startEdit(lead)}
+                          title="Edit lead"
+                          className="rounded-lg border border-white/5 p-2 text-white/30 hover:text-white hover:border-white/20 transition-colors"
+                        >
+                          <Pencil className="h-3.5 w-3.5" />
+                        </button>
                         {(lead.status === "new" ||
                           lead.status === "pitched") && (
                           <button
@@ -221,6 +412,145 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
           </tbody>
         </table>
       </div>
+
+      {/* Add Lead Modal */}
+      {showAddModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className="w-full max-w-lg rounded-xl border border-white/10 bg-[#080c10] p-8">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="font-mono text-lg font-bold text-white">
+                Add Lead
+              </h3>
+              <button
+                onClick={() => {
+                  setShowAddModal(false);
+                  setAddForm(emptyForm);
+                }}
+                className="text-white/30 hover:text-white transition-colors"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block font-mono text-xs text-white/40 mb-1">
+                  Business Name *
+                </label>
+                <input
+                  value={addForm.business_name}
+                  onChange={(e) =>
+                    setAddForm({ ...addForm, business_name: e.target.value })
+                  }
+                  className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 font-mono text-sm text-white placeholder:text-white/20 focus:border-brand-accent/30 focus:outline-none transition-colors"
+                  placeholder="Acme Corp"
+                />
+              </div>
+              <div>
+                <label className="block font-mono text-xs text-white/40 mb-1">
+                  Summary *
+                </label>
+                <textarea
+                  value={addForm.summary}
+                  onChange={(e) =>
+                    setAddForm({ ...addForm, summary: e.target.value })
+                  }
+                  rows={3}
+                  className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 font-mono text-sm text-white placeholder:text-white/20 focus:border-brand-accent/30 focus:outline-none transition-colors resize-none"
+                  placeholder="Brief description of the business and why they're a good lead..."
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block font-mono text-xs text-white/40 mb-1">
+                    Contact Email
+                  </label>
+                  <input
+                    value={addForm.contact_email}
+                    onChange={(e) =>
+                      setAddForm({ ...addForm, contact_email: e.target.value })
+                    }
+                    className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 font-mono text-sm text-white placeholder:text-white/20 focus:border-brand-accent/30 focus:outline-none transition-colors"
+                    placeholder="info@example.com"
+                  />
+                </div>
+                <div>
+                  <label className="block font-mono text-xs text-white/40 mb-1">
+                    Phone
+                  </label>
+                  <input
+                    value={addForm.phone}
+                    onChange={(e) =>
+                      setAddForm({ ...addForm, phone: e.target.value })
+                    }
+                    className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 font-mono text-sm text-white placeholder:text-white/20 focus:border-brand-accent/30 focus:outline-none transition-colors"
+                    placeholder="(555) 123-4567"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block font-mono text-xs text-white/40 mb-1">
+                  Website
+                </label>
+                <input
+                  value={addForm.current_website}
+                  onChange={(e) =>
+                    setAddForm({ ...addForm, current_website: e.target.value })
+                  }
+                  className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 font-mono text-sm text-white placeholder:text-white/20 focus:border-brand-accent/30 focus:outline-none transition-colors"
+                  placeholder="https://example.com"
+                />
+              </div>
+              <div>
+                <label className="block font-mono text-xs text-white/40 mb-1">
+                  Status
+                </label>
+                <select
+                  value={addForm.status}
+                  onChange={(e) =>
+                    setAddForm({ ...addForm, status: e.target.value })
+                  }
+                  className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 font-mono text-sm text-white focus:border-brand-accent/30 focus:outline-none transition-colors"
+                >
+                  <option value="new">New</option>
+                  <option value="pitched">Pitched</option>
+                  <option value="converted">Converted</option>
+                  <option value="dismissed">Dismissed</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="mt-6 flex gap-3">
+              <button
+                onClick={handleAddLead}
+                disabled={addSaving || !addForm.business_name || !addForm.summary}
+                className="flex-1 rounded-lg bg-brand-accent px-6 py-3 font-mono text-sm font-bold text-brand-bg hover:bg-brand-accent-light transition-all disabled:opacity-50 inline-flex items-center justify-center gap-2"
+              >
+                {addSaving ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <Plus className="h-4 w-4" />
+                    Add Lead
+                  </>
+                )}
+              </button>
+              <button
+                onClick={() => {
+                  setShowAddModal(false);
+                  setAddForm(emptyForm);
+                }}
+                className="rounded-lg border border-white/10 px-4 py-3 font-mono text-sm text-white/50 hover:text-white hover:border-white/20 transition-all"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Pitch Email Modal */}
       {pitchModal && (
