@@ -230,3 +230,130 @@ export async function deleteBooking(bookingId: string) {
   revalidatePath("/admin/bookings");
   return { success: true };
 }
+
+// ─── Lead Queue Management ───
+
+export async function generatePitchEmail(leadId: string) {
+  await requireAdmin();
+
+  if (!process.env.ANTHROPIC_API_KEY) throw new Error("ANTHROPIC_API_KEY not configured");
+
+  const { createServiceClient } = await import("@/lib/supabase/server");
+  const supabase = await createServiceClient();
+
+  const { data: lead, error } = await supabase
+    .from("leads")
+    .select("*")
+    .eq("id", leadId)
+    .single();
+
+  if (error || !lead) throw new Error("Lead not found");
+
+  const { default: Anthropic } = await import("@anthropic-ai/sdk");
+  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+
+  const response = await client.messages.create({
+    model: "claude-sonnet-4-20250514",
+    max_tokens: 1024,
+    messages: [
+      {
+        role: "user",
+        content: `Write a professional cold outreach email from Schtubbs LLC, a web development and software engineering company, to the following business. The email should be concise, friendly, and focused on how we can help them improve their online presence.
+
+Business Name: ${lead.business_name}
+Current Website: ${lead.current_website ?? "None"}
+Business Summary: ${lead.summary}
+
+Guidelines:
+- Keep it under 200 words
+- Be specific about what we noticed about their current web presence
+- Mention one or two concrete benefits of a modern website
+- Include a clear call to action (schedule a free consultation)
+- Sign off as "The Schtubbs Team"
+- Do NOT include a subject line, just the email body
+- Write in plain text, no HTML or markdown formatting`,
+      },
+    ],
+  });
+
+  let pitchEmail = "";
+  for (const block of response.content) {
+    if (block.type === "text") {
+      pitchEmail += block.text;
+    }
+  }
+
+  await supabase
+    .from("leads")
+    .update({ pitch_email: pitchEmail })
+    .eq("id", leadId);
+
+  revalidatePath("/admin/leads");
+  return { success: true, pitchEmail };
+}
+
+export async function sendPitchEmail(leadId: string, emailBody: string) {
+  await requireAdmin();
+
+  if (!process.env.RESEND_API_KEY) throw new Error("Resend not configured");
+
+  const { createServiceClient } = await import("@/lib/supabase/server");
+  const supabase = await createServiceClient();
+
+  const { data: lead, error } = await supabase
+    .from("leads")
+    .select("*")
+    .eq("id", leadId)
+    .single();
+
+  if (error || !lead) throw new Error("Lead not found");
+  if (!lead.contact_email) throw new Error("No contact email for this lead");
+
+  const { Resend } = await import("resend");
+  const resend = new Resend(process.env.RESEND_API_KEY);
+  const from = process.env.RESEND_FROM_EMAIL ?? "noreply@schtubbs.dev";
+
+  await resend.emails.send({
+    from: `Schtubbs <${from}>`,
+    to: lead.contact_email,
+    subject: `Elevate ${lead.business_name}'s Online Presence`,
+    html: `
+      <div style="font-family: 'Courier New', monospace; background-color: #080c10; color: #e2e8f0; padding: 40px; max-width: 600px; margin: 0 auto;">
+        <div style="border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 32px; background-color: rgba(255,255,255,0.02);">
+          ${emailBody.split("\n").map((line) => `<p style="margin: 8px 0; line-height: 1.6; color: #cbd5e1;">${line || "&nbsp;"}</p>`).join("")}
+        </div>
+        <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.05); text-align: center;">
+          <p style="font-size: 11px; color: rgba(255,255,255,0.2);">Schtubbs LLC &mdash; Web Development & Software Engineering</p>
+          <p style="font-size: 11px; color: rgba(255,255,255,0.2);">If you no longer wish to receive emails, reply with "unsubscribe"</p>
+        </div>
+      </div>
+    `,
+  });
+
+  await supabase
+    .from("leads")
+    .update({
+      status: "pitched",
+      pitch_email: emailBody,
+      pitched_at: new Date().toISOString(),
+    })
+    .eq("id", leadId);
+
+  revalidatePath("/admin/leads");
+  return { success: true };
+}
+
+export async function updateLeadStatus(leadId: string, status: string) {
+  await requireAdmin();
+
+  const validStatuses = ["new", "pitched", "converted", "dismissed"];
+  if (!validStatuses.includes(status)) throw new Error("Invalid status");
+
+  const { createServiceClient } = await import("@/lib/supabase/server");
+  const supabase = await createServiceClient();
+
+  await supabase.from("leads").update({ status }).eq("id", leadId);
+
+  revalidatePath("/admin/leads");
+  return { success: true };
+}

@@ -11,6 +11,7 @@ import {
   Calendar,
   LogOut,
   Settings,
+  Target,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
@@ -19,6 +20,7 @@ const navItems = [
   { href: "/admin/customers", label: "Customers", icon: Users },
   { href: "/admin/payments", label: "Payments", icon: CreditCard },
   { href: "/admin/bookings", label: "Bookings", icon: Calendar },
+  { href: "/admin/leads", label: "Lead Queue", icon: Target },
   { href: "/admin/messages", label: "Messages", icon: MessageSquare },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
