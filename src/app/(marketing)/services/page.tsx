@@ -18,7 +18,7 @@ import {
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Web development, cloud solutions, UI/UX design, and tech consulting — Schtubbs delivers full-spectrum technology services.",
+    "Web development, cloud solutions, UI/UX design, and tech consulting — Sierra-117 delivers full-spectrum technology services.",
 };
 
 const services = [

@@ -15,9 +15,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: { default: "Schtubbs | Web Development & Tech Solutions", template: "%s | Schtubbs" },
+  title: { default: "Sierra-117 | Web Development & Tech Solutions", template: "%s | Sierra-117" },
   description:
-    "Schtubbs builds cutting-edge websites and delivers tech solutions that drive results. Custom development, cloud infrastructure, and digital transformation.",
+    "Sierra-117 builds cutting-edge websites and delivers tech solutions that drive results. Custom development, cloud infrastructure, and digital transformation.",
 };
 
 export default function RootLayout({

@@ -10,7 +10,7 @@ interface Testimonial {
   role: string;
   project: string;
   url: string;
-  previewImage: string;
+  previewImage?: string;
   stack: string[];
   description: string;
   isLive: boolean;
@@ -22,13 +22,12 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     quote:
-      "Working with Schtubbs was seamless from start to finish. They delivered exactly what we needed, on time.",
+      "Working with Sierra-117 was seamless from start to finish. They delivered exactly what we needed, on time.",
     name: "J.M.",
     business: "Pocono Property Care",
     role: "Owner",
     project: "Pocono Property Care",
     url: "https://poconopropertycare.com",
-    previewImage: "https://poconopropertycare.com/og-image.png",
     stack: ["Next.js", "Tailwind", "Vercel"],
     description:
       "Full website for a Pocono Mountains property maintenance company. Before/after galleries, service pages, testimonials, and a lead-generation contact flow.",
@@ -81,6 +80,12 @@ const testimonials: Testimonial[] = [
   },
 ];
 
+function getPreviewUrl(url: string, previewImage?: string): string | null {
+  if (previewImage) return previewImage;
+  if (url) return `/api/screenshot?url=${encodeURIComponent(url)}`;
+  return null;
+}
+
 function TestimonialCard({
   testimonial,
   index,
@@ -127,12 +132,13 @@ function TestimonialCard({
     >
       {/* Preview thumbnail */}
       <div className="aspect-[16/9] relative border-b border-brand-accent/10 overflow-hidden">
-        {t.isLive && t.previewImage ? (
+        {t.isLive && getPreviewUrl(t.url, t.previewImage) ? (
           <>
             <img
-              src={t.previewImage}
+              src={getPreviewUrl(t.url, t.previewImage)!}
               alt={`${t.project} preview`}
               className="absolute inset-0 w-full h-full object-cover object-top opacity-60 group-hover:opacity-80 transition-opacity duration-300"
+              onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-brand-bg/90 via-brand-bg/40 to-transparent" />
             <div className="relative h-full flex items-end p-5">

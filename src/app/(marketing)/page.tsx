@@ -120,7 +120,7 @@ export default function HomePage() {
               </Reveal>
             </div>
 
-            <div data-parallax="0.15">
+            <div data-parallax="0.3">
               <Reveal delay={0.3}>
                 <div className="mt-10 flex flex-wrap gap-4">
                   <MagneticButton>
@@ -144,6 +144,7 @@ export default function HomePage() {
               </Reveal>
             </div>
 
+            <div data-parallax="0.3">
             <Stagger className="mt-16 grid grid-cols-3 gap-4" stagger={0.12}>
               {[
                 { step: "01", label: "Discover", desc: "Understand your goals" },
@@ -167,6 +168,7 @@ export default function HomePage() {
                 </StaggerItem>
               ))}
             </Stagger>
+            </div>
           </div>
         </div>
       </section>
@@ -239,7 +241,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Why Schtubbs */}
+      {/* Why Sierra-117 */}
       <section className="border-y border-white/5 bg-brand-bg-alt px-6 py-24 grid-bg">
         <div className="mx-auto max-w-7xl">
           <Reveal>
@@ -247,7 +249,7 @@ export default function HomePage() {
               // Why Us
             </p>
             <h2 className="font-mono text-3xl font-bold text-foreground md:text-4xl">
-              Why Schtubbs
+              Why Sierra-117
             </h2>
           </Reveal>
 
@@ -352,7 +354,7 @@ export default function HomePage() {
               <span className="text-brand-accent text-glow">Great</span>
             </h2>
             <p className="mx-auto mt-6 max-w-xl text-brand-text">
-              Book a free consultation and let&apos;s discuss how Schtubbs can
+              Book a free consultation and let&apos;s discuss how Sierra-117 can
               help with your next project.
             </p>
             <div className="mt-10 flex flex-wrap justify-center gap-4">

@@ -44,7 +44,7 @@ export function AdminSidebar({ userEmail }: { userEmail: string }) {
           <Terminal className="h-4 w-4 text-brand-accent" />
         </div>
         <span className="font-mono text-sm font-bold text-white">
-          SCHTUBBS
+          SIERRA-117
         </span>
       </div>
 

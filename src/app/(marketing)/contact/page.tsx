@@ -4,15 +4,15 @@ import { Mail, MapPin, Clock } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Get in touch with Schtubbs. We'd love to hear about your project.",
+  description: "Get in touch with Sierra-117. We'd love to hear about your project.",
 };
 
 const contactInfo = [
   {
     icon: Mail,
     label: "Email",
-    value: "hello@schtubbs.dev",
-    href: "mailto:hello@schtubbs.dev",
+    value: "hello@sierra-117.dev",
+    href: "mailto:hello@sierra-117.dev",
   },
   {
     icon: MapPin,
@@ -87,7 +87,7 @@ export default function ContactPage() {
                 <div className="font-mono text-xs space-y-1.5 text-brand-text/70">
                   <p>
                     <span className="text-brand-accent">$</span> ping
-                    schtubbs.dev
+                    sierra-117.dev
                   </p>
                   <p>64 bytes: time=0.42ms</p>
                   <p>64 bytes: time=0.38ms</p>

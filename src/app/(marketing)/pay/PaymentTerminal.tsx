@@ -62,7 +62,7 @@ export function PaymentTerminal() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           amount: cents,
-          description: description || "Schtubbs Payment",
+          description: description || "Sierra-117 Payment",
           customerEmail: email,
         }),
       });
@@ -87,7 +87,7 @@ export function PaymentTerminal() {
         <div className="h-3 w-3 rounded-full bg-yellow-500/60" />
         <div className="h-3 w-3 rounded-full bg-green-500/60" />
         <span className="ml-2 font-mono text-xs text-brand-text/60">
-          schtubbs — payment terminal
+          sierra-117 — payment terminal
         </span>
       </div>
 

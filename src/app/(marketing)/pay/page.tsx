@@ -4,7 +4,7 @@ import { Shield, CreditCard, Lock } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Pay",
-  description: "Secure payment portal — Schtubbs",
+  description: "Secure payment portal — Sierra-117",
 };
 
 export default function PayPage() {
