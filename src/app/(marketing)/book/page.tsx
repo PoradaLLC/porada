@@ -4,7 +4,7 @@ import { Video, Clock, Shield } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Book a Consultation",
-  description: "Schedule a free consultation with Schtubbs to discuss your project.",
+  description: "Schedule a free consultation with Sierra-117 to discuss your project.",
 };
 
 const benefits = [
@@ -39,7 +39,7 @@ export default function BookPage() {
             Let&apos;s Talk{" "}
             <span className="text-brand-accent text-glow">Strategy</span>
           </h1>
-          <p className="mt-6 max-w-2xl text-lg text-brand-text">
+          <p className="mt-6 max-w-2xl text-lg text-brand-text leading-relaxed">
             Book a free 30-minute consultation. We&apos;ll discuss your project,
             recommend the right approach, and give you a clear path forward.
           </p>
@@ -47,11 +47,11 @@ export default function BookPage() {
       </section>
 
       {/* Benefits */}
-      <section className="border-y border-brand-accent/10 bg-brand-primary/50 px-6 py-12">
+      <section className="border-y border-white/5 bg-brand-primary/50 px-6 py-12">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-6 md:grid-cols-3">
-            {benefits.map((b) => (
-              <div key={b.title} className="flex items-start gap-4">
+            {benefits.map((b, i) => (
+              <div key={b.title} data-reveal data-reveal-delay={String(i + 1)} className="flex items-start gap-4">
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-accent/10 border border-brand-accent/20 flex-shrink-0">
                   <b.icon className="h-5 w-5 text-brand-accent" />
                 </div>
@@ -68,8 +68,8 @@ export default function BookPage() {
       </section>
 
       {/* Booking Form */}
-      <section className="bg-brand-bg px-6 py-24">
-        <div className="mx-auto max-w-3xl">
+      <section className="border-t border-white/5 bg-brand-bg px-6 py-24">
+        <div className="mx-auto max-w-3xl" data-reveal>
           <div className="glow-border rounded-xl bg-brand-primary/30 p-8 md:p-10 backdrop-blur">
             <h2 className="font-mono text-xl font-bold text-foreground mb-2">
               Schedule Your Consultation

@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(amount),
       currency: "usd",
-      description: description || "Schtubbs Payment",
+      description: description || "Sierra-117 Payment",
       receipt_email: customerEmail || undefined,
       automatic_payment_methods: { enabled: true },
     });

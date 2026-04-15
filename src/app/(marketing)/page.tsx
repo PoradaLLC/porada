@@ -19,6 +19,7 @@ import {
   Counter,
   MagneticButton,
 } from "@/components/ui/Motion";
+import Testimonials from "@/components/Testimonials";
 
 const services = [
   {
@@ -54,28 +55,36 @@ const stats = [
   { value: "24/7", label: "Support Available" },
 ];
 
-const techStack = [
-  "Next.js",
-  "React",
-  "TypeScript",
-  "Node.js",
-  "PostgreSQL",
-  "AWS",
-  "Vercel",
-  "Tailwind CSS",
-  "Supabase",
-  "Stripe",
-  "Docker",
-  "GraphQL",
+const techCategories = [
+  {
+    label: "Frontend",
+    items: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
+  },
+  {
+    label: "Backend",
+    items: ["Node.js", "GraphQL", "PostgreSQL", "Supabase"],
+  },
+  {
+    label: "Infrastructure",
+    items: ["AWS", "Vercel", "Docker"],
+  },
+  {
+    label: "Payments & Auth",
+    items: ["Stripe"],
+  },
 ];
 
 export default function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative min-h-[90vh] flex items-center overflow-hidden grid-bg">
+      <section
+        data-hero-gradient
+        className="relative min-h-[90vh] flex items-center overflow-hidden grid-bg"
+      >
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-accent/5 rounded-full blur-[120px]" />
         <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-brand-accent/3 rounded-full blur-[100px]" />
+        <div id="hero-gradient-overlay" />
 
         <div className="relative mx-auto max-w-7xl px-6 py-32">
           <div className="max-w-3xl">
@@ -88,46 +97,54 @@ export default function HomePage() {
               </div>
             </Reveal>
 
-            <Reveal delay={0.1}>
-              <h1 className="font-mono text-5xl font-bold leading-tight tracking-tight md:text-7xl">
-                Websites & Tech
-                <br />
-                <span className="text-glow text-brand-accent">
-                  That Actually Work
-                </span>
-              </h1>
-            </Reveal>
+            <div data-parallax="0.3">
+              <Reveal delay={0.1}>
+                <div className="hero-glow relative">
+                  <h1 className="font-mono text-6xl font-bold leading-tight tracking-tight md:text-8xl">
+                    Websites & Tech
+                    <br />
+                    <span className="text-glow text-brand-accent">
+                      That Actually Work
+                    </span>
+                  </h1>
+                  <div className="hero-beam bottom-0" />
+                </div>
+              </Reveal>
 
-            <Reveal delay={0.2}>
-              <p className="mt-6 max-w-xl text-lg text-brand-text leading-relaxed">
-                We design, build, and ship web applications and infrastructure
-                for businesses that need things done right. No fluff — just
-                solid engineering.
-              </p>
-            </Reveal>
+              <Reveal delay={0.2}>
+                <p className="mt-6 max-w-xl text-lg text-brand-text leading-relaxed">
+                  We design, build, and ship web applications and infrastructure
+                  for businesses that need things done right. No fluff — just
+                  solid engineering.
+                </p>
+              </Reveal>
+            </div>
 
-            <Reveal delay={0.3}>
-              <div className="mt-10 flex flex-wrap gap-4">
-                <MagneticButton>
-                  <Link
-                    href="/book"
-                    className="inline-flex items-center gap-2 rounded-lg bg-brand-accent px-8 py-3.5 font-mono text-sm font-bold text-brand-bg hover:bg-brand-accent-light transition-all hover:shadow-[0_0_20px_rgba(52,211,153,0.15)]"
-                  >
-                    Book a Consultation
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </MagneticButton>
-                <MagneticButton>
-                  <Link
-                    href="/services"
-                    className="inline-flex items-center gap-2 rounded-lg border border-brand-accent/20 px-8 py-3.5 font-mono text-sm font-bold text-brand-accent hover:bg-brand-accent/5 transition-all"
-                  >
-                    View Services
-                  </Link>
-                </MagneticButton>
-              </div>
-            </Reveal>
+            <div data-parallax="0.3">
+              <Reveal delay={0.3}>
+                <div className="mt-10 flex flex-wrap gap-4">
+                  <MagneticButton>
+                    <Link
+                      href="/book"
+                      className="inline-flex items-center gap-2 rounded-lg bg-brand-accent px-8 py-3.5 font-mono text-sm font-bold text-brand-bg hover:bg-brand-accent-light transition-all hover:shadow-[0_0_20px_rgba(34,211,238,0.2)]"
+                    >
+                      Book a Consultation
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </MagneticButton>
+                  <MagneticButton>
+                    <Link
+                      href="/services"
+                      className="inline-flex items-center gap-2 rounded-lg border border-brand-accent/30 px-8 py-3.5 font-mono text-sm font-bold text-brand-accent hover:bg-brand-accent/5 transition-all"
+                    >
+                      View Services
+                    </Link>
+                  </MagneticButton>
+                </div>
+              </Reveal>
+            </div>
 
+            <div data-parallax="0.3">
             <Stagger className="mt-16 grid grid-cols-3 gap-4" stagger={0.12}>
               {[
                 { step: "01", label: "Discover", desc: "Understand your goals" },
@@ -136,7 +153,7 @@ export default function HomePage() {
               ].map((item) => (
                 <StaggerItem key={item.step}>
                   <HoverCard>
-                    <div className="rounded-xl border border-brand-accent/10 bg-brand-primary/50 p-5 backdrop-blur">
+                    <div className="rounded-xl border border-white/[0.08] bg-brand-primary/50 p-5 backdrop-blur hover:border-white/[0.15] transition-all hover:shadow-[0_0_20px_rgba(34,211,238,0.06)]">
                       <span className="font-mono text-xs text-brand-accent/50">
                         {item.step}
                       </span>
@@ -151,12 +168,13 @@ export default function HomePage() {
                 </StaggerItem>
               ))}
             </Stagger>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Stats */}
-      <section className="border-y border-brand-accent/10 bg-brand-primary/50">
+      <section className="border-y border-white/5 bg-brand-primary/50">
         <div className="mx-auto max-w-7xl px-6 py-12">
           <Stagger className="grid grid-cols-2 gap-8 md:grid-cols-4" stagger={0.08}>
             {stats.map((stat) => (
@@ -177,7 +195,7 @@ export default function HomePage() {
       </section>
 
       {/* Services */}
-      <section className="grain bg-brand-bg px-6 py-24">
+      <section className="grain border-t border-white/5 bg-brand-bg px-6 py-24">
         <div className="relative z-10 mx-auto max-w-7xl">
           <Reveal>
             <p className="font-mono text-xs font-semibold uppercase tracking-widest text-brand-accent mb-2">
@@ -196,7 +214,10 @@ export default function HomePage() {
             {services.map((service) => (
               <StaggerItem key={service.title}>
                 <HoverCard className="h-full">
-                  <div className="group glow-border rounded-xl bg-brand-primary/40 p-8 backdrop-blur hover:bg-brand-primary/60 transition-all hover:border-brand-accent/30 h-full">
+                  <div
+                    data-spotlight
+                    className="group glow-border rounded-xl bg-brand-primary/40 p-8 backdrop-blur hover:bg-brand-primary/60 transition-all h-full"
+                  >
                     <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-brand-accent/10 border border-brand-accent/20 group-hover:bg-brand-accent/20 transition-colors">
                       <service.icon className="h-6 w-6 text-brand-accent" />
                     </div>
@@ -220,15 +241,15 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Why Schtubbs */}
-      <section className="border-y border-brand-accent/10 bg-brand-bg-alt px-6 py-24 grid-bg">
+      {/* Why Sierra-117 */}
+      <section className="border-y border-white/5 bg-brand-bg-alt px-6 py-24 grid-bg">
         <div className="mx-auto max-w-7xl">
           <Reveal>
             <p className="font-mono text-xs font-semibold uppercase tracking-widest text-brand-accent mb-2">
               // Why Us
             </p>
             <h2 className="font-mono text-3xl font-bold text-foreground md:text-4xl">
-              Why Schtubbs
+              Why Sierra-117
             </h2>
           </Reveal>
 
@@ -252,7 +273,10 @@ export default function HomePage() {
             ].map((item) => (
               <StaggerItem key={item.title}>
                 <HoverCard className="h-full">
-                  <div className="rounded-xl border border-brand-accent/10 bg-brand-bg/50 p-8 backdrop-blur h-full">
+                  <div
+                    data-spotlight
+                    className="rounded-xl border border-white/[0.08] bg-brand-bg/50 p-8 backdrop-blur h-full hover:border-white/[0.15] transition-all hover:shadow-[0_0_20px_rgba(34,211,238,0.06)]"
+                  >
                     <item.icon className="h-8 w-8 text-brand-accent mb-4" />
                     <h3 className="font-mono text-lg font-bold text-foreground">
                       {item.title}
@@ -269,86 +293,10 @@ export default function HomePage() {
       </section>
 
       {/* Portfolio */}
-      <section className="bg-brand-bg px-6 py-24">
-        <div className="mx-auto max-w-7xl">
-          <Reveal>
-            <p className="font-mono text-xs font-semibold uppercase tracking-widest text-brand-accent mb-2">
-              // Our Work
-            </p>
-            <h2 className="font-mono text-3xl font-bold text-foreground md:text-4xl">
-              Portfolio
-            </h2>
-            <p className="mt-4 max-w-2xl text-brand-text">
-              A few projects we&apos;ve shipped recently.
-            </p>
-          </Reveal>
-
-          <Stagger className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3" stagger={0.1}>
-            <StaggerItem>
-              <HoverCard className="h-full">
-                <a
-                  href="https://poconopropertycare.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group block h-full rounded-xl border border-brand-accent/10 bg-brand-primary/40 overflow-hidden hover:border-brand-accent/25 transition-all"
-                >
-                  <div className="aspect-[16/9] bg-brand-bg-alt flex items-center justify-center border-b border-brand-accent/10 overflow-hidden">
-                    <div className="text-center px-6">
-                      <p className="font-mono text-lg font-bold text-foreground group-hover:text-brand-accent transition-colors">
-                        Pocono Property Care
-                      </p>
-                      <p className="mt-1 font-mono text-xs text-brand-text/50">
-                        poconopropertycare.com
-                      </p>
-                    </div>
-                  </div>
-                  <div className="p-6">
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {["Next.js", "Tailwind", "Vercel"].map((tag) => (
-                        <span
-                          key={tag}
-                          className="rounded-full bg-brand-accent/5 border border-brand-accent/10 px-2.5 py-0.5 font-mono text-[10px] text-brand-accent"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <p className="text-sm text-brand-text leading-relaxed">
-                      Full website for a Pocono Mountains property maintenance company.
-                      Before/after galleries, service pages, testimonials, and a
-                      lead-generation contact flow.
-                    </p>
-                    <p className="mt-3 inline-flex items-center gap-1 font-mono text-xs text-brand-accent group-hover:text-brand-accent-light transition-colors">
-                      Visit site <ArrowRight className="h-3 w-3" />
-                    </p>
-                  </div>
-                </a>
-              </HoverCard>
-            </StaggerItem>
-
-            {/* Placeholder for future projects */}
-            <StaggerItem>
-              <div className="h-full rounded-xl border border-dashed border-brand-accent/10 bg-brand-primary/20 p-8 flex flex-col items-center justify-center text-center min-h-[280px]">
-                <p className="font-mono text-sm text-brand-text/30">
-                  More projects coming soon
-                </p>
-                <p className="mt-2 font-mono text-xs text-brand-text/20">
-                  Want to be featured here?
-                </p>
-                <Link
-                  href="/book"
-                  className="mt-4 font-mono text-xs text-brand-accent hover:text-brand-accent-light transition-colors"
-                >
-                  Let&apos;s talk
-                </Link>
-              </div>
-            </StaggerItem>
-          </Stagger>
-        </div>
-      </section>
+      <Testimonials />
 
       {/* Tech Stack */}
-      <section className="border-t border-brand-accent/10 bg-brand-bg-alt px-6 py-24">
+      <section className="border-t border-white/5 bg-brand-bg-alt px-6 py-24">
         <div className="mx-auto max-w-7xl">
           <Reveal>
             <p className="font-mono text-xs font-semibold uppercase tracking-widest text-brand-accent mb-2">
@@ -359,12 +307,31 @@ export default function HomePage() {
             </h2>
           </Reveal>
 
-          <Stagger className="mt-12 flex flex-wrap gap-3" stagger={0.04}>
-            {techStack.map((tech) => (
-              <StaggerItem key={tech}>
-                <span className="inline-block rounded-lg border border-brand-accent/10 bg-brand-primary/40 px-5 py-2.5 font-mono text-sm text-brand-text hover:border-brand-accent/30 hover:text-brand-accent transition-all cursor-default">
-                  {tech}
-                </span>
+          <Stagger
+            className="mt-12 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
+            stagger={0.08}
+          >
+            {techCategories.map((cat) => (
+              <StaggerItem key={cat.label}>
+                <div
+                  data-spotlight
+                  className="glow-border rounded-xl bg-brand-primary/40 p-6 backdrop-blur h-full"
+                >
+                  <p className="font-mono text-xs font-semibold uppercase tracking-widest text-brand-accent mb-4">
+                    // {cat.label}
+                  </p>
+                  <ul className="space-y-2.5">
+                    {cat.items.map((item) => (
+                      <li
+                        key={item}
+                        className="group/item flex items-center gap-2.5 font-mono text-sm text-brand-text hover:text-white transition-colors cursor-default"
+                      >
+                        <span className="h-1.5 w-1.5 rounded-full bg-brand-accent/40 group-hover/item:bg-brand-accent transition-colors flex-shrink-0" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </StaggerItem>
             ))}
           </Stagger>
@@ -372,7 +339,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA */}
-      <section className="grain bg-brand-primary px-6 py-24">
+      <section className="grain border-t border-white/5 bg-brand-primary px-6 py-24">
         <div className="relative z-10 mx-auto max-w-4xl text-center">
           <Reveal>
             <div className="inline-flex items-center gap-2 mb-6">
@@ -387,14 +354,14 @@ export default function HomePage() {
               <span className="text-brand-accent text-glow">Great</span>
             </h2>
             <p className="mx-auto mt-6 max-w-xl text-brand-text">
-              Book a free consultation and let&apos;s discuss how Schtubbs can
+              Book a free consultation and let&apos;s discuss how Sierra-117 can
               help with your next project.
             </p>
             <div className="mt-10 flex flex-wrap justify-center gap-4">
               <MagneticButton>
                 <Link
                   href="/book"
-                  className="inline-flex items-center gap-2 rounded-lg bg-brand-accent px-10 py-4 font-mono text-sm font-bold text-brand-bg hover:bg-brand-accent-light transition-all hover:shadow-[0_0_20px_rgba(52,211,153,0.15)]"
+                  className="inline-flex items-center gap-2 rounded-lg bg-brand-accent px-10 py-4 font-mono text-sm font-bold text-brand-bg hover:bg-brand-accent-light transition-all hover:shadow-[0_0_20px_rgba(34,211,238,0.2)]"
                 >
                   Book a Consultation
                   <ArrowRight className="h-4 w-4" />
@@ -403,7 +370,7 @@ export default function HomePage() {
               <MagneticButton>
                 <Link
                   href="/contact"
-                  className="inline-flex items-center gap-2 rounded-lg border border-white/20 px-10 py-4 font-mono text-sm font-bold text-white hover:bg-white/5 transition-all"
+                  className="inline-flex items-center gap-2 rounded-lg border border-brand-accent/30 px-10 py-4 font-mono text-sm font-bold text-brand-accent hover:bg-brand-accent/5 transition-all"
                 >
                   Contact Us
                 </Link>

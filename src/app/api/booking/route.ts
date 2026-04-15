@@ -27,12 +27,12 @@ export async function POST(req: Request) {
     if (process.env.RESEND_API_KEY) {
       const { Resend } = await import("resend");
       const resend = new Resend(process.env.RESEND_API_KEY);
-      const from = process.env.RESEND_FROM_EMAIL ?? "noreply@schtubbs.dev";
+      const from = process.env.RESEND_FROM_EMAIL ?? "noreply@sierra-117.dev";
 
       await Promise.allSettled([
         // Notify admin
         resend.emails.send({
-          from: `Schtubbs <${from}>`,
+          from: `Sierra-117 <${from}>`,
           to: from,
           subject: `New Booking: ${data.service} - ${data.name}`,
           html: `
@@ -47,9 +47,9 @@ export async function POST(req: Request) {
         }),
         // Confirm to customer
         resend.emails.send({
-          from: `Schtubbs <${from}>`,
+          from: `Sierra-117 <${from}>`,
           to: data.email,
-          subject: "Consultation Confirmed — Schtubbs",
+          subject: "Consultation Confirmed — Sierra-117",
           html: `
             <div style="font-family: monospace; background: #080c10; color: #dce4ec; padding: 40px;">
               <h1 style="color: #34d399;">Consultation Confirmed</h1>
@@ -61,7 +61,7 @@ export async function POST(req: Request) {
                 <p><strong>Time:</strong> ${data.time} EST</p>
               </div>
               <p>We'll send you a meeting link before your scheduled time.</p>
-              <p style="color: #8b9a8b;">— Schtubbs Team</p>
+              <p style="color: #8b9a8b;">— Sierra-117 Team</p>
             </div>
           `,
         }),

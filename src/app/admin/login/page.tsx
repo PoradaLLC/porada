@@ -18,6 +18,17 @@ export default function AdminLoginPage() {
     setLoading(true);
 
     try {
+      if (
+        !process.env.NEXT_PUBLIC_SUPABASE_URL ||
+        !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+      ) {
+        setError(
+          "Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables."
+        );
+        setLoading(false);
+        return;
+      }
+
       const supabase = createClient();
       const { error: authError } = await supabase.auth.signInWithPassword({
         email,
@@ -32,8 +43,12 @@ export default function AdminLoginPage() {
 
       router.push("/admin");
       router.refresh();
-    } catch {
-      setError("An unexpected error occurred");
+    } catch (err) {
+      const message =
+        process.env.NODE_ENV === "development" && err instanceof Error
+          ? err.message
+          : "An unexpected error occurred. Please try again.";
+      setError(message);
       setLoading(false);
     }
   }
@@ -46,7 +61,7 @@ export default function AdminLoginPage() {
             <Terminal className="h-7 w-7 text-brand-accent" />
           </div>
           <h1 className="font-mono text-2xl font-bold text-foreground">
-            SCHTUBBS
+            SIERRA-117
           </h1>
           <p className="mt-2 font-mono text-xs text-brand-text">
             Admin Access Required
@@ -67,7 +82,7 @@ export default function AdminLoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full rounded-lg border border-brand-accent/10 bg-brand-bg/50 px-4 py-3 font-mono text-sm text-foreground placeholder:text-brand-text/40 focus:border-brand-accent/30 focus:outline-none focus:ring-1 focus:ring-brand-accent/20 transition-colors"
-              placeholder="admin@schtubbs.dev"
+              placeholder="admin@sierra-117.dev"
               required
             />
           </div>

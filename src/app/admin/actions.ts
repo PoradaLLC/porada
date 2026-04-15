@@ -258,7 +258,7 @@ export async function generatePitchEmail(leadId: string) {
     messages: [
       {
         role: "user",
-        content: `Write a professional cold outreach email from Schtubbs LLC, a web development and software engineering company, to the following business. The email should be concise, friendly, and focused on how we can help them improve their online presence.
+        content: `Write a professional cold outreach email from Sierra-117 LLC, a web development and software engineering company, to the following business. The email should be concise, friendly, and focused on how we can help them improve their online presence.
 
 Business Name: ${lead.business_name}
 Current Website: ${lead.current_website ?? "None"}
@@ -269,7 +269,7 @@ Guidelines:
 - Be specific about what we noticed about their current web presence
 - Mention one or two concrete benefits of a modern website
 - Include a clear call to action (schedule a free consultation)
-- Sign off as "The Schtubbs Team"
+- Sign off as "The Sierra-117 Team"
 - Do NOT include a subject line, just the email body
 - Write in plain text, no HTML or markdown formatting`,
       },
@@ -311,10 +311,10 @@ export async function sendPitchEmail(leadId: string, emailBody: string) {
 
   const { Resend } = await import("resend");
   const resend = new Resend(process.env.RESEND_API_KEY);
-  const from = process.env.RESEND_FROM_EMAIL ?? "noreply@schtubbs.dev";
+  const from = process.env.RESEND_FROM_EMAIL ?? "noreply@sierra-117.dev";
 
   await resend.emails.send({
-    from: `Schtubbs <${from}>`,
+    from: `Sierra-117 <${from}>`,
     to: lead.contact_email,
     subject: `Elevate ${lead.business_name}'s Online Presence`,
     html: `
@@ -323,7 +323,7 @@ export async function sendPitchEmail(leadId: string, emailBody: string) {
           ${emailBody.split("\n").map((line) => `<p style="margin: 8px 0; line-height: 1.6; color: #cbd5e1;">${line || "&nbsp;"}</p>`).join("")}
         </div>
         <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.05); text-align: center;">
-          <p style="font-size: 11px; color: rgba(255,255,255,0.2);">Schtubbs LLC &mdash; Web Development & Software Engineering</p>
+          <p style="font-size: 11px; color: rgba(255,255,255,0.2);">Sierra-117 LLC &mdash; Web Development & Software Engineering</p>
           <p style="font-size: 11px; color: rgba(255,255,255,0.2);">If you no longer wish to receive emails, reply with "unsubscribe"</p>
         </div>
       </div>
@@ -353,6 +353,65 @@ export async function updateLeadStatus(leadId: string, status: string) {
   const supabase = await createServiceClient();
 
   await supabase.from("leads").update({ status }).eq("id", leadId);
+
+  revalidatePath("/admin/leads");
+  return { success: true };
+}
+
+export async function createLead(data: {
+  business_name: string;
+  contact_email?: string;
+  phone?: string;
+  current_website?: string;
+  summary: string;
+  status?: string;
+}) {
+  await requireAdmin();
+
+  const validStatuses = ["new", "pitched", "converted", "dismissed"];
+  const status = data.status && validStatuses.includes(data.status) ? data.status : "new";
+
+  const { createServiceClient } = await import("@/lib/supabase/server");
+  const supabase = await createServiceClient();
+
+  const { error } = await supabase.from("leads").insert({
+    business_name: data.business_name,
+    contact_email: data.contact_email || null,
+    phone: data.phone || null,
+    current_website: data.current_website || null,
+    summary: data.summary,
+    status,
+  });
+
+  if (error) throw new Error(error.message);
+
+  revalidatePath("/admin/leads");
+  return { success: true };
+}
+
+export async function updateLead(
+  leadId: string,
+  data: {
+    business_name?: string;
+    contact_email?: string | null;
+    phone?: string | null;
+    current_website?: string | null;
+    summary?: string;
+    status?: string;
+  }
+) {
+  await requireAdmin();
+
+  const validStatuses = ["new", "pitched", "converted", "dismissed"];
+  if (data.status && !validStatuses.includes(data.status)) {
+    throw new Error("Invalid status");
+  }
+
+  const { createServiceClient } = await import("@/lib/supabase/server");
+  const supabase = await createServiceClient();
+
+  const { error } = await supabase.from("leads").update(data).eq("id", leadId);
+  if (error) throw new Error(error.message);
 
   revalidatePath("/admin/leads");
   return { success: true };
