@@ -12,6 +12,8 @@ import {
   Plus,
   Pencil,
   Save,
+  Search,
+  Globe,
 } from "lucide-react";
 import {
   generatePitchEmail,
@@ -19,6 +21,8 @@ import {
   updateLeadStatus,
   createLead,
   updateLead,
+  enrichLeadContact,
+  generateDemoSite,
 } from "@/app/admin/actions";
 
 interface Lead {
@@ -31,6 +35,7 @@ interface Lead {
   status: string;
   pitch_email: string | null;
   pitched_at: string | null;
+  demo_url: string | null;
   created_at: string;
 }
 
@@ -68,6 +73,8 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
   const [generating, setGenerating] = useState(false);
   const [sending, setSending] = useState(false);
   const [sendSuccess, setSendSuccess] = useState(false);
+  const [enrichingId, setEnrichingId] = useState<string | null>(null);
+  const [generatingDemoId, setGeneratingDemoId] = useState<string | null>(null);
 
   // Add lead modal state
   const [showAddModal, setShowAddModal] = useState(false);
@@ -117,6 +124,26 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
 
   async function handleConvert(leadId: string) {
     await updateLeadStatus(leadId, "converted");
+  }
+
+  async function handleEnrich(leadId: string) {
+    setEnrichingId(leadId);
+    try {
+      await enrichLeadContact(leadId);
+    } catch (err) {
+      console.error(err);
+    }
+    setEnrichingId(null);
+  }
+
+  async function handleGenerateDemo(leadId: string) {
+    setGeneratingDemoId(leadId);
+    try {
+      await generateDemoSite(leadId);
+    } catch (err) {
+      console.error(err);
+    }
+    setGeneratingDemoId(null);
   }
 
   async function handleAddLead() {
@@ -204,6 +231,9 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                 Website
               </th>
               <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-white/30">
+                Demo
+              </th>
+              <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-white/30">
                 Status
               </th>
               <th className="px-6 py-3 text-right font-mono text-xs uppercase tracking-widest text-white/30">
@@ -215,7 +245,7 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
             {leads.length === 0 ? (
               <tr>
                 <td
-                  colSpan={6}
+                  colSpan={7}
                   className="px-6 py-12 text-center font-mono text-sm text-white/20"
                 >
                   No leads yet. Leads are generated daily at 9:00 AM ET.
@@ -358,6 +388,23 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                       )}
                     </td>
                     <td className="px-6 py-4">
+                      {lead.demo_url ? (
+                        <a
+                          href={lead.demo_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 font-mono text-sm text-purple-400 hover:text-purple-300 transition-colors"
+                        >
+                          <Globe className="h-3 w-3" />
+                          Preview
+                        </a>
+                      ) : (
+                        <span className="font-mono text-[10px] text-white/20">
+                          —
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4">
                       <span
                         className={`inline-flex items-center rounded-full border px-2 py-1 font-mono text-[10px] ${status.classes}`}
                       >
@@ -373,6 +420,40 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                         >
                           <Pencil className="h-3.5 w-3.5" />
                         </button>
+                        {/* Enrich contact info */}
+                        {!lead.contact_email &&
+                          (lead.status === "new" ||
+                            lead.status === "pitched") && (
+                            <button
+                              onClick={() => handleEnrich(lead.id)}
+                              disabled={enrichingId === lead.id}
+                              title="Find contact info"
+                              className="rounded-lg border border-white/5 p-2 text-white/30 hover:text-cyan-400 hover:border-cyan-400/20 transition-colors disabled:opacity-50"
+                            >
+                              {enrichingId === lead.id ? (
+                                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                              ) : (
+                                <Search className="h-3.5 w-3.5" />
+                              )}
+                            </button>
+                          )}
+                        {/* Generate demo site */}
+                        {!lead.demo_url &&
+                          (lead.status === "new" ||
+                            lead.status === "pitched") && (
+                            <button
+                              onClick={() => handleGenerateDemo(lead.id)}
+                              disabled={generatingDemoId === lead.id}
+                              title="Generate demo site"
+                              className="rounded-lg border border-white/5 p-2 text-white/30 hover:text-purple-400 hover:border-purple-400/20 transition-colors disabled:opacity-50"
+                            >
+                              {generatingDemoId === lead.id ? (
+                                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                              ) : (
+                                <Globe className="h-3.5 w-3.5" />
+                              )}
+                            </button>
+                          )}
                         {(lead.status === "new" ||
                           lead.status === "pitched") && (
                           <button
@@ -585,6 +666,17 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                 <p className="mt-2 font-mono text-xs text-red-400">
                   No contact email found for this lead
                 </p>
+              )}
+              {pitchModal.demo_url && (
+                <a
+                  href={pitchModal.demo_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 inline-flex items-center gap-1 font-mono text-xs text-purple-400 hover:text-purple-300 transition-colors"
+                >
+                  <Globe className="h-3 w-3" />
+                  Demo site: {pitchModal.demo_url}
+                </a>
               )}
             </div>
 

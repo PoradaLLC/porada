@@ -233,7 +233,7 @@ export async function deleteBooking(bookingId: string) {
 
 // ─── Lead Queue Management ───
 
-export async function generatePitchEmail(leadId: string) {
+export async function enrichLeadContact(leadId: string) {
   await requireAdmin();
 
   if (!process.env.ANTHROPIC_API_KEY) throw new Error("ANTHROPIC_API_KEY not configured");
@@ -255,10 +255,91 @@ export async function generatePitchEmail(leadId: string) {
   const response = await client.messages.create({
     model: "claude-sonnet-4-20250514",
     max_tokens: 1024,
+    tools: [{ type: "web_search_20250305", name: "web_search", max_uses: 10 }],
     messages: [
       {
         role: "user",
-        content: `Write a professional cold outreach email from Sierra-117 LLC, a web development and software engineering company, to the following business. The email should be concise, friendly, and focused on how we can help them improve their online presence.
+        content: `Find the contact email address and phone number for the following business.
+
+Business Name: ${lead.business_name}
+Location: Fair Lawn, NJ area (07407)
+Current Website: ${lead.current_website ?? "Unknown"}
+
+Search their website contact page, Google Maps listing, Yelp page, Facebook page, and any business directories. Be thorough — check multiple sources.
+
+Return ONLY a JSON object (no markdown, no code fences):
+{"contact_email": "email@example.com or null", "phone": "(201) 555-1234 or null"}`,
+      },
+    ],
+  });
+
+  let jsonText = "";
+  for (const block of response.content) {
+    if (block.type === "text") {
+      jsonText += block.text;
+    }
+  }
+
+  const jsonMatch = jsonText.match(/\{[\s\S]*\}/);
+  if (!jsonMatch) throw new Error("Failed to parse enrichment response");
+
+  const enriched = JSON.parse(jsonMatch[0]) as {
+    contact_email: string | null;
+    phone: string | null;
+  };
+
+  // Only update null fields — don't overwrite existing data
+  const updates: Record<string, string> = {};
+  if (!lead.contact_email && enriched.contact_email && enriched.contact_email !== "null") {
+    updates.contact_email = enriched.contact_email;
+  }
+  if (!lead.phone && enriched.phone && enriched.phone !== "null") {
+    updates.phone = enriched.phone;
+  }
+
+  if (Object.keys(updates).length > 0) {
+    await supabase.from("leads").update(updates).eq("id", leadId);
+  }
+
+  revalidatePath("/admin/leads");
+  return {
+    success: true,
+    found: Object.keys(updates).length > 0,
+    contact_email: updates.contact_email ?? lead.contact_email,
+    phone: updates.phone ?? lead.phone,
+  };
+}
+
+export async function generatePitchEmail(leadId: string) {
+  await requireAdmin();
+
+  if (!process.env.ANTHROPIC_API_KEY) throw new Error("ANTHROPIC_API_KEY not configured");
+
+  const { createServiceClient } = await import("@/lib/supabase/server");
+  const supabase = await createServiceClient();
+
+  const { data: lead, error } = await supabase
+    .from("leads")
+    .select("*")
+    .eq("id", leadId)
+    .single();
+
+  if (error || !lead) throw new Error("Lead not found");
+
+  const { default: Anthropic } = await import("@anthropic-ai/sdk");
+  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+
+  const demoLine = lead.demo_url
+    ? `\n- Mention that we built a quick preview of what their site could look like and include this link: ${lead.demo_url}`
+    : "";
+
+  const response = await client.messages.create({
+    model: "claude-sonnet-4-20250514",
+    max_tokens: 1024,
+    messages: [
+      {
+        role: "user",
+        content: `Write a professional cold outreach email from Schtubbs LLC, a web development and software engineering company, to the following business. The email should be concise, friendly, and focused on how we can help them improve their online presence.
 
 Business Name: ${lead.business_name}
 Current Website: ${lead.current_website ?? "None"}
@@ -269,9 +350,9 @@ Guidelines:
 - Be specific about what we noticed about their current web presence
 - Mention one or two concrete benefits of a modern website
 - Include a clear call to action (schedule a free consultation)
-- Sign off as "The Sierra-117 Team"
+- Sign off as "The Schtubbs Team"
 - Do NOT include a subject line, just the email body
-- Write in plain text, no HTML or markdown formatting`,
+- Write in plain text, no HTML or markdown formatting${demoLine}`,
       },
     ],
   });
@@ -290,6 +371,93 @@ Guidelines:
 
   revalidatePath("/admin/leads");
   return { success: true, pitchEmail };
+}
+
+export async function generateDemoSite(leadId: string) {
+  await requireAdmin();
+
+  if (!process.env.ANTHROPIC_API_KEY) throw new Error("ANTHROPIC_API_KEY not configured");
+  if (!process.env.GITHUB_TOKEN) throw new Error("GITHUB_TOKEN not configured");
+
+  const { createServiceClient } = await import("@/lib/supabase/server");
+  const supabase = await createServiceClient();
+
+  const { data: lead, error } = await supabase
+    .from("leads")
+    .select("*")
+    .eq("id", leadId)
+    .single();
+
+  if (error || !lead) throw new Error("Lead not found");
+
+  const { default: Anthropic } = await import("@anthropic-ai/sdk");
+  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+
+  const response = await client.messages.create({
+    model: "claude-sonnet-4-20250514",
+    max_tokens: 16384,
+    messages: [
+      {
+        role: "user",
+        content: `Create a professional, modern single-page landing website for the following business. The site should look like it was built by a premium web agency and should make the business owner think "I want my website to look like this."
+
+Business: ${lead.business_name}
+Industry/Description: ${lead.summary}
+Location: Fair Lawn, NJ area
+
+Design requirements:
+- Mobile-first responsive design with a polished, modern aesthetic
+- Choose an appropriate color palette for the industry (avoid generic blue — be creative)
+- Smooth scroll behavior and subtle CSS animations (transitions, hover effects)
+- Hero section with business name, a compelling tagline, and a call-to-action button
+- Services or features section with icons (use Unicode/emoji icons, no external icon libraries)
+- A testimonials placeholder section with realistic-looking placeholder quotes
+- Contact call-to-action section with a placeholder form or contact details
+- Professional footer with business name, address placeholder, and a small "Demo by Schtubbs LLC" credit linking to https://schtubbs.dev
+- Use only vanilla HTML, CSS, and JavaScript — NO external dependencies, CDNs, or frameworks
+- CSS must be in a separate styles.css file, JS in a separate script.js file
+- The HTML must link to ./styles.css and ./script.js
+- Ensure the design looks complete and polished, not like a template — add visual depth with gradients, shadows, and spacing
+
+Return ONLY a JSON object with three keys (no markdown, no code fences, just raw JSON):
+{"index_html": "<full HTML content>", "styles_css": "<full CSS content>", "script_js": "<full JS content>"}`,
+      },
+    ],
+  });
+
+  let jsonText = "";
+  for (const block of response.content) {
+    if (block.type === "text") {
+      jsonText += block.text;
+    }
+  }
+
+  const jsonMatch = jsonText.match(/\{[\s\S]*\}/);
+  if (!jsonMatch) throw new Error("Failed to parse demo site response");
+
+  const site = JSON.parse(jsonMatch[0]) as {
+    index_html: string;
+    styles_css: string;
+    script_js: string;
+  };
+
+  const { slugify } = await import("@/lib/utils");
+  const slug = slugify(lead.business_name);
+
+  const { pushDemoSite } = await import("@/lib/github");
+  const demoUrl = await pushDemoSite(slug, [
+    { path: "index.html", content: site.index_html },
+    { path: "styles.css", content: site.styles_css },
+    { path: "script.js", content: site.script_js },
+  ]);
+
+  await supabase
+    .from("leads")
+    .update({ demo_url: demoUrl })
+    .eq("id", leadId);
+
+  revalidatePath("/admin/leads");
+  return { success: true, demoUrl };
 }
 
 export async function sendPitchEmail(leadId: string, emailBody: string) {

@@ -10,6 +10,7 @@ interface Lead {
   status: string;
   pitch_email: string | null;
   pitched_at: string | null;
+  demo_url: string | null;
   created_at: string;
 }
 
