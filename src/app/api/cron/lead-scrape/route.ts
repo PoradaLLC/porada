@@ -87,7 +87,7 @@ export async function GET(req: Request) {
           role: "user",
           content: `You are a lead generation assistant for Sierra-117 LLC, a web development and software engineering company.
 
-Search the web for 5 local businesses near zipcode 07407 (Fair Lawn, NJ area) that appear to need a new or better website. Look for businesses that:
+Search the web for 2 local businesses in Pennsylvania, New Jersey, or New York that appear to need a new or better website. Look for businesses that:
 - Have no website at all
 - Have an outdated or poorly designed website
 - Have a website that is not mobile-friendly

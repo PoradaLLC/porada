@@ -262,7 +262,7 @@ export async function enrichLeadContact(leadId: string) {
         content: `Find the contact email address and phone number for the following business.
 
 Business Name: ${lead.business_name}
-Location: Fair Lawn, NJ area (07407)
+Location: PA, NJ, or NY area
 Current Website: ${lead.current_website ?? "Unknown"}
 
 Search their website contact page, Google Maps listing, Yelp page, Facebook page, and any business directories. Be thorough — check multiple sources.
