@@ -14,6 +14,7 @@ import {
   Save,
   Search,
   Globe,
+  Rocket,
 } from "lucide-react";
 import {
   generatePitchEmail,
@@ -23,6 +24,7 @@ import {
   updateLead,
   enrichLeadContact,
   generateDemoSite,
+  generateDemoAndPitch,
 } from "@/app/admin/actions";
 
 interface Lead {
@@ -75,6 +77,7 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
   const [sendSuccess, setSendSuccess] = useState(false);
   const [enrichingId, setEnrichingId] = useState<string | null>(null);
   const [generatingDemoId, setGeneratingDemoId] = useState<string | null>(null);
+  const [launchingId, setLaunchingId] = useState<string | null>(null);
 
   // Add lead modal state
   const [showAddModal, setShowAddModal] = useState(false);
@@ -144,6 +147,16 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
       console.error(err);
     }
     setGeneratingDemoId(null);
+  }
+
+  async function handleLaunch(leadId: string) {
+    setLaunchingId(leadId);
+    try {
+      await generateDemoAndPitch(leadId);
+    } catch (err) {
+      console.error(err);
+    }
+    setLaunchingId(null);
   }
 
   async function handleAddLead() {
@@ -451,6 +464,23 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
                               ) : (
                                 <Globe className="h-3.5 w-3.5" />
+                              )}
+                            </button>
+                          )}
+                        {/* Launch: demo + pitch + send in one click */}
+                        {!lead.demo_url &&
+                          lead.contact_email &&
+                          lead.status === "new" && (
+                            <button
+                              onClick={() => handleLaunch(lead.id)}
+                              disabled={launchingId === lead.id}
+                              title="Generate demo, pitch, and send email"
+                              className="rounded-lg border border-white/5 p-2 text-white/30 hover:text-amber-400 hover:border-amber-400/20 transition-colors disabled:opacity-50"
+                            >
+                              {launchingId === lead.id ? (
+                                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                              ) : (
+                                <Rocket className="h-3.5 w-3.5" />
                               )}
                             </button>
                           )}

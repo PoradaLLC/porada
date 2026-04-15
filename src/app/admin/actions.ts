@@ -460,6 +460,48 @@ Return ONLY a JSON object with three keys (no markdown, no code fences, just raw
   return { success: true, demoUrl };
 }
 
+export async function generateDemoAndPitch(leadId: string) {
+  await requireAdmin();
+
+  // Step 1: Generate demo site
+  const demoResult = await generateDemoSite(leadId);
+
+  // Step 2: Generate pitch email (will reference the demo URL)
+  const pitchResult = await generatePitchEmail(leadId);
+
+  // Step 3: Send the pitch email via Resend
+  const { createServiceClient } = await import("@/lib/supabase/server");
+  const supabase = await createServiceClient();
+
+  const { data: lead } = await supabase
+    .from("leads")
+    .select("contact_email")
+    .eq("id", leadId)
+    .single();
+
+  if (!lead?.contact_email) {
+    // Demo + pitch generated but can't send without an email
+    revalidatePath("/admin/leads");
+    return {
+      success: true,
+      demoUrl: demoResult.demoUrl,
+      pitchGenerated: true,
+      emailSent: false,
+      reason: "No contact email — pitch saved but not sent",
+    };
+  }
+
+  await sendPitchEmail(leadId, pitchResult.pitchEmail);
+
+  revalidatePath("/admin/leads");
+  return {
+    success: true,
+    demoUrl: demoResult.demoUrl,
+    pitchGenerated: true,
+    emailSent: true,
+  };
+}
+
 export async function sendPitchEmail(leadId: string, emailBody: string) {
   await requireAdmin();
 
@@ -479,10 +521,10 @@ export async function sendPitchEmail(leadId: string, emailBody: string) {
 
   const { Resend } = await import("resend");
   const resend = new Resend(process.env.RESEND_API_KEY);
-  const from = process.env.RESEND_FROM_EMAIL ?? "noreply@sierra-117.dev";
+  const from = process.env.RESEND_FROM_EMAIL ?? "noreply@schtubbs.dev";
 
   await resend.emails.send({
-    from: `Sierra-117 <${from}>`,
+    from: `Schtubbs <${from}>`,
     to: lead.contact_email,
     subject: `Elevate ${lead.business_name}'s Online Presence`,
     html: `
@@ -491,7 +533,7 @@ export async function sendPitchEmail(leadId: string, emailBody: string) {
           ${emailBody.split("\n").map((line) => `<p style="margin: 8px 0; line-height: 1.6; color: #cbd5e1;">${line || "&nbsp;"}</p>`).join("")}
         </div>
         <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.05); text-align: center;">
-          <p style="font-size: 11px; color: rgba(255,255,255,0.2);">Sierra-117 LLC &mdash; Web Development & Software Engineering</p>
+          <p style="font-size: 11px; color: rgba(255,255,255,0.2);">Schtubbs LLC &mdash; Web Development & Software Engineering</p>
           <p style="font-size: 11px; color: rgba(255,255,255,0.2);">If you no longer wish to receive emails, reply with "unsubscribe"</p>
         </div>
       </div>
