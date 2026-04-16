@@ -46,25 +46,25 @@ export async function POST(req: Request) {
           `,
         }),
         // Confirm to customer
-        resend.emails.send({
-          from: `Sierra-117 <${from}>`,
-          to: data.email,
-          subject: "Consultation Confirmed — Sierra-117",
-          html: `
-            <div style="font-family: monospace; background: #080c10; color: #dce4ec; padding: 40px;">
-              <h1 style="color: #34d399;">Consultation Confirmed</h1>
-              <p>Hey ${data.name},</p>
-              <p>Your consultation has been booked. Here are the details:</p>
-              <div style="background: #161e27; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 3px solid #34d399;">
-                <p><strong>Service:</strong> ${data.service}</p>
-                <p><strong>Date:</strong> ${data.date}</p>
-                <p><strong>Time:</strong> ${data.time} EST</p>
+        (async () => {
+          const { wrapEmailTemplate } = await import("@/lib/email-template");
+          return resend.emails.send({
+            from: `Sierra-117 <${from}>`,
+            to: data.email,
+            subject: "Consultation Confirmed | Sierra-117",
+            html: wrapEmailTemplate(`
+              <h1 style="font-family: 'Courier New', monospace; font-size: 24px; font-weight: bold; color: #22d3ee; margin: 0 0 16px 0;">Consultation Confirmed</h1>
+              <p style="margin: 8px 0; line-height: 1.6; font-size: 14px; color: #cbd5e1;">Hey ${data.name},</p>
+              <p style="margin: 8px 0; line-height: 1.6; font-size: 14px; color: #cbd5e1;">Your consultation has been booked. Here are the details:</p>
+              <div style="background: #161e27; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 3px solid #22d3ee;">
+                <p style="margin: 6px 0; font-size: 14px; color: #cbd5e1;"><strong style="color: #dce4ec;">Service:</strong> ${data.service}</p>
+                <p style="margin: 6px 0; font-size: 14px; color: #cbd5e1;"><strong style="color: #dce4ec;">Date:</strong> ${data.date}</p>
+                <p style="margin: 6px 0; font-size: 14px; color: #cbd5e1;"><strong style="color: #dce4ec;">Time:</strong> ${data.time} EST</p>
               </div>
-              <p>We'll send you a meeting link before your scheduled time.</p>
-              <p style="color: #8b9a8b;">— Sierra-117 Team</p>
-            </div>
-          `,
-        }),
+              <p style="margin: 8px 0; line-height: 1.6; font-size: 14px; color: #cbd5e1;">We'll send you a meeting link before your scheduled time.</p>
+            `),
+          });
+        })(),
       ]);
     }
 

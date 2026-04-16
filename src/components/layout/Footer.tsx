@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Terminal, GitBranch, Globe, ExternalLink, Mail } from "lucide-react";
+import { Terminal, Mail } from "lucide-react";
 
 export function Footer() {
   return (
@@ -28,7 +28,8 @@ export function Footer() {
             </h4>
             <ul className="space-y-3 text-sm text-brand-text">
               <li><Link href="/services" className="hover:text-brand-accent transition-colors">Web Development</Link></li>
-              <li><Link href="/services" className="hover:text-brand-accent transition-colors">Cloud Solutions</Link></li>
+              <li><Link href="/services" className="hover:text-brand-accent transition-colors">CRM Development</Link></li>
+              <li><Link href="/services" className="hover:text-brand-accent transition-colors">Cloud Infrastructure</Link></li>
               <li><Link href="/services" className="hover:text-brand-accent transition-colors">UI/UX Design</Link></li>
               <li><Link href="/services" className="hover:text-brand-accent transition-colors">Tech Consulting</Link></li>
             </ul>
@@ -51,23 +52,13 @@ export function Footer() {
             <h4 className="font-mono text-xs font-bold uppercase tracking-widest text-brand-accent mb-4">
               Connect
             </h4>
-            <div className="flex gap-3">
-              {[
-                { icon: GitBranch, href: "#", label: "GitHub" },
-                { icon: Globe, href: "#", label: "Twitter" },
-                { icon: ExternalLink, href: "#", label: "LinkedIn" },
-                { icon: Mail, href: "mailto:hello@sierra-117.dev", label: "Email" },
-              ].map(({ icon: Icon, href, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  aria-label={label}
-                  className="flex h-10 w-10 items-center justify-center rounded-lg border border-brand-accent/10 text-brand-text hover:text-brand-accent hover:border-brand-accent/30 hover:bg-brand-accent/5 transition-all"
-                >
-                  <Icon className="h-4 w-4" />
-                </a>
-              ))}
-            </div>
+            <a
+              href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "hello@sierra-117.dev"}`}
+              className="inline-flex items-center gap-2 font-mono text-sm text-brand-text hover:text-brand-accent transition-colors"
+            >
+              <Mail className="h-4 w-4" />
+              {process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "hello@sierra-117.dev"}
+            </a>
           </div>
         </div>
 
@@ -76,7 +67,7 @@ export function Footer() {
             &copy; {new Date().getFullYear()} Sierra-117. All rights reserved.
           </p>
           <p className="font-mono text-xs text-brand-text/30">
-            A product of Sierra-117 LLC
+            A product of Schtubbs LLC
           </p>
         </div>
       </div>

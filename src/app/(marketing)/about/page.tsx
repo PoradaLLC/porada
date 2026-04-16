@@ -1,28 +1,29 @@
 import type { Metadata } from "next";
+import type React from "react";
 import Link from "next/link";
-import { ArrowRight, Target, Eye, Rocket, Terminal } from "lucide-react";
+import { ArrowRight, Code2, Shield, GraduationCap, Terminal } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Learn about Sierra-117 — a technology firm dedicated to building high-performance digital solutions.",
+    "Meet the Sierra-117 team. Engineers and builders based in the NYC Tri-State area.",
 };
 
-const values = [
+const team: { name: string; role: string; icon: React.ElementType }[] = [
   {
-    icon: Target,
-    title: "Precision Engineering",
-    text: "Every line of code is intentional. We don't ship bloat — we ship solutions that perform under pressure.",
+    name: "Michal Bienias",
+    role: "Software Engineer",
+    icon: Code2,
   },
   {
-    icon: Eye,
-    title: "Transparent Process",
-    text: "No black boxes. You get full visibility into our process, code, and infrastructure. It's your product.",
+    name: "Daniel Bzura",
+    role: "Cybersecurity Engineer",
+    icon: Shield,
   },
   {
-    icon: Rocket,
-    title: "Relentless Optimization",
-    text: "We iterate aggressively. Performance metrics, user feedback, and data drive every decision we make.",
+    name: "Marcin Bienias",
+    role: "Software Engineer",
+    icon: GraduationCap,
   },
 ];
 
@@ -30,7 +31,7 @@ const timeline = [
   { phase: "01", title: "Discovery", text: "We learn your business, audience, and goals. Deep dive into requirements and competitive landscape." },
   { phase: "02", title: "Architecture", text: "Design the technical blueprint. Stack selection, database schema, API design, and infrastructure planning." },
   { phase: "03", title: "Build", text: "Agile development with weekly demos. You see progress in real-time and can adjust priorities as we go." },
-  { phase: "04", title: "Launch & Scale", text: "Deployment, monitoring, and optimization. We don't disappear after launch — we ensure your product thrives." },
+  { phase: "04", title: "Launch & Scale", text: "Deployment, monitoring, and optimization. We don't disappear after launch. We make sure your product thrives." },
 ];
 
 export default function AboutPage() {
@@ -44,97 +45,77 @@ export default function AboutPage() {
             // About
           </p>
           <h1 className="font-mono text-4xl font-bold text-foreground md:text-6xl">
-            Who We
-            <br />
-            <span className="text-brand-accent text-glow">Are</span>
+            The <span className="text-brand-accent text-glow">Team</span>
           </h1>
           <p className="mt-6 max-w-2xl text-lg text-brand-text leading-relaxed">
-            Sierra-117 is a small technology firm focused on building digital
-            products that work well. Deep technical expertise, straightforward
-            communication, and reliable delivery.
+            Three engineers based in the NYC Tri-State area. We build
+            websites and tech for local businesses that need things done
+            right.
           </p>
         </div>
       </section>
 
-      {/* Mission */}
+      {/* Team */}
       <section className="border-y border-white/5 bg-brand-primary/50 px-6 py-24">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
-            <div data-reveal>
-              <p className="font-mono text-xs font-semibold uppercase tracking-widest text-brand-accent mb-2">
-                // Our Mission
-              </p>
-              <h2 className="font-mono text-3xl font-bold text-foreground md:text-4xl">
-                Building Technology That Matters
-              </h2>
-              <p className="mt-6 text-brand-text leading-relaxed">
-                We started Sierra-117 because we kept seeing businesses
-                stuck with technology that didn&apos;t work for them. Slow
-                sites, fragile infrastructure, and outdated stacks were
-                costing companies real money.
-              </p>
-              <p className="mt-4 text-brand-text leading-relaxed">
-                Our mission is simple: deliver technology solutions that are
-                fast, secure, and built to scale. No unnecessary complexity.
-                No vendor lock-in. Just clean, performant code that works.
-              </p>
-            </div>
-            <div data-reveal data-reveal-delay="2" className="rounded-xl border border-white/[0.08] bg-brand-bg/50 p-8">
-              <div className="flex items-center gap-2 mb-4">
-                <Terminal className="h-5 w-5 text-brand-accent" />
-                <span className="font-mono text-xs text-brand-accent">
-                  mission.log
-                </span>
-              </div>
-              <div className="font-mono text-sm space-y-2">
-                <p className="text-brand-text/80">
-                  <span className="text-brand-accent">&gt;</span> philosophy: &quot;code with purpose&quot;
-                </p>
-                <p className="text-brand-text/80">
-                  <span className="text-brand-accent">&gt;</span> approach: &quot;measure twice, deploy once&quot;
-                </p>
-                <p className="text-brand-text/80">
-                  <span className="text-brand-accent">&gt;</span> stack: &quot;modern, proven, performant&quot;
-                </p>
-                <p className="text-brand-text/80">
-                  <span className="text-brand-accent">&gt;</span> commitment: &quot;your success = our success&quot;
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Values */}
-      <section className="border-t border-white/5 bg-brand-bg px-6 py-24">
         <div className="mx-auto max-w-7xl">
           <div data-reveal>
             <p className="font-mono text-xs font-semibold uppercase tracking-widest text-brand-accent mb-2">
-              // Core Values
+              // Who We Are
             </p>
-            <h2 className="font-mono text-3xl font-bold text-foreground">
-              What Drives Us
+            <h2 className="font-mono text-3xl font-bold text-foreground md:text-4xl">
+              Engineers First
             </h2>
+            <p className="mt-4 max-w-2xl text-brand-text leading-relaxed">
+              We all have day jobs in software and cybersecurity. Sierra-117
+              is how we put that experience to work for businesses that need
+              reliable, well-built websites without the agency markup.
+            </p>
           </div>
 
           <div className="mt-12 grid gap-8 md:grid-cols-3">
-            {values.map((value, i) => (
+            {team.map((member, i) => (
               <div
-                key={value.title}
+                key={member.name}
                 data-reveal
                 data-reveal-delay={String(i + 1)}
                 data-spotlight
                 className="glow-border rounded-xl bg-brand-primary/30 p-8 hover:-translate-y-0.5 transition-all"
               >
-                <value.icon className="h-8 w-8 text-brand-accent mb-4" />
+                <div className="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-brand-accent/10 border border-brand-accent/20 mb-4">
+                  <member.icon className="h-6 w-6 text-brand-accent" />
+                </div>
                 <h3 className="font-mono text-lg font-bold text-foreground">
-                  {value.title}
+                  {member.name}
                 </h3>
-                <p className="mt-3 text-sm text-brand-text leading-relaxed">
-                  {value.text}
+                <p className="mt-1 font-mono text-sm text-brand-accent">
+                  {member.role}
                 </p>
               </div>
             ))}
+          </div>
+
+          {/* Terminal decoration */}
+          <div data-reveal data-reveal-delay="4" className="mt-12 max-w-md rounded-xl border border-white/[0.08] bg-brand-bg/50 p-8">
+            <div className="flex items-center gap-2 mb-4">
+              <Terminal className="h-5 w-5 text-brand-accent" />
+              <span className="font-mono text-xs text-brand-accent">
+                team.log
+              </span>
+            </div>
+            <div className="font-mono text-sm space-y-2">
+              <p className="text-brand-text/80">
+                <span className="text-brand-accent">&gt;</span> location: &quot;NYC Tri-State Area&quot;
+              </p>
+              <p className="text-brand-text/80">
+                <span className="text-brand-accent">&gt;</span> stack: &quot;Next.js, React, TypeScript&quot;
+              </p>
+              <p className="text-brand-text/80">
+                <span className="text-brand-accent">&gt;</span> delivery: &quot;2-4 weeks, hosting included&quot;
+              </p>
+              <p className="text-brand-text/80">
+                <span className="text-brand-accent">&gt;</span> status: &quot;accepting new projects&quot;
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -177,8 +158,8 @@ export default function AboutPage() {
             <span className="text-brand-accent text-glow">Together</span>?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-brand-text">
-            We&apos;re selective about the projects we take on — but if we take
-            yours, we&apos;re all in. Let&apos;s talk.
+            We take on a handful of projects at a time so we can give each
+            one our full attention. Let&apos;s talk.
           </p>
           <Link
             href="/book"

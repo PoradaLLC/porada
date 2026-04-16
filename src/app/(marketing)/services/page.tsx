@@ -13,12 +13,13 @@ import {
   Smartphone,
   Search,
   GitBranch,
+  LayoutDashboard,
 } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Web development, cloud solutions, UI/UX design, and tech consulting — Sierra-117 delivers full-spectrum technology services.",
+    "Web development, cloud solutions, UI/UX design, and tech consulting. Sierra-117 delivers full-spectrum technology services.",
 };
 
 const services = [
@@ -26,52 +27,65 @@ const services = [
     icon: Code2,
     title: "Custom Web Development",
     description:
-      "From marketing sites to complex web applications, we build with Next.js, React, and TypeScript for maximum performance and developer experience.",
+      "Your business needs a site that loads fast, looks professional, and actually brings in customers. We build that with modern tools and clean code.",
     features: [
-      "Server-side rendering & static generation",
-      "Progressive web apps (PWAs)",
-      "E-commerce platforms with Stripe integration",
-      "Custom CMS and admin dashboards",
-      "API development & third-party integrations",
+      "Marketing sites & landing pages",
+      "Online booking & scheduling",
+      "E-commerce with Stripe payments",
+      "Contact forms & lead capture",
+      "Mobile-friendly on every device",
+    ],
+  },
+  {
+    icon: LayoutDashboard,
+    title: "CRM Development",
+    description:
+      "Custom dashboards and tools to manage your clients, leads, and day-to-day operations. Built around how you actually work.",
+    features: [
+      "Client & lead management",
+      "Custom admin dashboards",
+      "Automated email & follow-ups",
+      "Reporting & analytics",
+      "Integration with your existing tools",
     ],
   },
   {
     icon: Cloud,
     title: "Cloud Infrastructure",
     description:
-      "We architect, deploy, and manage cloud infrastructure that scales automatically and stays resilient under load.",
+      "We set up, deploy, and manage the servers and databases behind your site so you never have to think about it.",
     features: [
-      "AWS, GCP, and Vercel deployments",
-      "CI/CD pipeline setup & optimization",
-      "Database design & migration",
-      "Serverless architecture",
-      "Monitoring, logging & alerting",
+      "AWS, Vercel & cloud deployments",
+      "Database setup & management",
+      "Automated backups & monitoring",
+      "Domain & DNS configuration",
+      "Performance optimization",
     ],
   },
   {
     icon: Palette,
     title: "UI/UX Design",
     description:
-      "Data-driven design that converts visitors into customers. We build design systems that scale with your product.",
+      "Design that converts visitors into customers. Clean layouts, clear calls to action, and a look that builds trust.",
     features: [
-      "User research & journey mapping",
-      "Wireframing & prototyping",
-      "Design systems & component libraries",
-      "Accessibility (WCAG 2.1 AA)",
-      "Motion design & micro-interactions",
+      "Custom designs tailored to your brand",
+      "Wireframes & prototypes before we build",
+      "Responsive design for all screen sizes",
+      "Built with accessibility in mind",
+      "Modern animations & interactions",
     ],
   },
   {
     icon: Cpu,
     title: "Tech Consulting",
     description:
-      "Strategic technology guidance for businesses at any stage. From startup MVPs to enterprise modernization.",
+      "Not sure what you need? We can review your current setup, recommend the right tools, and help you make smart technical decisions.",
     features: [
-      "Architecture reviews & recommendations",
-      "Technology stack audits",
-      "Performance optimization",
-      "Security assessments",
-      "Digital transformation roadmaps",
+      "Website & tech stack audits",
+      "Performance reviews",
+      "Security best practices",
+      "Tool & platform recommendations",
+      "Ongoing technical guidance",
     ],
   },
 ];
@@ -101,9 +115,8 @@ export default function ServicesPage() {
             What We <span className="text-brand-accent text-glow">Build</span>
           </h1>
           <p className="mt-6 max-w-2xl text-lg text-brand-text leading-relaxed">
-            Full-spectrum technology services from concept to deployment and
-            beyond. Every solution is engineered for performance, security, and
-            scale.
+            Websites, apps, and infrastructure for businesses that need things
+            done right. Every project includes hosting and ongoing maintenance.
           </p>
         </div>
       </section>

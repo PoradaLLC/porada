@@ -7,17 +7,19 @@ export const metadata: Metadata = {
   description: "Get in touch with Sierra-117. We'd love to hear about your project.",
 };
 
+const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "hello@sierra-117.dev";
+
 const contactInfo = [
   {
     icon: Mail,
     label: "Email",
-    value: "hello@sierra-117.dev",
-    href: "mailto:hello@sierra-117.dev",
+    value: contactEmail,
+    href: `mailto:${contactEmail}`,
   },
   {
     icon: MapPin,
     label: "Location",
-    value: "Remote-First, Global Team",
+    value: "NYC Tri-State Area",
     href: null,
   },
   {

@@ -357,11 +357,11 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                     </td>
                     <td className="px-6 py-4 font-mono text-sm text-white/50">
                       {lead.contact_email ?? (
-                        <span className="text-white/20">—</span>
+                        <span className="text-white/20">-</span>
                       )}
                     </td>
                     <td className="px-6 py-4 font-mono text-sm text-white/50">
-                      {lead.phone ?? <span className="text-white/20">—</span>}
+                      {lead.phone ?? <span className="text-white/20">-</span>}
                     </td>
                     <td className="px-6 py-4">
                       {lead.current_website ? (
