@@ -32,7 +32,7 @@ const services = [
     icon: Cloud,
     title: "Cloud Solutions",
     description:
-      "Infrastructure design, deployment, and management. AWS, GCP, Vercel — we optimize your stack.",
+      "Infrastructure design, deployment, and management. AWS, GCP, Vercel. We optimize your stack.",
   },
   {
     icon: Palette,
@@ -44,15 +44,15 @@ const services = [
     icon: Cpu,
     title: "Tech Consulting",
     description:
-      "Strategic technology guidance. Architecture reviews, stack audits, and digital transformation roadmaps.",
+      "Strategic technology guidance. Architecture reviews, stack audits, and hands-on problem solving.",
   },
 ];
 
 const stats = [
-  { value: "50+", label: "Projects Delivered" },
-  { value: "99.9%", label: "Uptime Guarantee" },
-  { value: "< 1s", label: "Avg Load Time" },
-  { value: "24/7", label: "Support Available" },
+  { value: "2-4", label: "Week Delivery" },
+  { value: "< 1s", label: "Load Times" },
+  { value: "100%", label: "Client Retention" },
+  { value: "✓", label: "Hosting Included" },
 ];
 
 const techCategories = [
@@ -114,7 +114,7 @@ export default function HomePage() {
               <Reveal delay={0.2}>
                 <p className="mt-6 max-w-xl text-lg text-brand-text leading-relaxed">
                   We design, build, and ship web applications and infrastructure
-                  for businesses that need things done right. No fluff — just
+                  for businesses that need things done right. No fluff. Just
                   solid engineering.
                 </p>
               </Reveal>
@@ -205,8 +205,8 @@ export default function HomePage() {
               Our Services
             </h2>
             <p className="mt-4 max-w-2xl text-brand-text">
-              End-to-end technology solutions designed for performance,
-              scalability, and impact.
+              Everything your business needs online: from the website to
+              the servers behind it. Hosting and maintenance included.
             </p>
           </Reveal>
 
@@ -263,7 +263,7 @@ export default function HomePage() {
               {
                 icon: Shield,
                 title: "Secure by Default",
-                text: "Security-first architecture. OWASP compliant. Regular audits and penetration testing.",
+                text: "Security best practices built into every project. Encrypted connections, input validation, and hardened infrastructure.",
               },
               {
                 icon: Globe,
@@ -354,25 +354,26 @@ export default function HomePage() {
               <span className="text-brand-accent text-glow">Great</span>
             </h2>
             <p className="mx-auto mt-6 max-w-xl text-brand-text">
-              Book a free consultation and let&apos;s discuss how Sierra-117 can
-              help with your next project.
+              Send us your URL and we&apos;ll tell you what&apos;s slowing your
+              site down. Free, no strings. Or book a call to talk about your
+              next project.
             </p>
             <div className="mt-10 flex flex-wrap justify-center gap-4">
               <MagneticButton>
                 <Link
-                  href="/book"
+                  href="/contact"
                   className="inline-flex items-center gap-2 rounded-lg bg-brand-accent px-10 py-4 font-mono text-sm font-bold text-brand-bg hover:bg-brand-accent-light transition-all hover:shadow-[0_0_20px_rgba(34,211,238,0.2)]"
                 >
-                  Book a Consultation
+                  Get a Free Site Review
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </MagneticButton>
               <MagneticButton>
                 <Link
-                  href="/contact"
+                  href="/book"
                   className="inline-flex items-center gap-2 rounded-lg border border-brand-accent/30 px-10 py-4 font-mono text-sm font-bold text-brand-accent hover:bg-brand-accent/5 transition-all"
                 >
-                  Contact Us
+                  Book a Consultation
                 </Link>
               </MagneticButton>
             </div>

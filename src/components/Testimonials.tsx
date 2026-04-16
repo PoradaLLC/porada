@@ -21,8 +21,7 @@ interface Testimonial {
 
 const testimonials: Testimonial[] = [
   {
-    quote:
-      "Working with Sierra-117 was seamless from start to finish. They delivered exactly what we needed, on time.",
+    quote: "",
     name: "J.M.",
     business: "Pocono Property Care",
     role: "Owner",
@@ -35,48 +34,33 @@ const testimonials: Testimonial[] = [
     challenge:
       "The client had no online presence and was losing leads to competitors with modern websites. They needed a fast, professional site that could showcase their work and capture inquiries.",
     solution:
-      "We built a fully custom Next.js site with before/after image galleries, detailed service breakdowns, and an optimized multi-step contact form. The site was deployed on Vercel's edge network for sub-second load times across the region.",
+      "We built a fully custom Next.js site with before/after image galleries, detailed service breakdowns, and an optimized multi-step contact form. Deployed on Vercel for sub-second load times.",
     results: [
       "Launched in under 3 weeks from kickoff",
       "Page load time under 1 second on mobile",
-      "Lead form submissions increased from 0 to 15+ per week",
+      "Significant increase in lead inquiries after launch",
     ],
   },
   {
-    quote:
-      "The site they built loads incredibly fast and looks great on every device. Exactly what we asked for.",
-    name: "R.T.",
-    business: "Placeholder Client",
-    role: "Founder",
-    project: "Coming Soon",
-    url: "",
-    previewImage: "",
-    stack: ["Next.js", "Tailwind", "Supabase"],
-    description: "Placeholder project description — replace when ready.",
-    isLive: false,
+    quote: "",
+    name: "Forteca Estates",
+    business: "Forteca Estates",
+    role: "Property Management",
+    project: "Forteca Estates",
+    url: "https://www.fortecaestate.com",
+    stack: ["Next.js", "Tailwind", "Supabase", "Vercel"],
+    description:
+      "Complete redesign of a property rental platform with Airbnb-style scheduling, individual property pages, and booking integration.",
+    isLive: true,
     challenge:
-      "Details coming soon — this project is currently in development.",
+      "The existing site wasn't converting visitors into bookings. The client needed a modern platform with per-property scheduling that integrated with their existing reservation software.",
     solution:
-      "Details coming soon — this project is currently in development.",
-    results: ["Project in progress"],
-  },
-  {
-    quote:
-      "Professional, communicative, and technically excellent. Would absolutely work with them again.",
-    name: "A.K.",
-    business: "Placeholder Client",
-    role: "Operations Manager",
-    project: "Coming Soon",
-    url: "",
-    previewImage: "",
-    stack: ["Next.js", "TypeScript", "Vercel"],
-    description: "Placeholder project description — replace when ready.",
-    isLive: false,
-    challenge:
-      "Details coming soon — this project is currently in development.",
-    solution:
-      "Details coming soon — this project is currently in development.",
-    results: ["Project in progress"],
+      "We rebuilt the site from scratch with a custom scheduling system per property, responsive design across all devices, and seamless integration with their booking tools.",
+    results: [
+      "Full platform redesign delivered on schedule",
+      "Custom per-property scheduling system",
+      "Modern, mobile-first booking experience",
+    ],
   },
 ];
 
@@ -168,17 +152,23 @@ function TestimonialCard({
         )}
       </div>
 
-      {/* Collapsed content: quote + attribution */}
+      {/* Collapsed content: description + attribution */}
       <div className="p-6">
-        <p className="text-sm text-brand-text leading-relaxed italic">
-          &ldquo;{t.quote}&rdquo;
-        </p>
+        {t.quote ? (
+          <p className="text-sm text-brand-text leading-relaxed italic">
+            &ldquo;{t.quote}&rdquo;
+          </p>
+        ) : (
+          <p className="text-sm text-brand-text leading-relaxed">
+            {t.description}
+          </p>
+        )}
         <div className="mt-4">
           <p className="font-mono text-sm font-bold text-foreground">
-            {t.name}
+            {t.business}
           </p>
           <p className="font-mono text-xs text-brand-text/50">
-            {t.business} &middot; {t.role}
+            {t.role}
           </p>
         </div>
 
@@ -303,7 +293,7 @@ export default function Testimonials() {
           A few projects we&apos;ve shipped recently.
         </p>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-3 items-start">
+        <div className="mt-12 grid gap-6 md:grid-cols-2 max-w-4xl items-start">
           {testimonials.map((t, i) => (
             <TestimonialCard
               key={i}

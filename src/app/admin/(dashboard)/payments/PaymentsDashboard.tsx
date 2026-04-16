@@ -97,13 +97,13 @@ export function PaymentsDashboard({ payments }: { payments: Payment[] }) {
             ) : (
               payments.map((payment) => (
                 <tr key={payment.id} className="hover:bg-white/5 transition-colors">
-                  <td className="px-6 py-4 font-mono text-sm text-white/50">{payment.customer_email ?? "—"}</td>
+                  <td className="px-6 py-4 font-mono text-sm text-white/50">{payment.customer_email ?? "-"}</td>
                   <td className="px-6 py-4 font-mono text-sm text-white font-bold">
                     {formatCurrency(payment.amount)}
                   </td>
-                  <td className="px-6 py-4 font-mono text-sm text-white/50">{payment.description ?? "—"}</td>
+                  <td className="px-6 py-4 font-mono text-sm text-white/50">{payment.description ?? "-"}</td>
                   <td className="px-6 py-4 font-mono text-xs text-white/30">
-                    {payment.stripe_session_id ?? "—"}
+                    {payment.stripe_session_id ?? "-"}
                   </td>
                   <td className="px-6 py-4">
                     <span

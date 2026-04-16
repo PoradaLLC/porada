@@ -87,7 +87,7 @@ export function PaymentTerminal() {
         <div className="h-3 w-3 rounded-full bg-yellow-500/60" />
         <div className="h-3 w-3 rounded-full bg-green-500/60" />
         <span className="ml-2 font-mono text-xs text-brand-text/60">
-          sierra-117 — payment terminal
+          sierra-117 / payment terminal
         </span>
       </div>
 
@@ -180,7 +180,7 @@ export function PaymentTerminal() {
           <div className="space-y-6">
             <div className="rounded-lg border border-brand-accent/10 bg-brand-bg/30 p-4 mb-2">
               <p className="font-mono text-xs text-brand-text/50">
-                Pay a specific amount — use this if we gave you a total over
+                Pay a specific amount. Use this if we gave you a total over
                 email or on a call.
               </p>
             </div>

@@ -258,20 +258,22 @@ export async function generatePitchEmail(leadId: string) {
     messages: [
       {
         role: "user",
-        content: `Write a professional cold outreach email from Sierra-117 LLC, a web development and software engineering company, to the following business. The email should be concise, friendly, and focused on how we can help them improve their online presence.
+        content: `Write a short cold outreach email from Sierra-117, a small web dev team based in the NYC Tri-State area. We build websites and tech for local businesses.
 
-Business Name: ${lead.business_name}
-Current Website: ${lead.current_website ?? "None"}
-Business Summary: ${lead.summary}
+Business: ${lead.business_name}
+Their website: ${lead.current_website ?? "None found"}
+About them: ${lead.summary}
 
-Guidelines:
-- Keep it under 200 words
-- Be specific about what we noticed about their current web presence
-- Mention one or two concrete benefits of a modern website
-- Include a clear call to action (schedule a free consultation)
+Rules:
+- Under 150 words. Shorter is better.
+- Sound like a real person, not a sales team. No buzzwords ("leverage", "elevate", "empower", "in today's digital landscape").
+- Be specific about one thing we noticed about their current site (or lack of one).
+- Mention our free website review offer: "We'll review your site and tell you what's slowing it down, free, no strings."
+- If they don't have a site, offer to show them what one could look like.
+- CTA: reply to this email or book a call at sierra-117.dev/book
 - Sign off as "The Sierra-117 Team"
-- Do NOT include a subject line, just the email body
-- Write in plain text, no HTML or markdown formatting`,
+- Plain text only. No HTML, no markdown, no formatting.
+- No subject line, just the body.`,
       },
     ],
   });
@@ -313,21 +315,13 @@ export async function sendPitchEmail(leadId: string, emailBody: string) {
   const resend = new Resend(process.env.RESEND_API_KEY);
   const from = process.env.RESEND_FROM_EMAIL ?? "noreply@sierra-117.dev";
 
+  const { wrapEmailTemplate, formatEmailBody } = await import("@/lib/email-template");
+
   await resend.emails.send({
     from: `Sierra-117 <${from}>`,
     to: lead.contact_email,
-    subject: `Elevate ${lead.business_name}'s Online Presence`,
-    html: `
-      <div style="font-family: 'Courier New', monospace; background-color: #080c10; color: #e2e8f0; padding: 40px; max-width: 600px; margin: 0 auto;">
-        <div style="border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 32px; background-color: rgba(255,255,255,0.02);">
-          ${emailBody.split("\n").map((line) => `<p style="margin: 8px 0; line-height: 1.6; color: #cbd5e1;">${line || "&nbsp;"}</p>`).join("")}
-        </div>
-        <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.05); text-align: center;">
-          <p style="font-size: 11px; color: rgba(255,255,255,0.2);">Sierra-117 LLC &mdash; Web Development & Software Engineering</p>
-          <p style="font-size: 11px; color: rgba(255,255,255,0.2);">If you no longer wish to receive emails, reply with "unsubscribe"</p>
-        </div>
-      </div>
-    `,
+    subject: `Quick question about ${lead.business_name}'s website`,
+    html: wrapEmailTemplate(formatEmailBody(emailBody)),
   });
 
   await supabase
@@ -414,5 +408,74 @@ export async function updateLead(
   if (error) throw new Error(error.message);
 
   revalidatePath("/admin/leads");
+  return { success: true };
+}
+
+// ── Email Dashboard Actions ──────────────────────────────────
+
+export interface ResendEmail {
+  id: string;
+  from: string;
+  to: string[];
+  subject: string;
+  html: string;
+  text: string | null;
+  created_at: string;
+  last_event: string;
+}
+
+export async function getEmails(): Promise<ResendEmail[]> {
+  await requireAdmin();
+
+  if (!process.env.RESEND_API_KEY) return [];
+
+  try {
+    const res = await fetch("https://api.resend.com/emails", {
+      headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}` },
+    });
+    if (!res.ok) return [];
+    const json = await res.json();
+    return (json.data ?? []) as ResendEmail[];
+  } catch {
+    return [];
+  }
+}
+
+export async function getEmailDetail(emailId: string): Promise<ResendEmail | null> {
+  await requireAdmin();
+
+  if (!process.env.RESEND_API_KEY) return null;
+
+  try {
+    const res = await fetch(`https://api.resend.com/emails/${emailId}`, {
+      headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}` },
+    });
+    if (!res.ok) return null;
+    return (await res.json()) as ResendEmail;
+  } catch {
+    return null;
+  }
+}
+
+export async function sendNewEmail(to: string, subject: string, body: string) {
+  await requireAdmin();
+
+  if (!process.env.RESEND_API_KEY) throw new Error("Resend not configured");
+
+  const { Resend } = await import("resend");
+  const resend = new Resend(process.env.RESEND_API_KEY);
+  const from = process.env.RESEND_FROM_EMAIL ?? "noreply@sierra-117.dev";
+
+  const { wrapEmailTemplate, formatEmailBody } = await import("@/lib/email-template");
+
+  const { error } = await resend.emails.send({
+    from: `Sierra-117 <${from}>`,
+    to,
+    subject,
+    html: wrapEmailTemplate(formatEmailBody(body)),
+  });
+
+  if (error) throw new Error(error.message);
+
   return { success: true };
 }

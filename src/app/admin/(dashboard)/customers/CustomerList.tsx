@@ -101,7 +101,7 @@ export function CustomerList({ customers }: { customers: Customer[] }) {
                 <tr key={customer.id} className="hover:bg-white/5 transition-colors">
                   <td className="px-6 py-4 font-mono text-sm text-white">{customer.name}</td>
                   <td className="px-6 py-4 font-mono text-sm text-white/50">{customer.email}</td>
-                  <td className="px-6 py-4 font-mono text-sm text-white/50">{customer.company ?? "—"}</td>
+                  <td className="px-6 py-4 font-mono text-sm text-white/50">{customer.company ?? "-"}</td>
                   <td className="px-6 py-4">
                     {customer.stripe_customer_id ? (
                       <span className="inline-flex items-center gap-1 rounded-full bg-brand-accent/10 px-2 py-1 font-mono text-[10px] text-brand-accent">
