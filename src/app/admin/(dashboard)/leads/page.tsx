@@ -11,6 +11,7 @@ interface Lead {
   pitch_email: string | null;
   pitched_at: string | null;
   demo_url: string | null;
+  job_status: string | null;
   created_at: string;
 }
 

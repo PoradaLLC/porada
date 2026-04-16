@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { after } from "next/server";
 
 async function requireAdmin() {
   const { createClient } = await import("@/lib/supabase/server");
@@ -241,25 +242,34 @@ export async function enrichLeadContact(leadId: string) {
   const { createServiceClient } = await import("@/lib/supabase/server");
   const supabase = await createServiceClient();
 
-  const { data: lead, error } = await supabase
-    .from("leads")
-    .select("*")
-    .eq("id", leadId)
-    .single();
+  // Mark as in-progress immediately
+  await supabase.from("leads").update({ job_status: "enriching" }).eq("id", leadId);
+  revalidatePath("/admin/leads");
 
-  if (error || !lead) throw new Error("Lead not found");
+  after(async () => {
+    try {
+      const { createServiceClient: createSC } = await import("@/lib/supabase/server");
+      const sb = await createSC();
 
-  const { default: Anthropic } = await import("@anthropic-ai/sdk");
-  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+      const { data: lead } = await sb
+        .from("leads")
+        .select("*")
+        .eq("id", leadId)
+        .single();
 
-  const response = await client.messages.create({
-    model: "claude-sonnet-4-20250514",
-    max_tokens: 1024,
-    tools: [{ type: "web_search_20250305", name: "web_search", max_uses: 10 }],
-    messages: [
-      {
-        role: "user",
-        content: `Find the contact email address and phone number for the following business.
+      if (!lead) return;
+
+      const { default: Anthropic } = await import("@anthropic-ai/sdk");
+      const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! });
+
+      const response = await client.messages.create({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1024,
+        tools: [{ type: "web_search_20250305", name: "web_search", max_uses: 10 }],
+        messages: [
+          {
+            role: "user",
+            content: `Find the contact email address and phone number for the following business.
 
 Business Name: ${lead.business_name}
 Location: PA, NJ, or NY area
@@ -269,45 +279,44 @@ Search their website contact page, Google Maps listing, Yelp page, Facebook page
 
 Return ONLY a JSON object (no markdown, no code fences):
 {"contact_email": "email@example.com or null", "phone": "(201) 555-1234 or null"}`,
-      },
-    ],
+          },
+        ],
+      });
+
+      let jsonText = "";
+      for (const block of response.content) {
+        if (block.type === "text") {
+          jsonText += block.text;
+        }
+      }
+
+      const jsonMatch = jsonText.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) throw new Error("Failed to parse enrichment response");
+
+      const enriched = JSON.parse(jsonMatch[0]) as {
+        contact_email: string | null;
+        phone: string | null;
+      };
+
+      const updates: Record<string, string | null> = { job_status: null };
+      if (!lead.contact_email && enriched.contact_email && enriched.contact_email !== "null") {
+        updates.contact_email = enriched.contact_email;
+      }
+      if (!lead.phone && enriched.phone && enriched.phone !== "null") {
+        updates.phone = enriched.phone;
+      }
+
+      await sb.from("leads").update(updates).eq("id", leadId);
+    } catch (err) {
+      console.error("Enrich background job failed:", err);
+      const { createServiceClient: createSC } = await import("@/lib/supabase/server");
+      const sb = await createSC();
+      await sb.from("leads").update({ job_status: "failed" }).eq("id", leadId);
+    }
+    revalidatePath("/admin/leads");
   });
 
-  let jsonText = "";
-  for (const block of response.content) {
-    if (block.type === "text") {
-      jsonText += block.text;
-    }
-  }
-
-  const jsonMatch = jsonText.match(/\{[\s\S]*\}/);
-  if (!jsonMatch) throw new Error("Failed to parse enrichment response");
-
-  const enriched = JSON.parse(jsonMatch[0]) as {
-    contact_email: string | null;
-    phone: string | null;
-  };
-
-  // Only update null fields — don't overwrite existing data
-  const updates: Record<string, string> = {};
-  if (!lead.contact_email && enriched.contact_email && enriched.contact_email !== "null") {
-    updates.contact_email = enriched.contact_email;
-  }
-  if (!lead.phone && enriched.phone && enriched.phone !== "null") {
-    updates.phone = enriched.phone;
-  }
-
-  if (Object.keys(updates).length > 0) {
-    await supabase.from("leads").update(updates).eq("id", leadId);
-  }
-
-  revalidatePath("/admin/leads");
-  return {
-    success: true,
-    found: Object.keys(updates).length > 0,
-    contact_email: updates.contact_email ?? lead.contact_email,
-    phone: updates.phone ?? lead.phone,
-  };
+  return { success: true, started: true };
 }
 
 export async function generatePitchEmail(leadId: string) {
@@ -373,25 +382,21 @@ Guidelines:
   return { success: true, pitchEmail };
 }
 
-export async function generateDemoSite(leadId: string) {
-  await requireAdmin();
-
-  if (!process.env.ANTHROPIC_API_KEY) throw new Error("ANTHROPIC_API_KEY not configured");
-  if (!process.env.GITHUB_TOKEN) throw new Error("GITHUB_TOKEN not configured");
-
+// Internal helper — does the actual demo site generation work
+async function _doGenerateDemoSite(leadId: string) {
   const { createServiceClient } = await import("@/lib/supabase/server");
-  const supabase = await createServiceClient();
+  const sb = await createServiceClient();
 
-  const { data: lead, error } = await supabase
+  const { data: lead } = await sb
     .from("leads")
     .select("*")
     .eq("id", leadId)
     .single();
 
-  if (error || !lead) throw new Error("Lead not found");
+  if (!lead) throw new Error("Lead not found");
 
   const { default: Anthropic } = await import("@anthropic-ai/sdk");
-  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! });
 
   const response = await client.messages.create({
     model: "claude-sonnet-4-20250514",
@@ -469,55 +474,91 @@ Return ONLY a JSON object with three keys (no markdown, no code fences, just raw
     { path: "script.js", content: site.script_js },
   ]);
 
-  await supabase
+  await sb
     .from("leads")
     .update({ demo_url: demoUrl })
     .eq("id", leadId);
 
+  return demoUrl;
+}
+
+export async function generateDemoSite(leadId: string) {
+  await requireAdmin();
+
+  if (!process.env.ANTHROPIC_API_KEY) throw new Error("ANTHROPIC_API_KEY not configured");
+  if (!process.env.GITHUB_TOKEN) throw new Error("GITHUB_TOKEN not configured");
+
+  const { createServiceClient } = await import("@/lib/supabase/server");
+  const supabase = await createServiceClient();
+
+  // Mark as in-progress immediately
+  await supabase.from("leads").update({ job_status: "generating_demo" }).eq("id", leadId);
   revalidatePath("/admin/leads");
-  return { success: true, demoUrl };
+
+  after(async () => {
+    try {
+      await _doGenerateDemoSite(leadId);
+      const { createServiceClient: createSC } = await import("@/lib/supabase/server");
+      const sb = await createSC();
+      await sb.from("leads").update({ job_status: null }).eq("id", leadId);
+    } catch (err) {
+      console.error("Demo generation background job failed:", err);
+      const { createServiceClient: createSC } = await import("@/lib/supabase/server");
+      const sb = await createSC();
+      await sb.from("leads").update({ job_status: "failed" }).eq("id", leadId);
+    }
+    revalidatePath("/admin/leads");
+  });
+
+  return { success: true, started: true };
 }
 
 export async function generateDemoAndPitch(leadId: string) {
   await requireAdmin();
 
-  // Step 1: Generate demo site
-  const demoResult = await generateDemoSite(leadId);
+  if (!process.env.ANTHROPIC_API_KEY) throw new Error("ANTHROPIC_API_KEY not configured");
+  if (!process.env.GITHUB_TOKEN) throw new Error("GITHUB_TOKEN not configured");
 
-  // Step 2: Generate pitch email (will reference the demo URL)
-  const pitchResult = await generatePitchEmail(leadId);
-
-  // Step 3: Send the pitch email via Resend
   const { createServiceClient } = await import("@/lib/supabase/server");
   const supabase = await createServiceClient();
 
-  const { data: lead } = await supabase
-    .from("leads")
-    .select("contact_email")
-    .eq("id", leadId)
-    .single();
-
-  if (!lead?.contact_email) {
-    // Demo + pitch generated but can't send without an email
-    revalidatePath("/admin/leads");
-    return {
-      success: true,
-      demoUrl: demoResult.demoUrl,
-      pitchGenerated: true,
-      emailSent: false,
-      reason: "No contact email — pitch saved but not sent",
-    };
-  }
-
-  await sendPitchEmail(leadId, pitchResult.pitchEmail);
-
+  // Mark as in-progress immediately
+  await supabase.from("leads").update({ job_status: "launching" }).eq("id", leadId);
   revalidatePath("/admin/leads");
-  return {
-    success: true,
-    demoUrl: demoResult.demoUrl,
-    pitchGenerated: true,
-    emailSent: true,
-  };
+
+  after(async () => {
+    try {
+      const { createServiceClient: createSC } = await import("@/lib/supabase/server");
+      const sb = await createSC();
+
+      // Step 1: Generate demo site
+      await _doGenerateDemoSite(leadId);
+
+      // Step 2: Generate pitch email (references the demo URL)
+      const pitchResult = await generatePitchEmail(leadId);
+
+      // Step 3: Send the pitch if we have an email
+      const { data: lead } = await sb
+        .from("leads")
+        .select("contact_email")
+        .eq("id", leadId)
+        .single();
+
+      if (lead?.contact_email) {
+        await sendPitchEmail(leadId, pitchResult.pitchEmail);
+      }
+
+      await sb.from("leads").update({ job_status: null }).eq("id", leadId);
+    } catch (err) {
+      console.error("Launch background job failed:", err);
+      const { createServiceClient: createSC } = await import("@/lib/supabase/server");
+      const sb = await createSC();
+      await sb.from("leads").update({ job_status: "failed" }).eq("id", leadId);
+    }
+    revalidatePath("/admin/leads");
+  });
+
+  return { success: true, started: true };
 }
 
 export async function sendPitchEmail(leadId: string, emailBody: string) {
