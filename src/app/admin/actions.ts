@@ -339,7 +339,7 @@ export async function generatePitchEmail(leadId: string) {
     messages: [
       {
         role: "user",
-        content: `Write a professional cold outreach email from Schtubbs LLC, a web development and software engineering company, to the following business. The email should be concise, friendly, and focused on how we can help them improve their online presence.
+        content: `Write a professional cold outreach email from Sierra-117 LLC, a web development and software engineering company, to the following business. The email should be concise, friendly, and focused on how we can help them improve their online presence.
 
 Business Name: ${lead.business_name}
 Current Website: ${lead.current_website ?? "None"}
@@ -350,7 +350,7 @@ Guidelines:
 - Be specific about what we noticed about their current web presence
 - Mention one or two concrete benefits of a modern website
 - Include a clear call to action (schedule a free consultation)
-- Sign off as "Marcin" (from Schtubbs LLC)
+- Sign off as "Marcin" (from Sierra-117 LLC)
 - Do NOT include a subject line, just the email body
 - Write in plain text, no HTML or markdown formatting${demoLine}`,
       },
@@ -413,7 +413,7 @@ Design requirements:
 - Services or features section with icons (use Unicode/emoji icons, no external icon libraries)
 - A testimonials placeholder section with realistic-looking placeholder quotes
 - Contact call-to-action section with a placeholder form or contact details
-- Professional footer with business name, address placeholder, and a small "Demo by Schtubbs LLC" credit linking to https://schtubbs.dev
+- Professional footer with business name, address placeholder, and a small "Demo by Sierra-117 LLC" credit linking to https://sierra-117.net
 - Use only vanilla HTML, CSS, and JavaScript — NO external dependencies, CDNs, or frameworks
 - CSS must be in a separate styles.css file, JS in a separate script.js file
 - The HTML must link to ./styles.css and ./script.js
@@ -524,7 +524,7 @@ export async function sendPitchEmail(leadId: string, emailBody: string) {
   const from = process.env.RESEND_FROM_EMAIL ?? "noreply@schtubbs.dev";
 
   await resend.emails.send({
-    from: `Marcin from Schtubbs <${from}>`,
+    from: `Marcin from Sierra-117 <${from}>`,
     to: lead.contact_email,
     subject: `Elevate ${lead.business_name}'s Online Presence`,
     html: `
@@ -533,7 +533,7 @@ export async function sendPitchEmail(leadId: string, emailBody: string) {
           ${emailBody.split("\n").map((line) => `<p style="margin: 8px 0; line-height: 1.6; color: #cbd5e1;">${line || "&nbsp;"}</p>`).join("")}
         </div>
         <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.05); text-align: center;">
-          <p style="font-size: 11px; color: rgba(255,255,255,0.2);">Schtubbs LLC &mdash; Web Development & Software Engineering</p>
+          <p style="font-size: 11px; color: rgba(255,255,255,0.2);">Sierra-117 LLC &mdash; Web Development & Software Engineering</p>
           <p style="font-size: 11px; color: rgba(255,255,255,0.2);">If you no longer wish to receive emails, reply with "unsubscribe"</p>
         </div>
       </div>
