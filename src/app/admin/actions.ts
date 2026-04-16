@@ -350,7 +350,7 @@ Guidelines:
 - Be specific about what we noticed about their current web presence
 - Mention one or two concrete benefits of a modern website
 - Include a clear call to action (schedule a free consultation)
-- Sign off as "The Schtubbs Team"
+- Sign off as "Marcin" (from Schtubbs LLC)
 - Do NOT include a subject line, just the email body
 - Write in plain text, no HTML or markdown formatting${demoLine}`,
       },
@@ -524,7 +524,7 @@ export async function sendPitchEmail(leadId: string, emailBody: string) {
   const from = process.env.RESEND_FROM_EMAIL ?? "noreply@schtubbs.dev";
 
   await resend.emails.send({
-    from: `Schtubbs <${from}>`,
+    from: `Marcin from Schtubbs <${from}>`,
     to: lead.contact_email,
     subject: `Elevate ${lead.business_name}'s Online Presence`,
     html: `
