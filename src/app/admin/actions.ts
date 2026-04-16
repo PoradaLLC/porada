@@ -399,25 +399,43 @@ export async function generateDemoSite(leadId: string) {
     messages: [
       {
         role: "user",
-        content: `Create a professional, modern single-page landing website for the following business. The site should look like it was built by a premium web agency and should make the business owner think "I want my website to look like this."
+        content: `You are a world-class web designer. Create a stunning, modern single-page landing website for the following business. The site must look like a $10,000+ custom build from a premium agency — the kind that makes the business owner immediately want to hire you.
 
 Business: ${lead.business_name}
 Industry/Description: ${lead.summary}
-Location: Fair Lawn, NJ area
+Current Website: ${lead.current_website ?? "None"}
 
-Design requirements:
-- Mobile-first responsive design with a polished, modern aesthetic
-- Choose an appropriate color palette for the industry (avoid generic blue — be creative)
-- Smooth scroll behavior and subtle CSS animations (transitions, hover effects)
-- Hero section with business name, a compelling tagline, and a call-to-action button
-- Services or features section with icons (use Unicode/emoji icons, no external icon libraries)
-- A testimonials placeholder section with realistic-looking placeholder quotes
-- Contact call-to-action section with a placeholder form or contact details
-- Professional footer with business name, address placeholder, and a small "Demo by Sierra-117 LLC" credit linking to https://sierra-117.net
-- Use only vanilla HTML, CSS, and JavaScript — NO external dependencies, CDNs, or frameworks
-- CSS must be in a separate styles.css file, JS in a separate script.js file
-- The HTML must link to ./styles.css and ./script.js
-- Ensure the design looks complete and polished, not like a template — add visual depth with gradients, shadows, and spacing
+DESIGN VISION:
+- Study what the top agencies (Apple, Stripe, Linear) do: generous whitespace, bold typography hierarchy, subtle micro-interactions
+- Pick a sophisticated color palette that fits the industry — use 1 bold accent color with neutral backgrounds. Avoid generic blue.
+- Use large, bold section headings (48-72px) with lighter subtext. Mix font weights dramatically.
+- Every section should have visual breathing room — generous padding (80-120px vertical)
+
+REQUIRED SECTIONS (in order):
+1. HERO: Full-viewport height. Business name in large bold type, a compelling one-line tagline below, and a prominent CTA button. Use a relevant hero background image from Unsplash via https://source.unsplash.com/1600x900/?{relevant-keyword} (e.g., ?auto-repair, ?bakery, ?salon). Add a dark overlay gradient so text is readable over the image.
+2. ABOUT/INTRO: Brief value proposition. 2-3 short paragraphs max. Maybe a relevant side image from Unsplash.
+3. SERVICES/FEATURES: Card-based grid layout (3 columns on desktop, 1 on mobile). Each card has an icon (use Unicode/emoji), title, and short description. Cards should have subtle shadows and hover lift effects.
+4. GALLERY/SHOWCASE: Image grid using Unsplash photos relevant to the business via https://source.unsplash.com/600x400/?{keyword}. Use 3-6 images. Add subtle hover zoom effect.
+5. TESTIMONIALS: 2-3 realistic placeholder reviews with star ratings, customer names, and short quotes. Style as elegant cards.
+6. CONTACT CTA: Eye-catching section with contrasting background. Include a styled placeholder form (name, email, message, submit button) or business contact details. Make the submit button match the accent color.
+7. FOOTER: Business name, placeholder address, phone, email. Navigation links. Small "Demo by Sierra-117 LLC" credit linking to https://www.sierra-117.net
+
+TECHNICAL REQUIREMENTS:
+- Mobile-first responsive CSS with breakpoints at 768px and 1024px
+- Smooth scroll behavior (scroll-behavior: smooth in CSS)
+- CSS animations: fade-in on scroll (use IntersectionObserver in JS), hover transitions on all interactive elements, subtle parallax on hero
+- Images: use <img> tags with src="https://source.unsplash.com/WIDTHxHEIGHT/?keyword" — pick keywords relevant to the specific business
+- All images must have object-fit: cover and appropriate aspect ratios
+- Use CSS Grid and Flexbox for layouts — no floats
+- The HTML links to ./styles.css and ./script.js
+- NO external dependencies, CDNs, fonts, or frameworks — vanilla HTML, CSS, JS only
+- Use system font stack: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif
+
+QUALITY BAR:
+- This should NOT look like a template. It should feel custom, intentional, and high-end.
+- Pay attention to micro-details: button border-radius, input styling, link hover states, image aspect ratios
+- Use CSS custom properties (variables) for colors so the palette is consistent
+- Add a smooth scroll-to-top button
 
 Return ONLY a JSON object with three keys (no markdown, no code fences, just raw JSON):
 {"index_html": "<full HTML content>", "styles_css": "<full CSS content>", "script_js": "<full JS content>"}`,
@@ -528,13 +546,13 @@ export async function sendPitchEmail(leadId: string, emailBody: string) {
     to: lead.contact_email,
     subject: `Elevate ${lead.business_name}'s Online Presence`,
     html: `
-      <div style="font-family: 'Courier New', monospace; background-color: #080c10; color: #e2e8f0; padding: 40px; max-width: 600px; margin: 0 auto;">
-        <div style="border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 32px; background-color: rgba(255,255,255,0.02);">
-          ${emailBody.split("\n").map((line) => `<p style="margin: 8px 0; line-height: 1.6; color: #cbd5e1;">${line || "&nbsp;"}</p>`).join("")}
+      <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; padding: 40px 20px; max-width: 600px; margin: 0 auto;">
+        <div style="background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 36px; box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
+          ${emailBody.split("\n").map((line) => `<p style="margin: 10px 0; line-height: 1.7; color: #374151; font-size: 15px;">${line || "&nbsp;"}</p>`).join("")}
         </div>
-        <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.05); text-align: center;">
-          <p style="font-size: 11px; color: rgba(255,255,255,0.2);">Sierra-117 LLC &mdash; Web Development & Software Engineering</p>
-          <p style="font-size: 11px; color: rgba(255,255,255,0.2);">If you no longer wish to receive emails, reply with "unsubscribe"</p>
+        <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #e5e7eb; text-align: center;">
+          <p style="font-size: 12px; color: #9ca3af; margin: 4px 0;">Sierra-117 LLC &mdash; Web Development & Software Engineering</p>
+          <p style="font-size: 11px; color: #9ca3af; margin: 4px 0;">If you no longer wish to receive emails, reply with &ldquo;unsubscribe&rdquo;</p>
         </div>
       </div>
     `,
