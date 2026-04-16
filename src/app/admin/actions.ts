@@ -417,10 +417,10 @@ DESIGN VISION:
 - Every section should have visual breathing room — generous padding (80-120px vertical)
 
 REQUIRED SECTIONS (in order):
-1. HERO: Full-viewport height. Business name in large bold type, a compelling one-line tagline below, and a prominent CTA button. Use a relevant hero background image from Unsplash via https://source.unsplash.com/1600x900/?{relevant-keyword} (e.g., ?auto-repair, ?bakery, ?salon). Add a dark overlay gradient so text is readable over the image.
-2. ABOUT/INTRO: Brief value proposition. 2-3 short paragraphs max. Maybe a relevant side image from Unsplash.
+1. HERO: Full-viewport height. Business name in large bold type, a compelling one-line tagline below, and a prominent CTA button. Use a relevant hero background image from picsum.photos (e.g., https://picsum.photos/1600/900 for a random high-quality photo). Add a dark overlay gradient so text is readable over the image.
+2. ABOUT/INTRO: Brief value proposition. 2-3 short paragraphs max. Include a side image from picsum.photos (e.g., https://picsum.photos/600/400).
 3. SERVICES/FEATURES: Card-based grid layout (3 columns on desktop, 1 on mobile). Each card has an icon (use Unicode/emoji), title, and short description. Cards should have subtle shadows and hover lift effects.
-4. GALLERY/SHOWCASE: Image grid using Unsplash photos relevant to the business via https://source.unsplash.com/600x400/?{keyword}. Use 3-6 images. Add subtle hover zoom effect.
+4. GALLERY/SHOWCASE: Image grid with 3-6 photos from picsum.photos. Use different seed values for variety: https://picsum.photos/seed/{unique-word}/600/400 — use business-related words as seeds (e.g., seed/office, seed/team, seed/workshop). Add subtle hover zoom effect.
 5. TESTIMONIALS: 2-3 realistic placeholder reviews with star ratings, customer names, and short quotes. Style as elegant cards.
 6. CONTACT CTA: Eye-catching section with contrasting background. Include a styled placeholder form (name, email, message, submit button) or business contact details. Make the submit button match the accent color.
 7. FOOTER: Business name, placeholder address, phone, email. Navigation links. Small "Demo by Sierra-117 LLC" credit linking to https://www.sierra-117.net
@@ -429,7 +429,7 @@ TECHNICAL REQUIREMENTS:
 - Mobile-first responsive CSS with breakpoints at 768px and 1024px
 - Smooth scroll behavior (scroll-behavior: smooth in CSS)
 - CSS animations: fade-in on scroll (use IntersectionObserver in JS), hover transitions on all interactive elements, subtle parallax on hero
-- Images: use <img> tags with src="https://source.unsplash.com/WIDTHxHEIGHT/?keyword" — pick keywords relevant to the specific business
+- Images: use <img> tags with src from picsum.photos. For variety use seeded URLs: https://picsum.photos/seed/{word}/WIDTH/HEIGHT — pick different seed words per image
 - All images must have object-fit: cover and appropriate aspect ratios
 - Use CSS Grid and Flexbox for layouts — no floats
 - The HTML links to ./styles.css and ./script.js
