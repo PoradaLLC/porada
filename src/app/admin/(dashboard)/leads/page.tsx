@@ -34,13 +34,13 @@ export default async function LeadsPage() {
   const leads = await getLeads();
 
   return (
-    <div className="p-8">
-      <div className="mb-8">
-        <h1 className="font-mono text-2xl font-bold text-white">Lead Queue</h1>
-        <p className="mt-1 font-mono text-sm text-white/40">
-          &gt; ai-generated local business leads
-        </p>
-      </div>
+    <div className="admin-page">
+      <header className="admin-page-head">
+        <div>
+          <h1>Lead queue</h1>
+          <div className="sub">§ outbound · {leads.length} total</div>
+        </div>
+      </header>
       <LeadQueue leads={leads} />
     </div>
   );

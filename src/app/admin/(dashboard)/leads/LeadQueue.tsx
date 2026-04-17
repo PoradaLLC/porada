@@ -53,11 +53,11 @@ const statusConfig: Record<string, { label: string; classes: string }> = {
   },
   converted: {
     label: "Converted",
-    classes: "bg-brand-accent/10 text-brand-accent border-brand-accent/20",
+    classes: "bg-[var(--accent-soft)] text-[var(--accent)] border-[color-mix(in_oklab,var(--accent)_40%,transparent)]",
   },
   dismissed: {
     label: "Dismissed",
-    classes: "bg-white/5 text-white/30 border-white/10",
+    classes: "bg-[var(--bg-elev)] text-[var(--ink-faint)] border-[var(--rule-strong)]",
   },
 };
 
@@ -191,7 +191,7 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
   }
 
   const inputClasses =
-    "w-full rounded border border-white/10 bg-white/5 px-2 py-1 font-mono text-sm text-white placeholder:text-white/20 focus:border-brand-accent/30 focus:outline-none transition-colors";
+    "w-full rounded border border-[var(--rule-strong)] bg-[var(--bg-elev)] px-2 py-1 font-mono text-sm text-[var(--ink)] placeholder:text-[var(--ink-faint)] focus:border-[var(--accent)] focus:outline-none transition-colors";
 
   return (
     <>
@@ -199,7 +199,7 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
       <div className="mb-4 flex justify-end">
         <button
           onClick={() => setShowAddModal(true)}
-          className="inline-flex items-center gap-2 rounded-lg bg-brand-accent px-4 py-2 font-mono text-sm font-bold text-brand-bg hover:bg-brand-accent-light transition-all"
+          className="inline-flex items-center gap-2 rounded-lg bg-[var(--ink)] px-4 py-2 font-mono text-sm font-bold text-[var(--bg)] hover:bg-[var(--accent)] transition-all"
         >
           <Plus className="h-4 w-4" />
           Add Lead
@@ -207,29 +207,29 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
       </div>
 
       {/* Lead Table */}
-      <div className="rounded-xl border border-white/5 bg-white/5 overflow-hidden">
+      <div className="rounded-xl border border-[var(--rule)] bg-[var(--bg-elev)] overflow-hidden">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-white/5">
-              <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-white/30">
+            <tr className="border-b border-[var(--rule)]">
+              <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-[var(--ink-faint)]">
                 Business
               </th>
-              <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-white/30">
+              <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-[var(--ink-faint)]">
                 Email
               </th>
-              <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-white/30">
+              <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-[var(--ink-faint)]">
                 Phone
               </th>
-              <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-white/30">
+              <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-[var(--ink-faint)]">
                 Website
               </th>
-              <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-white/30">
+              <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-[var(--ink-faint)]">
                 Demo
               </th>
-              <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-white/30">
+              <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-[var(--ink-faint)]">
                 Status
               </th>
-              <th className="px-6 py-3 text-right font-mono text-xs uppercase tracking-widest text-white/30">
+              <th className="px-6 py-3 text-right font-mono text-xs uppercase tracking-widest text-[var(--ink-faint)]">
                 Actions
               </th>
             </tr>
@@ -239,7 +239,7 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
               <tr>
                 <td
                   colSpan={7}
-                  className="px-6 py-12 text-center font-mono text-sm text-white/20"
+                  className="px-6 py-12 text-center font-mono text-sm text-[var(--ink-faint)]"
                 >
                   No leads yet. Leads are generated daily at 9:00 AM ET.
                 </td>
@@ -251,7 +251,7 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
 
                 if (isEditing) {
                   return (
-                    <tr key={lead.id} className="bg-white/5">
+                    <tr key={lead.id} className="bg-[var(--bg-elev)]">
                       <td className="px-6 py-3">
                         <input
                           value={editForm.business_name}
@@ -321,7 +321,7 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                             onClick={handleSaveEdit}
                             disabled={editSaving || !editForm.business_name || !editForm.summary}
                             title="Save"
-                            className="rounded-lg border border-brand-accent/20 p-2 text-brand-accent hover:bg-brand-accent/10 transition-colors disabled:opacity-50"
+                            className="rounded-lg border border-[color-mix(in_oklab,var(--accent)_40%,transparent)] p-2 text-[var(--accent)] hover:bg-[var(--accent-soft)] transition-colors disabled:opacity-50"
                           >
                             {editSaving ? (
                               <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -332,7 +332,7 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                           <button
                             onClick={() => setEditingId(null)}
                             title="Cancel"
-                            className="rounded-lg border border-white/5 p-2 text-white/30 hover:text-white hover:border-white/20 transition-colors"
+                            className="rounded-lg border border-[var(--rule)] p-2 text-[var(--ink-faint)] hover:text-[var(--ink)] hover:border-[var(--ink)] transition-colors"
                           >
                             <X className="h-3.5 w-3.5" />
                           </button>
@@ -345,23 +345,23 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                 return (
                   <tr
                     key={lead.id}
-                    className="hover:bg-white/5 transition-colors"
+                    className="hover:bg-[color-mix(in_oklab,var(--ink)_4%,transparent)] transition-colors"
                   >
                     <td className="px-6 py-4">
-                      <div className="font-mono text-sm text-white">
+                      <div className="font-mono text-sm text-[var(--ink)]">
                         {lead.business_name}
                       </div>
-                      <div className="mt-1 font-mono text-[11px] text-white/30 max-w-xs truncate">
+                      <div className="mt-1 font-mono text-[11px] text-[var(--ink-faint)] max-w-xs truncate">
                         {lead.summary}
                       </div>
                     </td>
-                    <td className="px-6 py-4 font-mono text-sm text-white/50">
+                    <td className="px-6 py-4 font-mono text-sm text-[var(--ink-soft)]">
                       {lead.contact_email ?? (
-                        <span className="text-white/20">-</span>
+                        <span className="text-[var(--ink-faint)]">-</span>
                       )}
                     </td>
-                    <td className="px-6 py-4 font-mono text-sm text-white/50">
-                      {lead.phone ?? <span className="text-white/20">-</span>}
+                    <td className="px-6 py-4 font-mono text-sm text-[var(--ink-soft)]">
+                      {lead.phone ?? <span className="text-[var(--ink-faint)]">-</span>}
                     </td>
                     <td className="px-6 py-4">
                       {lead.current_website ? (
@@ -369,13 +369,13 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                           href={lead.current_website}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 font-mono text-sm text-brand-accent hover:text-brand-accent-light transition-colors"
+                          className="inline-flex items-center gap-1 font-mono text-sm text-[var(--accent)] hover:text-[var(--ink)] transition-colors"
                         >
                           <ExternalLink className="h-3 w-3" />
                           Visit
                         </a>
                       ) : (
-                        <span className="font-mono text-[10px] text-white/20">
+                        <span className="font-mono text-[10px] text-[var(--ink-faint)]">
                           no website
                         </span>
                       )}
@@ -392,7 +392,7 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                           Preview
                         </a>
                       ) : (
-                        <span className="font-mono text-[10px] text-white/20">
+                        <span className="font-mono text-[10px] text-[var(--ink-faint)]">
                           —
                         </span>
                       )}
@@ -425,7 +425,7 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                             <button
                               onClick={() => startEdit(lead)}
                               title="Edit lead"
-                              className="rounded-lg border border-white/5 p-2 text-white/30 hover:text-white hover:border-white/20 transition-colors"
+                              className="rounded-lg border border-[var(--rule)] p-2 text-[var(--ink-faint)] hover:text-[var(--ink)] hover:border-[var(--ink)] transition-colors"
                             >
                               <Pencil className="h-3.5 w-3.5" />
                             </button>
@@ -436,7 +436,7 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                                 <button
                                   onClick={() => handleEnrich(lead.id)}
                                   title="Find contact info"
-                                  className="rounded-lg border border-white/5 p-2 text-white/30 hover:text-cyan-400 hover:border-cyan-400/20 transition-colors"
+                                  className="rounded-lg border border-[var(--rule)] p-2 text-[var(--ink-faint)] hover:text-cyan-400 hover:border-cyan-400/20 transition-colors"
                                 >
                                   <Search className="h-3.5 w-3.5" />
                                 </button>
@@ -448,7 +448,7 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                                 <button
                                   onClick={() => handleGenerateDemo(lead.id)}
                                   title="Generate demo site"
-                                  className="rounded-lg border border-white/5 p-2 text-white/30 hover:text-purple-400 hover:border-purple-400/20 transition-colors"
+                                  className="rounded-lg border border-[var(--rule)] p-2 text-[var(--ink-faint)] hover:text-purple-400 hover:border-purple-400/20 transition-colors"
                                 >
                                   <Globe className="h-3.5 w-3.5" />
                                 </button>
@@ -460,7 +460,7 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                                 <button
                                   onClick={() => handleLaunch(lead.id)}
                                   title="Generate demo, pitch, and send email"
-                                  className="rounded-lg border border-white/5 p-2 text-white/30 hover:text-amber-400 hover:border-amber-400/20 transition-colors"
+                                  className="rounded-lg border border-[var(--rule)] p-2 text-[var(--ink-faint)] hover:text-amber-400 hover:border-amber-400/20 transition-colors"
                                 >
                                   <Rocket className="h-3.5 w-3.5" />
                                 </button>
@@ -472,7 +472,7 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                                 title={
                                   lead.pitch_email ? "View pitch" : "Generate pitch"
                                 }
-                                className="rounded-lg border border-white/5 p-2 text-white/30 hover:text-brand-accent hover:border-brand-accent/20 transition-colors"
+                                className="rounded-lg border border-[var(--rule)] p-2 text-[var(--ink-faint)] hover:text-[var(--accent)] hover:border-[color-mix(in_oklab,var(--accent)_40%,transparent)] transition-colors"
                               >
                                 <Sparkles className="h-3.5 w-3.5" />
                               </button>
@@ -481,7 +481,7 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                               <button
                                 onClick={() => handleConvert(lead.id)}
                                 title="Mark as converted"
-                                className="rounded-lg border border-white/5 p-2 text-white/30 hover:text-brand-accent hover:border-brand-accent/20 transition-colors"
+                                className="rounded-lg border border-[var(--rule)] p-2 text-[var(--ink-faint)] hover:text-[var(--accent)] hover:border-[color-mix(in_oklab,var(--accent)_40%,transparent)] transition-colors"
                               >
                                 <CheckCircle2 className="h-3.5 w-3.5" />
                               </button>
@@ -490,7 +490,7 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                               <button
                                 onClick={() => handleDismiss(lead.id)}
                                 title="Dismiss"
-                                className="rounded-lg border border-white/5 p-2 text-white/30 hover:text-red-400 hover:border-red-400/20 transition-colors"
+                                className="rounded-lg border border-[var(--rule)] p-2 text-[var(--ink-faint)] hover:text-red-400 hover:border-red-400/20 transition-colors"
                               >
                                 <XCircle className="h-3.5 w-3.5" />
                               </button>
@@ -510,9 +510,9 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
       {/* Add Lead Modal */}
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-lg rounded-xl border border-white/10 bg-[#080c10] p-8">
+          <div className="w-full max-w-lg rounded-xl border border-[var(--rule-strong)] bg-[var(--bg-elev)] p-8">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="font-mono text-lg font-bold text-white">
+              <h3 className="font-mono text-lg font-bold text-[var(--ink)]">
                 Add Lead
               </h3>
               <button
@@ -520,7 +520,7 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                   setShowAddModal(false);
                   setAddForm(emptyForm);
                 }}
-                className="text-white/30 hover:text-white transition-colors"
+                className="text-[var(--ink-faint)] hover:text-[var(--ink)] transition-colors"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -528,7 +528,7 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
 
             <div className="space-y-4">
               <div>
-                <label className="block font-mono text-xs text-white/40 mb-1">
+                <label className="block font-mono text-xs text-[var(--ink-soft)] mb-1">
                   Business Name *
                 </label>
                 <input
@@ -536,12 +536,12 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                   onChange={(e) =>
                     setAddForm({ ...addForm, business_name: e.target.value })
                   }
-                  className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 font-mono text-sm text-white placeholder:text-white/20 focus:border-brand-accent/30 focus:outline-none transition-colors"
+                  className="w-full rounded-lg border border-[var(--rule-strong)] bg-[var(--bg-elev)] px-4 py-2.5 font-mono text-sm text-[var(--ink)] placeholder:text-[var(--ink-faint)] focus:border-[var(--accent)] focus:outline-none transition-colors"
                   placeholder="Acme Corp"
                 />
               </div>
               <div>
-                <label className="block font-mono text-xs text-white/40 mb-1">
+                <label className="block font-mono text-xs text-[var(--ink-soft)] mb-1">
                   Summary *
                 </label>
                 <textarea
@@ -550,13 +550,13 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                     setAddForm({ ...addForm, summary: e.target.value })
                   }
                   rows={3}
-                  className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 font-mono text-sm text-white placeholder:text-white/20 focus:border-brand-accent/30 focus:outline-none transition-colors resize-none"
+                  className="w-full rounded-lg border border-[var(--rule-strong)] bg-[var(--bg-elev)] px-4 py-2.5 font-mono text-sm text-[var(--ink)] placeholder:text-[var(--ink-faint)] focus:border-[var(--accent)] focus:outline-none transition-colors resize-none"
                   placeholder="Brief description of the business and why they're a good lead..."
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block font-mono text-xs text-white/40 mb-1">
+                  <label className="block font-mono text-xs text-[var(--ink-soft)] mb-1">
                     Contact Email
                   </label>
                   <input
@@ -564,12 +564,12 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                     onChange={(e) =>
                       setAddForm({ ...addForm, contact_email: e.target.value })
                     }
-                    className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 font-mono text-sm text-white placeholder:text-white/20 focus:border-brand-accent/30 focus:outline-none transition-colors"
+                    className="w-full rounded-lg border border-[var(--rule-strong)] bg-[var(--bg-elev)] px-4 py-2.5 font-mono text-sm text-[var(--ink)] placeholder:text-[var(--ink-faint)] focus:border-[var(--accent)] focus:outline-none transition-colors"
                     placeholder="info@example.com"
                   />
                 </div>
                 <div>
-                  <label className="block font-mono text-xs text-white/40 mb-1">
+                  <label className="block font-mono text-xs text-[var(--ink-soft)] mb-1">
                     Phone
                   </label>
                   <input
@@ -577,13 +577,13 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                     onChange={(e) =>
                       setAddForm({ ...addForm, phone: e.target.value })
                     }
-                    className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 font-mono text-sm text-white placeholder:text-white/20 focus:border-brand-accent/30 focus:outline-none transition-colors"
+                    className="w-full rounded-lg border border-[var(--rule-strong)] bg-[var(--bg-elev)] px-4 py-2.5 font-mono text-sm text-[var(--ink)] placeholder:text-[var(--ink-faint)] focus:border-[var(--accent)] focus:outline-none transition-colors"
                     placeholder="(555) 123-4567"
                   />
                 </div>
               </div>
               <div>
-                <label className="block font-mono text-xs text-white/40 mb-1">
+                <label className="block font-mono text-xs text-[var(--ink-soft)] mb-1">
                   Website
                 </label>
                 <input
@@ -591,12 +591,12 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                   onChange={(e) =>
                     setAddForm({ ...addForm, current_website: e.target.value })
                   }
-                  className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 font-mono text-sm text-white placeholder:text-white/20 focus:border-brand-accent/30 focus:outline-none transition-colors"
+                  className="w-full rounded-lg border border-[var(--rule-strong)] bg-[var(--bg-elev)] px-4 py-2.5 font-mono text-sm text-[var(--ink)] placeholder:text-[var(--ink-faint)] focus:border-[var(--accent)] focus:outline-none transition-colors"
                   placeholder="https://example.com"
                 />
               </div>
               <div>
-                <label className="block font-mono text-xs text-white/40 mb-1">
+                <label className="block font-mono text-xs text-[var(--ink-soft)] mb-1">
                   Status
                 </label>
                 <select
@@ -604,7 +604,7 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                   onChange={(e) =>
                     setAddForm({ ...addForm, status: e.target.value })
                   }
-                  className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 font-mono text-sm text-white focus:border-brand-accent/30 focus:outline-none transition-colors"
+                  className="w-full rounded-lg border border-[var(--rule-strong)] bg-[var(--bg-elev)] px-4 py-2.5 font-mono text-sm text-[var(--ink)] focus:border-[var(--accent)] focus:outline-none transition-colors"
                 >
                   <option value="new">New</option>
                   <option value="pitched">Pitched</option>
@@ -618,7 +618,7 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
               <button
                 onClick={handleAddLead}
                 disabled={addSaving || !addForm.business_name || !addForm.summary}
-                className="flex-1 rounded-lg bg-brand-accent px-6 py-3 font-mono text-sm font-bold text-brand-bg hover:bg-brand-accent-light transition-all disabled:opacity-50 inline-flex items-center justify-center gap-2"
+                className="flex-1 rounded-lg bg-[var(--ink)] px-6 py-3 font-mono text-sm font-bold text-[var(--bg)] hover:bg-[var(--accent)] transition-all disabled:opacity-50 inline-flex items-center justify-center gap-2"
               >
                 {addSaving ? (
                   <>
@@ -637,7 +637,7 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                   setShowAddModal(false);
                   setAddForm(emptyForm);
                 }}
-                className="rounded-lg border border-white/10 px-4 py-3 font-mono text-sm text-white/50 hover:text-white hover:border-white/20 transition-all"
+                className="rounded-lg border border-[var(--rule-strong)] px-4 py-3 font-mono text-sm text-[var(--ink-soft)] hover:text-[var(--ink)] hover:border-[var(--ink)] transition-all"
               >
                 Cancel
               </button>
@@ -649,9 +649,9 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
       {/* Pitch Email Modal */}
       {pitchModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-lg rounded-xl border border-white/10 bg-[#080c10] p-8">
+          <div className="w-full max-w-lg rounded-xl border border-[var(--rule-strong)] bg-[var(--bg-elev)] p-8">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="font-mono text-lg font-bold text-white">
+              <h3 className="font-mono text-lg font-bold text-[var(--ink)]">
                 Pitch: {pitchModal.business_name}
               </h3>
               <button
@@ -659,19 +659,19 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                   setPitchModal(null);
                   setSendSuccess(false);
                 }}
-                className="text-white/30 hover:text-white transition-colors"
+                className="text-[var(--ink-faint)] hover:text-[var(--ink)] transition-colors"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
 
             {/* Lead Summary */}
-            <div className="mb-4 rounded-lg border border-white/5 bg-white/5 p-3">
-              <p className="font-mono text-xs text-white/40">
+            <div className="mb-4 rounded-lg border border-[var(--rule)] bg-[var(--bg-elev)] p-3">
+              <p className="font-mono text-xs text-[var(--ink-soft)]">
                 {pitchModal.summary}
               </p>
               {pitchModal.contact_email && (
-                <p className="mt-2 font-mono text-xs text-brand-accent">
+                <p className="mt-2 font-mono text-xs text-[var(--accent)]">
                   To: {pitchModal.contact_email}
                 </p>
               )}
@@ -696,15 +696,15 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
             {/* Email Body */}
             {generating ? (
               <div className="flex items-center justify-center py-12">
-                <Loader2 className="h-6 w-6 animate-spin text-brand-accent" />
-                <span className="ml-3 font-mono text-sm text-white/40">
+                <Loader2 className="h-6 w-6 animate-spin text-[var(--accent)]" />
+                <span className="ml-3 font-mono text-sm text-[var(--ink-soft)]">
                   Generating pitch...
                 </span>
               </div>
             ) : sendSuccess ? (
               <div className="flex flex-col items-center justify-center py-12 gap-3">
-                <CheckCircle2 className="h-8 w-8 text-brand-accent" />
-                <p className="font-mono text-sm text-brand-accent font-bold">
+                <CheckCircle2 className="h-8 w-8 text-[var(--accent)]" />
+                <p className="font-mono text-sm text-[var(--accent)] font-bold">
                   Email sent successfully!
                 </p>
               </div>
@@ -714,14 +714,14 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                   value={pitchText}
                   onChange={(e) => setPitchText(e.target.value)}
                   rows={12}
-                  className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 font-mono text-sm text-white placeholder:text-white/20 focus:border-brand-accent/30 focus:outline-none transition-colors resize-none"
+                  className="w-full rounded-lg border border-[var(--rule-strong)] bg-[var(--bg-elev)] px-4 py-3 font-mono text-sm text-[var(--ink)] placeholder:text-[var(--ink-faint)] focus:border-[var(--accent)] focus:outline-none transition-colors resize-none"
                   placeholder="Pitch email content..."
                 />
                 <div className="mt-4 flex gap-3">
                   <button
                     onClick={handleSendPitch}
                     disabled={sending || !pitchModal.contact_email || !pitchText}
-                    className="flex-1 rounded-lg bg-brand-accent px-6 py-3 font-mono text-sm font-bold text-brand-bg hover:bg-brand-accent-light transition-all disabled:opacity-50 inline-flex items-center justify-center gap-2"
+                    className="flex-1 rounded-lg bg-[var(--ink)] px-6 py-3 font-mono text-sm font-bold text-[var(--bg)] hover:bg-[var(--accent)] transition-all disabled:opacity-50 inline-flex items-center justify-center gap-2"
                   >
                     {sending ? (
                       <>
@@ -740,7 +740,7 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                       setPitchModal(null);
                       setSendSuccess(false);
                     }}
-                    className="rounded-lg border border-white/10 px-4 py-3 font-mono text-sm text-white/50 hover:text-white hover:border-white/20 transition-all"
+                    className="rounded-lg border border-[var(--rule-strong)] px-4 py-3 font-mono text-sm text-[var(--ink-soft)] hover:text-[var(--ink)] hover:border-[var(--ink)] transition-all"
                   >
                     Cancel
                   </button>

@@ -33,13 +33,13 @@ export default async function BookingsPage() {
   const bookings = await getBookings();
 
   return (
-    <div className="p-8">
-      <div className="mb-8">
-        <h1 className="font-mono text-2xl font-bold text-white">Bookings</h1>
-        <p className="mt-1 font-mono text-sm text-white/40">
-          &gt; consultation schedule
-        </p>
-      </div>
+    <div className="admin-page">
+      <header className="admin-page-head">
+        <div>
+          <h1>Bookings</h1>
+          <div className="sub">§ consultation schedule · {bookings.length} total</div>
+        </div>
+      </header>
       <BookingsList bookings={bookings} />
     </div>
   );

@@ -30,13 +30,13 @@ export default async function PaymentsPage() {
   const payments = await getPayments();
 
   return (
-    <div className="p-8">
-      <div className="mb-8">
-        <h1 className="font-mono text-2xl font-bold text-white">Payments</h1>
-        <p className="mt-1 font-mono text-sm text-white/40">
-          &gt; track revenue & manage billing
-        </p>
-      </div>
+    <div className="admin-page">
+      <header className="admin-page-head">
+        <div>
+          <h1>Payments</h1>
+          <div className="sub">§ revenue · {payments.length} total</div>
+        </div>
+      </header>
       <PaymentsDashboard payments={payments} />
     </div>
   );

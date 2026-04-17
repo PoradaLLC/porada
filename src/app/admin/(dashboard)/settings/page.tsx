@@ -1,5 +1,3 @@
-import { Terminal } from "lucide-react";
-
 export default function SettingsPage() {
   const envStatus = [
     { name: "NEXT_PUBLIC_SUPABASE_URL", set: !!process.env.NEXT_PUBLIC_SUPABASE_URL },
@@ -13,59 +11,68 @@ export default function SettingsPage() {
   ];
 
   return (
-    <div className="p-8">
-      <div className="mb-8">
-        <h1 className="font-mono text-2xl font-bold text-white">Settings</h1>
-        <p className="mt-1 font-mono text-sm text-white/40">
-          &gt; system configuration
-        </p>
-      </div>
-
-      {/* Environment Variables */}
-      <div className="rounded-xl border border-white/5 bg-white/5 p-6 mb-8">
-        <div className="flex items-center gap-2 mb-4">
-          <Terminal className="h-4 w-4 text-brand-accent" />
-          <h2 className="font-mono text-sm font-bold text-white">
-            Environment Status
-          </h2>
+    <div className="admin-page">
+      <header className="admin-page-head">
+        <div>
+          <h1>Settings</h1>
+          <div className="sub">§ system configuration · environment + setup</div>
         </div>
-        <div className="space-y-2">
+      </header>
+
+      <section className="admin-panel" style={{ marginTop: 0 }}>
+        <div className="panel-title">
+          <span className="dot" />
+          environment status
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
           {envStatus.map((env) => (
             <div
               key={env.name}
-              className="flex items-center justify-between rounded-lg bg-white/5 px-4 py-2.5"
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: "10px 14px",
+                borderRadius: 8,
+                border: "1px solid var(--rule)",
+                background: "var(--bg)",
+                fontFamily: "var(--font-mono-family)",
+                fontSize: 12,
+                color: "var(--ink-soft)",
+              }}
             >
-              <span className="font-mono text-xs text-white/50">
-                {env.name}
+              <span>{env.name}</span>
+              <span className={`admin-badge ${env.set ? "ok" : "danger"}`}>
+                {env.set ? "configured" : "not set"}
               </span>
-              {env.set ? (
-                <span className="font-mono text-[10px] text-brand-accent">
-                  configured
-                </span>
-              ) : (
-                <span className="font-mono text-[10px] text-red-400">
-                  not set
-                </span>
-              )}
             </div>
           ))}
         </div>
-      </div>
+      </section>
 
-      {/* Setup Instructions */}
-      <div className="rounded-xl border border-white/5 bg-white/5 p-6">
-        <h2 className="font-mono text-sm font-bold text-white mb-4">
-          Quick Setup Guide
-        </h2>
-        <div className="font-mono text-xs text-white/30 space-y-3">
-          <p>1. Create a Supabase project and add the URL + keys to .env.local</p>
-          <p>2. Run the migration SQL in Supabase SQL Editor (see supabase/migrations/)</p>
-          <p>3. Create an admin user and set their role in Supabase</p>
-          <p>4. Add Stripe keys for payment processing</p>
-          <p>5. Add Resend API key for email notifications</p>
-          <p>6. Set up a Stripe webhook pointing to /api/stripe/webhook</p>
+      <section className="admin-panel">
+        <div className="panel-title">
+          <span className="dot" />
+          quick setup guide
         </div>
-      </div>
+        <ol
+          style={{
+            margin: 0,
+            paddingLeft: 20,
+            fontFamily: "var(--font-mono-family)",
+            fontSize: 13,
+            color: "var(--ink-soft)",
+            lineHeight: 1.8,
+          }}
+        >
+          <li>Create a Supabase project and add the URL + keys to .env.local</li>
+          <li>Run the migration SQL in Supabase SQL Editor (see supabase/migrations/)</li>
+          <li>Create an admin user and set their role in Supabase</li>
+          <li>Add Stripe keys for payment processing</li>
+          <li>Add Resend API key for email notifications</li>
+          <li>Set up a Stripe webhook pointing to /api/stripe/webhook</li>
+        </ol>
+      </section>
     </div>
   );
 }

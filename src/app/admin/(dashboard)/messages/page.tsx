@@ -30,58 +30,127 @@ export default async function MessagesPage() {
   const messages = await getMessages();
 
   return (
-    <div className="p-8">
-      <div className="mb-8">
-        <h1 className="font-mono text-2xl font-bold text-white">Messages</h1>
-        <p className="mt-1 font-mono text-sm text-white/40">
-          &gt; contact form submissions
-        </p>
-      </div>
+    <div className="admin-page">
+      <header className="admin-page-head">
+        <div>
+          <h1>Messages</h1>
+          <div className="sub">§ contact form submissions · {messages.length} total</div>
+        </div>
+      </header>
 
-      <div className="space-y-4">
-        {messages.length === 0 ? (
-          <div className="rounded-xl border border-white/5 bg-white/5 p-12 text-center">
-            <p className="font-mono text-sm text-white/20">No messages yet.</p>
-          </div>
-        ) : (
-          messages.map((msg) => (
-            <div
-              key={msg.id}
-              className="rounded-xl border border-white/5 bg-white/5 p-6"
-            >
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-accent/10 border border-brand-accent/20">
-                    <Mail className="h-4 w-4 text-brand-accent" />
+      {messages.length === 0 ? (
+        <div
+          className="admin-panel"
+          style={{ textAlign: "center", padding: "60px 24px", color: "var(--ink-soft)" }}
+        >
+          No messages yet.
+        </div>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          {messages.map((msg) => (
+            <article key={msg.id} className="admin-panel" style={{ marginTop: 0, padding: 22 }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "flex-start",
+                  gap: 12,
+                  marginBottom: 12,
+                  flexWrap: "wrap",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                  <div
+                    style={{
+                      width: 34,
+                      height: 34,
+                      borderRadius: 10,
+                      border: "1px solid var(--rule-strong)",
+                      display: "grid",
+                      placeItems: "center",
+                      color: "var(--accent)",
+                      background: "var(--accent-soft)",
+                    }}
+                  >
+                    <Mail aria-hidden="true" style={{ width: 15, height: 15 }} />
                   </div>
                   <div>
-                    <h3 className="font-mono text-sm font-bold text-white">
+                    <div
+                      style={{
+                        fontFamily: "var(--font-display-family)",
+                        fontSize: 18,
+                        letterSpacing: "-0.01em",
+                        color: "var(--ink)",
+                      }}
+                    >
                       {msg.name}
-                    </h3>
-                    <p className="font-mono text-xs text-white/30">{msg.email}</p>
+                    </div>
+                    <div
+                      style={{
+                        fontFamily: "var(--font-mono-family)",
+                        fontSize: 12,
+                        color: "var(--ink-soft)",
+                        marginTop: 2,
+                      }}
+                    >
+                      {msg.email}
+                    </div>
                   </div>
                 </div>
-                <span className="font-mono text-xs text-white/20">
+                <span
+                  style={{
+                    fontFamily: "var(--font-mono-family)",
+                    fontSize: 11,
+                    color: "var(--ink-faint)",
+                    letterSpacing: "0.04em",
+                  }}
+                >
                   {formatDate(msg.created_at)}
                 </span>
               </div>
-              <div className="ml-11">
-                <p className="font-mono text-xs text-brand-accent mb-2">
-                  {msg.subject}
-                </p>
-                <p className="font-mono text-sm text-white/50 leading-relaxed whitespace-pre-wrap">
+              <div style={{ paddingLeft: 46 }}>
+                {msg.subject && (
+                  <div
+                    style={{
+                      fontFamily: "var(--font-mono-family)",
+                      fontSize: 11,
+                      letterSpacing: "0.1em",
+                      textTransform: "uppercase",
+                      color: "var(--accent)",
+                      marginBottom: 8,
+                    }}
+                  >
+                    {msg.subject}
+                  </div>
+                )}
+                <p
+                  style={{
+                    fontSize: 14,
+                    color: "var(--ink)",
+                    lineHeight: 1.55,
+                    whiteSpace: "pre-wrap",
+                    margin: 0,
+                  }}
+                >
                   {msg.message}
                 </p>
                 {msg.phone && (
-                  <p className="mt-2 font-mono text-xs text-white/20">
-                    phone: {msg.phone}
+                  <p
+                    style={{
+                      marginTop: 10,
+                      fontFamily: "var(--font-mono-family)",
+                      fontSize: 11,
+                      color: "var(--ink-faint)",
+                    }}
+                  >
+                    Phone · {msg.phone}
                   </p>
                 )}
               </div>
-            </div>
-          ))
-        )}
-      </div>
+            </article>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

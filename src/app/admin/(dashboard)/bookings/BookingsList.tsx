@@ -31,82 +31,125 @@ export function BookingsList({ bookings }: { bookings: Booking[] }) {
     await deleteBooking(id);
   }
 
+  if (bookings.length === 0) {
+    return (
+      <div
+        className="admin-panel"
+        style={{ textAlign: "center", padding: "60px 24px", color: "var(--ink-soft)" }}
+      >
+        No bookings yet.
+      </div>
+    );
+  }
+
   return (
-    <div className="space-y-4">
-      {bookings.length === 0 ? (
-        <div className="rounded-xl border border-white/5 bg-white/5 p-12 text-center">
-          <p className="font-mono text-sm text-white/20">No bookings yet.</p>
-        </div>
-      ) : (
-        bookings.map((booking) => (
+    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      {bookings.map((booking) => {
+        const badgeKind =
+          booking.status === "confirmed" ? "ok" : booking.status === "cancelled" ? "danger" : "warn";
+        return (
           <div
             key={booking.id}
-            className="rounded-xl border border-white/5 bg-white/5 p-6 hover:bg-white/8 transition-colors"
+            className="admin-panel"
+            style={{ marginTop: 0, padding: 22 }}
           >
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <div className="flex-1">
-                <div className="flex items-center gap-3 mb-2">
-                  <h3 className="font-mono text-sm font-bold text-white">{booking.name}</h3>
-                  <span
-                    className={`inline-flex rounded-full px-2 py-0.5 font-mono text-[10px] ${
-                      booking.status === "confirmed"
-                        ? "bg-brand-accent/10 text-brand-accent"
-                        : booking.status === "cancelled"
-                          ? "bg-red-500/10 text-red-400"
-                          : "bg-yellow-500/10 text-yellow-400"
-                    }`}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                flexWrap: "wrap",
+                justifyContent: "space-between",
+                gap: 16,
+                alignItems: "flex-start",
+              }}
+            >
+              <div style={{ flex: 1, minWidth: 240 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+                  <h3
+                    style={{
+                      fontFamily: "var(--font-display-family)",
+                      fontSize: 20,
+                      letterSpacing: "-0.015em",
+                      color: "var(--ink)",
+                      fontWeight: 400,
+                    }}
                   >
-                    {booking.status}
-                  </span>
+                    {booking.name}
+                  </h3>
+                  <span className={`admin-badge ${badgeKind}`}>{booking.status}</span>
                 </div>
-                <div className="grid gap-1 font-mono text-xs text-white/40">
-                  <p>
-                    <span className="text-white/20">email:</span> {booking.email}
-                  </p>
-                  <p>
-                    <span className="text-white/20">service:</span> {booking.service}
-                  </p>
-                  <p>
-                    <span className="text-white/20">date:</span> {booking.date} at {booking.time}
-                  </p>
+                <dl
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "auto 1fr",
+                    gap: "6px 14px",
+                    fontFamily: "var(--font-mono-family)",
+                    fontSize: 12,
+                    color: "var(--ink-soft)",
+                    margin: 0,
+                  }}
+                >
+                  <dt style={{ color: "var(--ink-faint)", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+                    Email
+                  </dt>
+                  <dd style={{ margin: 0 }}>{booking.email}</dd>
+                  <dt style={{ color: "var(--ink-faint)", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+                    Service
+                  </dt>
+                  <dd style={{ margin: 0 }}>{booking.service}</dd>
+                  <dt style={{ color: "var(--ink-faint)", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+                    When
+                  </dt>
+                  <dd style={{ margin: 0 }}>
+                    {booking.date} at {booking.time}
+                  </dd>
                   {booking.message && (
-                    <p>
-                      <span className="text-white/20">note:</span> {booking.message}
-                    </p>
+                    <>
+                      <dt style={{ color: "var(--ink-faint)", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+                        Note
+                      </dt>
+                      <dd style={{ margin: 0 }}>{booking.message}</dd>
+                    </>
                   )}
-                </div>
+                </dl>
               </div>
-              <div className="flex items-center gap-2">
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 {booking.status === "pending" && (
                   <>
                     <button
+                      type="button"
                       onClick={() => handleConfirm(booking.id)}
-                      className="rounded-lg border border-brand-accent/20 bg-brand-accent/10 p-2 text-brand-accent hover:bg-brand-accent/20 transition-colors"
+                      className="admin-btn admin-btn-ghost"
                       title="Confirm"
+                      style={{ padding: "8px 10px" }}
                     >
-                      <Check className="h-4 w-4" />
+                      <Check aria-hidden="true" style={{ width: 14, height: 14 }} />
                     </button>
                     <button
+                      type="button"
                       onClick={() => handleCancel(booking.id)}
-                      className="rounded-lg border border-red-500/20 bg-red-500/10 p-2 text-red-400 hover:bg-red-500/20 transition-colors"
+                      className="admin-btn admin-btn-danger"
                       title="Cancel"
+                      style={{ padding: "8px 10px" }}
                     >
-                      <X className="h-4 w-4" />
+                      <X aria-hidden="true" style={{ width: 14, height: 14 }} />
                     </button>
                   </>
                 )}
                 <button
+                  type="button"
                   onClick={() => handleDelete(booking.id)}
-                  className="rounded-lg border border-white/5 p-2 text-white/20 hover:text-red-400 hover:border-red-400/20 transition-colors"
+                  className="admin-btn admin-btn-ghost"
                   title="Delete"
+                  style={{ padding: "8px 10px" }}
                 >
-                  <Trash2 className="h-4 w-4" />
+                  <Trash2 aria-hidden="true" style={{ width: 14, height: 14 }} />
                 </button>
               </div>
             </div>
           </div>
-        ))
-      )}
+        );
+      })}
     </div>
   );
 }

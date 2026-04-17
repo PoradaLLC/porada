@@ -28,22 +28,19 @@ function formatDate(date: string) {
 }
 
 function StatusBadge({ status }: { status: string }) {
-  const config: Record<string, { icon: React.ElementType; color: string }> = {
-    delivered: { icon: CheckCircle, color: "text-green-400" },
-    sent: { icon: Send, color: "text-blue-400" },
-    opened: { icon: Mail, color: "text-brand-accent" },
-    clicked: { icon: CheckCircle, color: "text-brand-accent" },
-    bounced: { icon: AlertCircle, color: "text-red-400" },
-    complained: { icon: AlertCircle, color: "text-orange-400" },
+  const config: Record<string, { icon: React.ElementType; kind: "ok" | "warn" | "danger" | "accent" | "" }> = {
+    delivered: { icon: CheckCircle, kind: "ok" },
+    sent: { icon: Send, kind: "accent" },
+    opened: { icon: Mail, kind: "accent" },
+    clicked: { icon: CheckCircle, kind: "accent" },
+    bounced: { icon: AlertCircle, kind: "danger" },
+    complained: { icon: AlertCircle, kind: "warn" },
   };
-  const { icon: Icon, color } = config[status] ?? {
-    icon: Clock,
-    color: "text-white/30",
-  };
+  const { icon: Icon, kind } = config[status] ?? { icon: Clock, kind: "" as const };
 
   return (
-    <span className={`inline-flex items-center gap-1 font-mono text-xs ${color}`}>
-      <Icon className="h-3 w-3" />
+    <span className={`admin-badge ${kind}`}>
+      <Icon aria-hidden="true" style={{ width: 11, height: 11 }} />
       {status}
     </span>
   );
@@ -60,15 +57,11 @@ export function EmailsDashboard({
   const [loadingDetail, setLoadingDetail] = useState(false);
   const [showCompose, setShowCompose] = useState(false);
 
-  // Compose state
   const [to, setTo] = useState("");
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
   const [sending, setSending] = useState(false);
-  const [sendResult, setSendResult] = useState<{
-    ok: boolean;
-    msg: string;
-  } | null>(null);
+  const [sendResult, setSendResult] = useState<{ ok: boolean; msg: string } | null>(null);
 
   async function handleExpand(emailId: string) {
     if (expandedId === emailId) {
@@ -76,11 +69,9 @@ export function EmailsDashboard({
       setExpandedHtml(null);
       return;
     }
-
     setExpandedId(emailId);
     setExpandedHtml(null);
     setLoadingDetail(true);
-
     try {
       const detail = await getEmailDetail(emailId);
       setExpandedHtml(detail?.html ?? "<p>No content available</p>");
@@ -92,10 +83,8 @@ export function EmailsDashboard({
 
   async function handleSend() {
     if (!to || !subject || !body) return;
-
     setSending(true);
     setSendResult(null);
-
     try {
       await sendNewEmail(to, subject, body);
       setSendResult({ ok: true, msg: "Email sent." });
@@ -111,35 +100,41 @@ export function EmailsDashboard({
     setSending(false);
   }
 
-  const inputClass =
-    "w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 font-mono text-sm text-white placeholder:text-white/20 focus:border-brand-accent/30 focus:outline-none transition-colors";
-
   return (
     <>
-      {/* Header bar */}
-      <div className="flex items-center justify-between mb-6">
-        <p className="font-mono text-xs text-white/30">
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: 20,
+          flexWrap: "wrap",
+          gap: 12,
+        }}
+      >
+        <p style={{ fontFamily: "var(--font-mono-family)", fontSize: 12, color: "var(--ink-faint)" }}>
           {emails.length} email{emails.length !== 1 ? "s" : ""}
         </p>
         <button
+          type="button"
+          className="admin-btn admin-btn-primary"
           onClick={() => {
             setShowCompose(true);
             setSendResult(null);
           }}
-          className="inline-flex items-center gap-2 rounded-lg bg-brand-accent/10 border border-brand-accent/20 px-4 py-2 font-mono text-xs text-brand-accent hover:bg-brand-accent/20 transition-colors"
         >
-          <Send className="h-3.5 w-3.5" />
-          Compose Email
+          <Send aria-hidden="true" style={{ width: 13, height: 13 }} />
+          Compose email
         </button>
       </div>
 
-      {/* Email list */}
-      <div className="space-y-2">
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
         {emails.length === 0 ? (
-          <div className="rounded-xl border border-white/5 bg-white/5 p-12 text-center">
-            <p className="font-mono text-sm text-white/20">
-              No emails sent yet.
-            </p>
+          <div
+            className="admin-panel"
+            style={{ marginTop: 0, textAlign: "center", padding: "60px 24px", color: "var(--ink-soft)" }}
+          >
+            No emails sent yet.
           </div>
         ) : (
           emails.map((email) => {
@@ -147,62 +142,138 @@ export function EmailsDashboard({
             return (
               <div
                 key={email.id}
-                className="rounded-xl border border-white/5 bg-white/5 overflow-hidden"
+                style={{
+                  border: "1px solid var(--rule)",
+                  background: "var(--bg-elev)",
+                  borderRadius: 12,
+                  overflow: "hidden",
+                }}
               >
                 <button
+                  type="button"
                   onClick={() => handleExpand(email.id)}
-                  className="w-full flex items-center gap-4 px-6 py-4 text-left hover:bg-white/[0.02] transition-colors"
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 14,
+                    padding: "14px 18px",
+                    textAlign: "left",
+                    background: "transparent",
+                    border: 0,
+                    color: "inherit",
+                    cursor: "pointer",
+                  }}
                 >
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-accent/10 border border-brand-accent/20 shrink-0">
-                    <Mail className="h-4 w-4 text-brand-accent" />
+                  <div
+                    style={{
+                      width: 34,
+                      height: 34,
+                      borderRadius: 10,
+                      border: "1px solid var(--rule-strong)",
+                      background: "var(--accent-soft)",
+                      display: "grid",
+                      placeItems: "center",
+                      color: "var(--accent)",
+                      flexShrink: 0,
+                    }}
+                  >
+                    <Mail aria-hidden="true" style={{ width: 14, height: 14 }} />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-3">
-                      <span className="font-mono text-sm text-white truncate">
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+                      <span
+                        style={{
+                          fontFamily: "var(--font-mono-family)",
+                          fontSize: 13,
+                          color: "var(--ink)",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
                         {email.to?.[0] ?? "unknown"}
                       </span>
                       <StatusBadge status={email.last_event ?? "sent"} />
                     </div>
-                    <p className="font-mono text-xs text-white/40 truncate mt-0.5">
+                    <p
+                      style={{
+                        marginTop: 2,
+                        fontFamily: "var(--font-mono-family)",
+                        fontSize: 12,
+                        color: "var(--ink-soft)",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
                       {email.subject}
                     </p>
                   </div>
-                  <span className="font-mono text-xs text-white/20 shrink-0">
+                  <span
+                    style={{
+                      fontFamily: "var(--font-mono-family)",
+                      fontSize: 11,
+                      color: "var(--ink-faint)",
+                      flexShrink: 0,
+                    }}
+                  >
                     {formatDate(email.created_at)}
                   </span>
                   {isExpanded ? (
-                    <ChevronDown className="h-4 w-4 text-white/20 shrink-0" />
+                    <ChevronDown aria-hidden="true" style={{ width: 14, height: 14, color: "var(--ink-faint)", flexShrink: 0 }} />
                   ) : (
-                    <ChevronRight className="h-4 w-4 text-white/20 shrink-0" />
+                    <ChevronRight aria-hidden="true" style={{ width: 14, height: 14, color: "var(--ink-faint)", flexShrink: 0 }} />
                   )}
                 </button>
 
                 {isExpanded && (
-                  <div className="border-t border-white/5 px-6 py-4">
-                    <div className="flex gap-4 mb-4 font-mono text-xs text-white/30">
+                  <div style={{ borderTop: "1px solid var(--rule)", padding: "14px 18px" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: 16,
+                        marginBottom: 12,
+                        fontFamily: "var(--font-mono-family)",
+                        fontSize: 11,
+                        color: "var(--ink-faint)",
+                        flexWrap: "wrap",
+                      }}
+                    >
                       <span>
-                        From: <span className="text-white/50">{email.from}</span>
+                        From: <span style={{ color: "var(--ink-soft)" }}>{email.from}</span>
                       </span>
                       <span>
-                        To:{" "}
-                        <span className="text-white/50">
-                          {email.to?.join(", ")}
-                        </span>
+                        To: <span style={{ color: "var(--ink-soft)" }}>{email.to?.join(", ")}</span>
                       </span>
                     </div>
                     {loadingDetail ? (
-                      <div className="flex items-center gap-2 py-8 justify-center">
-                        <Loader2 className="h-4 w-4 animate-spin text-brand-accent" />
-                        <span className="font-mono text-xs text-white/30">
-                          Loading...
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 8,
+                          padding: "24px 0",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Loader2 aria-hidden="true" style={{ width: 14, height: 14, color: "var(--accent)" }} className="animate-spin" />
+                        <span style={{ fontFamily: "var(--font-mono-family)", fontSize: 12, color: "var(--ink-soft)" }}>
+                          Loading…
                         </span>
                       </div>
                     ) : (
                       <div
-                        className="rounded-lg border border-white/5 bg-black/30 p-4 overflow-auto max-h-96"
-                        dangerouslySetInnerHTML={{
-                          __html: expandedHtml ?? "",
+                        style={{
+                          borderRadius: 8,
+                          border: "1px solid var(--rule)",
+                          background: "var(--bg)",
+                          padding: 16,
+                          overflow: "auto",
+                          maxHeight: 384,
+                          color: "var(--ink)",
                         }}
+                        dangerouslySetInnerHTML={{ __html: expandedHtml ?? "" }}
                       />
                     )}
                   </div>
@@ -213,101 +284,149 @@ export function EmailsDashboard({
         )}
       </div>
 
-      {/* Compose Modal */}
       {showCompose && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-lg rounded-xl border border-white/10 bg-[#0c1117] p-6 shadow-2xl">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="font-mono text-lg font-bold text-white">
-                Compose Email
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Compose email"
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 100,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 20,
+            background: "rgba(10, 10, 10, 0.55)",
+            backdropFilter: "blur(6px)",
+          }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowCompose(false);
+          }}
+        >
+          <div
+            style={{
+              width: "100%",
+              maxWidth: 520,
+              borderRadius: 14,
+              border: "1px solid var(--rule-strong)",
+              background: "var(--bg-elev)",
+              padding: 28,
+              boxShadow: "var(--shadow)",
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+              <h2
+                style={{
+                  fontFamily: "var(--font-display-family)",
+                  fontSize: 22,
+                  letterSpacing: "-0.015em",
+                  color: "var(--ink)",
+                  fontWeight: 400,
+                }}
+              >
+                Compose email
               </h2>
               <button
+                type="button"
+                aria-label="Close"
                 onClick={() => setShowCompose(false)}
-                className="text-white/30 hover:text-white transition-colors"
+                style={{
+                  background: "none",
+                  border: 0,
+                  color: "var(--ink-soft)",
+                  cursor: "pointer",
+                  padding: 4,
+                  lineHeight: 0,
+                }}
               >
-                <X className="h-5 w-5" />
+                <X aria-hidden="true" style={{ width: 18, height: 18 }} />
               </button>
             </div>
 
-            <div className="space-y-4">
-              <div>
-                <label className="block font-mono text-xs uppercase tracking-widest text-brand-accent mb-2">
-                  To *
-                </label>
-                <input
-                  type="email"
-                  value={to}
-                  onChange={(e) => setTo(e.target.value)}
-                  placeholder="recipient@example.com"
-                  className={inputClass}
-                />
-              </div>
-              <div>
-                <label className="block font-mono text-xs uppercase tracking-widest text-brand-accent mb-2">
-                  Subject *
-                </label>
-                <input
-                  type="text"
-                  value={subject}
-                  onChange={(e) => setSubject(e.target.value)}
-                  placeholder="Email subject"
-                  className={inputClass}
-                />
-              </div>
-              <div>
-                <label className="block font-mono text-xs uppercase tracking-widest text-brand-accent mb-2">
-                  Body *
-                </label>
-                <textarea
-                  value={body}
-                  onChange={(e) => setBody(e.target.value)}
-                  placeholder="Write your email here (plain text, will be wrapped in branded template)..."
-                  rows={8}
-                  className={`${inputClass} resize-none`}
-                />
-              </div>
+            <div className="admin-field">
+              <label htmlFor="em-to">To *</label>
+              <input
+                id="em-to"
+                type="email"
+                value={to}
+                onChange={(e) => setTo(e.target.value)}
+                placeholder="recipient@example.com"
+                className="admin-input"
+              />
+            </div>
+            <div className="admin-field">
+              <label htmlFor="em-subject">Subject *</label>
+              <input
+                id="em-subject"
+                type="text"
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+                placeholder="Email subject"
+                className="admin-input"
+              />
+            </div>
+            <div className="admin-field">
+              <label htmlFor="em-body">Body *</label>
+              <textarea
+                id="em-body"
+                value={body}
+                onChange={(e) => setBody(e.target.value)}
+                placeholder="Write your email here (plain text, will be wrapped in branded template)…"
+                rows={8}
+                className="admin-input"
+                style={{ resize: "vertical" }}
+              />
+            </div>
 
-              {sendResult && (
-                <div
-                  className={`flex items-center gap-2 rounded-lg border px-4 py-3 ${
+            {sendResult && (
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                  padding: "12px 14px",
+                  marginTop: 14,
+                  borderRadius: 8,
+                  border: `1px solid ${
                     sendResult.ok
-                      ? "border-green-500/20 bg-green-500/5"
-                      : "border-red-500/20 bg-red-500/5"
-                  }`}
-                >
-                  {sendResult.ok ? (
-                    <CheckCircle className="h-4 w-4 text-green-400 shrink-0" />
-                  ) : (
-                    <AlertCircle className="h-4 w-4 text-red-400 shrink-0" />
-                  )}
-                  <p
-                    className={`font-mono text-xs ${
-                      sendResult.ok ? "text-green-400" : "text-red-400"
-                    }`}
-                  >
-                    {sendResult.msg}
-                  </p>
-                </div>
-              )}
-
-              <button
-                onClick={handleSend}
-                disabled={sending || !to || !subject || !body}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-brand-accent px-8 py-3 font-mono text-sm font-bold text-brand-bg hover:bg-brand-accent-light transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                      ? "color-mix(in oklab, var(--positive) 40%, transparent)"
+                      : "color-mix(in oklab, var(--accent) 40%, transparent)"
+                  }`,
+                  background: sendResult.ok ? "color-mix(in oklab, var(--positive) 10%, transparent)" : "var(--accent-soft)",
+                  fontFamily: "var(--font-mono-family)",
+                  fontSize: 12,
+                  color: sendResult.ok ? "var(--positive)" : "var(--accent)",
+                }}
               >
-                {sending ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Sending...
-                  </>
+                {sendResult.ok ? (
+                  <CheckCircle aria-hidden="true" style={{ width: 14, height: 14, flexShrink: 0 }} />
                 ) : (
-                  <>
-                    <Send className="h-4 w-4" />
-                    Send Email
-                  </>
+                  <AlertCircle aria-hidden="true" style={{ width: 14, height: 14, flexShrink: 0 }} />
                 )}
-              </button>
-            </div>
+                <span>{sendResult.msg}</span>
+              </div>
+            )}
+
+            <button
+              type="button"
+              onClick={handleSend}
+              disabled={sending || !to || !subject || !body}
+              className="admin-btn admin-btn-primary"
+              style={{ width: "100%", justifyContent: "center", marginTop: 18 }}
+            >
+              {sending ? (
+                <>
+                  <Loader2 aria-hidden="true" style={{ width: 14, height: 14 }} className="animate-spin" />
+                  Sending…
+                </>
+              ) : (
+                <>
+                  <Send aria-hidden="true" style={{ width: 14, height: 14 }} />
+                  Send email
+                </>
+              )}
+            </button>
           </div>
         </div>
       )}

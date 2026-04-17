@@ -53,11 +53,11 @@ export function Footer() {
               Connect
             </h4>
             <a
-              href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "hello@sierra-117.dev"}`}
+              href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "team@sierra-117.net"}`}
               className="inline-flex items-center gap-2 font-mono text-sm text-brand-text hover:text-brand-accent transition-colors"
             >
               <Mail className="h-4 w-4" />
-              {process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "hello@sierra-117.dev"}
+              {process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "team@sierra-117.net"}
             </a>
           </div>
         </div>

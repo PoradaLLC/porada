@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Terminal, Loader2, AlertCircle } from "lucide-react";
+import { Loader2, AlertCircle } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { Logo } from "@/components/site/Logo";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -54,78 +55,116 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#080c10] grid-bg px-6">
-      <div className="w-full max-w-md">
-        <div className="mb-8 text-center">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-brand-accent/10 border border-brand-accent/20">
-            <Terminal className="h-7 w-7 text-brand-accent" />
+    <div className="admin-login-shell">
+      <div style={{ width: "100%", maxWidth: 420 }}>
+        <div style={{ textAlign: "center", marginBottom: 28 }}>
+          <div
+            style={{
+              margin: "0 auto 16px",
+              width: 52,
+              height: 52,
+              borderRadius: 14,
+              border: "1px solid var(--rule-strong)",
+              display: "grid",
+              placeItems: "center",
+              color: "var(--ink)",
+            }}
+          >
+            <Logo size={28} />
           </div>
-          <h1 className="font-mono text-2xl font-bold text-foreground">
-            SIERRA-117
-          </h1>
-          <p className="mt-2 font-mono text-xs text-brand-text">
-            Admin Access Required
-          </p>
+          <div
+            style={{
+              fontFamily: "var(--font-mono-family)",
+              fontSize: 13,
+              letterSpacing: "0.08em",
+              color: "var(--ink)",
+            }}
+          >
+            SIERRA&nbsp;·&nbsp;117
+          </div>
+          <div
+            style={{
+              fontFamily: "var(--font-mono-family)",
+              fontSize: 11,
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              color: "var(--ink-faint)",
+              marginTop: 6,
+            }}
+          >
+            Admin access required
+          </div>
         </div>
 
-        <form
-          onSubmit={handleSubmit}
-          className="glow-border rounded-xl bg-brand-primary/30 p-8 backdrop-blur space-y-6"
-        >
-          <div>
-            <label htmlFor="admin-email" className="block font-mono text-xs uppercase tracking-widest text-brand-accent mb-2">
-              Email
-            </label>
-            <input
-              id="admin-email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border border-brand-accent/10 bg-brand-bg/50 px-4 py-3 font-mono text-sm text-foreground placeholder:text-brand-text/40 focus:border-brand-accent/30 focus:outline-none focus:ring-1 focus:ring-brand-accent/20 transition-colors"
-              placeholder="admin@sierra-117.dev"
-              required
-            />
-          </div>
+        <form onSubmit={handleSubmit} className="admin-login-card" noValidate>
+          <h1>Sign in</h1>
+          <p className="hint" style={{ marginTop: 8 }}>
+            Authorized personnel only
+          </p>
 
-          <div>
-            <label htmlFor="admin-password" className="block font-mono text-xs uppercase tracking-widest text-brand-accent mb-2">
-              Password
-            </label>
-            <input
-              id="admin-password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-lg border border-brand-accent/10 bg-brand-bg/50 px-4 py-3 font-mono text-sm text-foreground placeholder:text-brand-text/40 focus:border-brand-accent/30 focus:outline-none focus:ring-1 focus:ring-brand-accent/20 transition-colors"
-              placeholder="••••••••"
-              required
-            />
+          <div style={{ marginTop: 24 }}>
+            <div className="admin-field">
+              <label htmlFor="admin-email">Email</label>
+              <input
+                id="admin-email"
+                type="email"
+                className="admin-input"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@sierra-117.net"
+                autoComplete="email"
+                required
+              />
+            </div>
+            <div className="admin-field">
+              <label htmlFor="admin-password">Password</label>
+              <input
+                id="admin-password"
+                type="password"
+                className="admin-input"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                autoComplete="current-password"
+                required
+              />
+            </div>
           </div>
 
           {error && (
-            <div className="flex items-center gap-2 rounded-lg border border-red-500/20 bg-red-500/5 px-4 py-3">
-              <AlertCircle className="h-4 w-4 text-red-400 flex-shrink-0" />
-              <p className="font-mono text-xs text-red-400">{error}</p>
+            <div className="admin-error" role="alert" style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <AlertCircle aria-hidden="true" style={{ width: 14, height: 14, flexShrink: 0 }} />
+              <span>{error}</span>
             </div>
           )}
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-lg bg-brand-accent px-6 py-3.5 font-mono text-sm font-bold text-brand-bg hover:bg-brand-accent-light transition-all disabled:opacity-50"
+            className="admin-btn admin-btn-primary"
+            style={{ marginTop: 24, width: "100%", justifyContent: "center" }}
           >
             {loading ? (
-              <span className="inline-flex items-center gap-2">
-                <Loader2 className="h-4 w-4 animate-spin" />
-                Authenticating...
-              </span>
+              <>
+                <Loader2 aria-hidden="true" style={{ width: 14, height: 14 }} className="animate-spin" />
+                Authenticating…
+              </>
             ) : (
-              "Sign In"
+              "Sign in"
             )}
           </button>
         </form>
 
-        <div className="mt-6 rounded-lg border border-brand-accent/10 bg-brand-primary/20 p-4 font-mono text-xs text-brand-text/50 text-center">
+        <div
+          style={{
+            marginTop: 20,
+            textAlign: "center",
+            fontFamily: "var(--font-mono-family)",
+            fontSize: 11,
+            letterSpacing: "0.06em",
+            color: "var(--ink-faint)",
+          }}
+        >
           <p>&gt; authorized personnel only</p>
           <p>&gt; all access attempts are logged</p>
         </div>

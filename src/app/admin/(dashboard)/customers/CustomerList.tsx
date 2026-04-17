@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Plus, Trash2, CreditCard, RefreshCw, X, Loader2, Copy, Check } from "lucide-react";
 import { createCustomer, deleteCustomer, createOneTimeCharge, createSubscription } from "@/app/admin/actions";
-import { formatCurrency } from "@/lib/utils";
 
 interface Customer {
   id: string;
@@ -66,77 +65,81 @@ export function CustomerList({ customers }: { customers: Customer[] }) {
 
   return (
     <>
-      {/* Add Button */}
-      <div className="mb-6">
-        <button
-          onClick={() => setShowAdd(true)}
-          className="inline-flex items-center gap-2 rounded-lg bg-brand-accent px-4 py-2.5 font-mono text-sm font-bold text-brand-bg hover:bg-brand-accent-light transition-all"
-        >
-          <Plus className="h-4 w-4" />
-          Add Customer
+      <div style={{ marginBottom: 20 }}>
+        <button type="button" className="admin-btn admin-btn-primary" onClick={() => setShowAdd(true)}>
+          <Plus aria-hidden="true" style={{ width: 14, height: 14 }} />
+          Add customer
         </button>
       </div>
 
-      {/* Customer Table */}
-      <div className="rounded-xl border border-white/5 bg-white/5 overflow-hidden">
-        <table className="w-full">
+      <div style={{ overflowX: "auto" }}>
+        <table className="admin-table">
           <thead>
-            <tr className="border-b border-white/5">
-              <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-white/30">Name</th>
-              <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-white/30">Email</th>
-              <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-white/30">Company</th>
-              <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-white/30">Stripe</th>
-              <th className="px-6 py-3 text-right font-mono text-xs uppercase tracking-widest text-white/30">Actions</th>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Company</th>
+              <th>Stripe</th>
+              <th style={{ textAlign: "right" }}>Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-white/5">
+          <tbody>
             {customers.length === 0 ? (
               <tr>
-                <td colSpan={5} className="px-6 py-12 text-center font-mono text-sm text-white/20">
+                <td colSpan={5} style={{ textAlign: "center", padding: "40px 20px", color: "var(--ink-soft)" }}>
                   No customers yet. Add your first customer above.
                 </td>
               </tr>
             ) : (
               customers.map((customer) => (
-                <tr key={customer.id} className="hover:bg-white/5 transition-colors">
-                  <td className="px-6 py-4 font-mono text-sm text-white">{customer.name}</td>
-                  <td className="px-6 py-4 font-mono text-sm text-white/50">{customer.email}</td>
-                  <td className="px-6 py-4 font-mono text-sm text-white/50">{customer.company ?? "-"}</td>
-                  <td className="px-6 py-4">
+                <tr key={customer.id}>
+                  <td style={{ color: "var(--ink)", fontWeight: 500 }}>{customer.name}</td>
+                  <td style={{ color: "var(--ink-soft)", fontFamily: "var(--font-mono-family)", fontSize: 13 }}>
+                    {customer.email}
+                  </td>
+                  <td style={{ color: "var(--ink-soft)" }}>{customer.company ?? "—"}</td>
+                  <td>
                     {customer.stripe_customer_id ? (
-                      <span className="inline-flex items-center gap-1 rounded-full bg-brand-accent/10 px-2 py-1 font-mono text-[10px] text-brand-accent">
-                        <CreditCard className="h-3 w-3" />
+                      <span className="admin-badge accent">
+                        <CreditCard aria-hidden="true" style={{ width: 11, height: 11 }} />
                         linked
                       </span>
                     ) : (
-                      <span className="font-mono text-[10px] text-white/20">not linked</span>
+                      <span className="admin-badge">not linked</span>
                     )}
                   </td>
-                  <td className="px-6 py-4 text-right">
-                    <div className="flex items-center justify-end gap-2">
+                  <td style={{ textAlign: "right" }}>
+                    <div style={{ display: "inline-flex", gap: 6 }}>
                       {customer.stripe_customer_id && (
                         <>
                           <button
+                            type="button"
+                            className="admin-btn admin-btn-ghost"
+                            style={{ padding: "7px 9px" }}
                             onClick={() => setShowCharge(customer)}
                             title="One-time charge"
-                            className="rounded-lg border border-white/5 p-2 text-white/30 hover:text-brand-accent hover:border-brand-accent/20 transition-colors"
                           >
-                            <CreditCard className="h-3.5 w-3.5" />
+                            <CreditCard aria-hidden="true" style={{ width: 13, height: 13 }} />
                           </button>
                           <button
+                            type="button"
+                            className="admin-btn admin-btn-ghost"
+                            style={{ padding: "7px 9px" }}
                             onClick={() => setShowSubscription(customer)}
                             title="Add subscription"
-                            className="rounded-lg border border-white/5 p-2 text-white/30 hover:text-brand-accent hover:border-brand-accent/20 transition-colors"
                           >
-                            <RefreshCw className="h-3.5 w-3.5" />
+                            <RefreshCw aria-hidden="true" style={{ width: 13, height: 13 }} />
                           </button>
                         </>
                       )}
                       <button
+                        type="button"
+                        className="admin-btn admin-btn-danger"
+                        style={{ padding: "7px 9px" }}
                         onClick={() => handleDelete(customer.id)}
-                        className="rounded-lg border border-white/5 p-2 text-white/30 hover:text-red-400 hover:border-red-400/20 transition-colors"
+                        title="Delete"
                       >
-                        <Trash2 className="h-3.5 w-3.5" />
+                        <Trash2 aria-hidden="true" style={{ width: 13, height: 13 }} />
                       </button>
                     </div>
                   </td>
@@ -147,78 +150,99 @@ export function CustomerList({ customers }: { customers: Customer[] }) {
         </table>
       </div>
 
-      {/* Add Customer Modal */}
       {showAdd && (
-        <Modal title="Add Customer" onClose={() => setShowAdd(false)}>
-          <form action={handleCreateCustomer} className="space-y-4">
+        <Modal title="Add customer" onClose={() => setShowAdd(false)}>
+          <form action={handleCreateCustomer}>
             <FormField name="name" label="Name" required />
             <FormField name="email" label="Email" type="email" required />
             <FormField name="company" label="Company" />
             <FormField name="phone" label="Phone" />
-            <SubmitButton loading={loading} label="Create Customer" />
+            <SubmitButton loading={loading} label="Create customer" />
           </form>
         </Modal>
       )}
 
-      {/* One-Time Charge Modal */}
       {showCharge && (
         <Modal title={`Charge ${showCharge.name}`} onClose={() => setShowCharge(null)}>
-          <form action={handleCharge} className="space-y-4">
+          <form action={handleCharge}>
             <input type="hidden" name="stripeCustomerId" value={showCharge.stripe_customer_id ?? ""} />
             <input type="hidden" name="customerEmail" value={showCharge.email} />
-            <div>
-              <label className="block font-mono text-xs uppercase tracking-widest text-brand-accent mb-2">
-                Amount (cents) *
-              </label>
+            <div className="admin-field">
+              <label htmlFor="charge-amount">Amount (cents) *</label>
               <input
+                id="charge-amount"
                 name="amount"
                 type="number"
-                min="50"
+                min={50}
                 required
                 placeholder="e.g. 5000 = $50.00"
-                className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 font-mono text-sm text-white placeholder:text-white/20 focus:border-brand-accent/30 focus:outline-none transition-colors"
+                className="admin-input"
               />
-              <p className="mt-1 font-mono text-[10px] text-white/20">Enter amount in cents. 100 = $1.00</p>
+              <p
+                style={{
+                  marginTop: 6,
+                  fontFamily: "var(--font-mono-family)",
+                  fontSize: 11,
+                  color: "var(--ink-faint)",
+                }}
+              >
+                Enter amount in cents. 100 = $1.00
+              </p>
             </div>
             <FormField name="description" label="Description" required />
-            <SubmitButton loading={loading} label="Send Invoice" />
+            <SubmitButton loading={loading} label="Send invoice" />
           </form>
         </Modal>
       )}
 
-      {/* Subscription Modal */}
       {showSubscription && (
         <Modal title={`Subscribe ${showSubscription.name}`} onClose={() => setShowSubscription(null)}>
-          <form action={handleSubscription} className="space-y-4">
+          <form action={handleSubscription}>
             <input type="hidden" name="stripeCustomerId" value={showSubscription.stripe_customer_id ?? ""} />
             <input type="hidden" name="customerEmail" value={showSubscription.email} />
             <FormField name="priceId" label="Stripe Price ID" required placeholder="price_..." />
-            <p className="font-mono text-[10px] text-white/20">
-              Create prices in your Stripe Dashboard first, then paste the Price ID here.
+            <p
+              style={{
+                marginTop: 6,
+                fontFamily: "var(--font-mono-family)",
+                fontSize: 11,
+                color: "var(--ink-faint)",
+              }}
+            >
+              Create prices in your Stripe dashboard first, then paste the Price ID here.
             </p>
-            <SubmitButton loading={loading} label="Create Subscription" />
+            <SubmitButton loading={loading} label="Create subscription" />
           </form>
         </Modal>
       )}
-      {/* Invoice Created Modal */}
+
       {invoiceResult && (
-        <Modal title="Invoice Sent" onClose={() => setInvoiceResult(null)}>
-          <div className="space-y-4">
-            <div className="rounded-lg border border-brand-accent/20 bg-brand-accent/5 p-4">
-              <p className="font-mono text-sm text-brand-accent font-bold mb-3">
+        <Modal title="Invoice sent" onClose={() => setInvoiceResult(null)}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            <div
+              style={{
+                borderRadius: 10,
+                border: "1px solid color-mix(in oklab, var(--accent) 40%, transparent)",
+                background: "var(--accent-soft)",
+                padding: 16,
+              }}
+            >
+              <p style={{ color: "var(--ink)", fontWeight: 500, marginBottom: 8 }}>
                 Invoice sent to {invoiceResult.customerName}
               </p>
-              <p className="font-mono text-xs text-white/40 mb-2">
+              <p style={{ fontFamily: "var(--font-mono-family)", fontSize: 12, color: "var(--ink-soft)", marginBottom: 10 }}>
                 Share this code with your customer so they can pay at /pay:
               </p>
               <CopyableCode value={invoiceResult.invoiceId} />
             </div>
-            <p className="font-mono text-[10px] text-white/30">
+            <p style={{ fontFamily: "var(--font-mono-family)", fontSize: 11, color: "var(--ink-faint)" }}>
               The customer can also pay directly from the email Stripe sent them.
             </p>
             <button
+              type="button"
+              className="admin-btn admin-btn-ghost"
+              style={{ width: "100%", justifyContent: "center" }}
               onClick={() => setInvoiceResult(null)}
-              className="w-full rounded-lg border border-white/10 px-4 py-2.5 font-mono text-sm text-white/50 hover:text-white hover:border-white/20 transition-all"
             >
               Done
             </button>
@@ -239,16 +263,35 @@ function CopyableCode({ value }: { value: string }) {
   }
 
   return (
-    <div className="flex items-center gap-2">
-      <code className="flex-1 rounded-lg bg-white/5 border border-white/10 px-4 py-2.5 font-mono text-sm text-white select-all">
+    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+      <code
+        style={{
+          flex: 1,
+          borderRadius: 8,
+          background: "var(--bg)",
+          border: "1px solid var(--rule-strong)",
+          padding: "10px 14px",
+          fontFamily: "var(--font-mono-family)",
+          fontSize: 14,
+          color: "var(--ink)",
+          userSelect: "all",
+          overflow: "auto",
+        }}
+      >
         {value}
       </code>
       <button
+        type="button"
+        className="admin-btn admin-btn-ghost"
+        style={{ padding: "8px 10px" }}
         onClick={handleCopy}
-        className="rounded-lg border border-white/10 p-2.5 text-white/30 hover:text-brand-accent hover:border-brand-accent/20 transition-colors"
         title="Copy to clipboard"
       >
-        {copied ? <Check className="h-4 w-4 text-brand-accent" /> : <Copy className="h-4 w-4" />}
+        {copied ? (
+          <Check aria-hidden="true" style={{ width: 14, height: 14, color: "var(--accent)" }} />
+        ) : (
+          <Copy aria-hidden="true" style={{ width: 14, height: 14 }} />
+        )}
       </button>
     </div>
   );
@@ -264,12 +307,61 @@ function Modal({
   children: React.ReactNode;
 }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-      <div className="w-full max-w-md rounded-xl border border-white/10 bg-[#080c10] p-8">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="font-mono text-lg font-bold text-white">{title}</h3>
-          <button onClick={onClose} className="text-white/30 hover:text-white transition-colors">
-            <X className="h-5 w-5" />
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={title}
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 100,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 20,
+        background: "rgba(10, 10, 10, 0.55)",
+        backdropFilter: "blur(6px)",
+      }}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          maxWidth: 440,
+          borderRadius: 14,
+          border: "1px solid var(--rule-strong)",
+          background: "var(--bg-elev)",
+          padding: 28,
+        }}
+      >
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+          <h3
+            style={{
+              fontFamily: "var(--font-display-family)",
+              fontSize: 22,
+              letterSpacing: "-0.015em",
+              color: "var(--ink)",
+              fontWeight: 400,
+            }}
+          >
+            {title}
+          </h3>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close"
+            style={{
+              background: "none",
+              border: 0,
+              color: "var(--ink-soft)",
+              cursor: "pointer",
+              padding: 4,
+              lineHeight: 0,
+            }}
+          >
+            <X aria-hidden="true" style={{ width: 18, height: 18 }} />
           </button>
         </div>
         {children}
@@ -292,16 +384,17 @@ function FormField({
   placeholder?: string;
 }) {
   return (
-    <div>
-      <label className="block font-mono text-xs uppercase tracking-widest text-brand-accent mb-2">
+    <div className="admin-field">
+      <label htmlFor={`cust-${name}`}>
         {label} {required && "*"}
       </label>
       <input
+        id={`cust-${name}`}
         name={name}
         type={type}
         required={required}
         placeholder={placeholder}
-        className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 font-mono text-sm text-white placeholder:text-white/20 focus:border-brand-accent/30 focus:outline-none transition-colors"
+        className="admin-input"
       />
     </div>
   );
@@ -312,13 +405,14 @@ function SubmitButton({ loading, label }: { loading: boolean; label: string }) {
     <button
       type="submit"
       disabled={loading}
-      className="w-full rounded-lg bg-brand-accent px-6 py-3 font-mono text-sm font-bold text-brand-bg hover:bg-brand-accent-light transition-all disabled:opacity-50"
+      className="admin-btn admin-btn-primary"
+      style={{ width: "100%", justifyContent: "center", marginTop: 18 }}
     >
       {loading ? (
-        <span className="inline-flex items-center gap-2">
-          <Loader2 className="h-4 w-4 animate-spin" />
-          Processing...
-        </span>
+        <>
+          <Loader2 aria-hidden="true" style={{ width: 14, height: 14 }} className="animate-spin" />
+          Processing…
+        </>
       ) : (
         label
       )}

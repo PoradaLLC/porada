@@ -1,383 +1,289 @@
 import Link from "next/link";
-import {
-  Code2,
-  Cloud,
-  Palette,
-  Cpu,
-  ArrowRight,
-  Terminal,
-  Zap,
-  Shield,
-  Globe,
-  ChevronRight,
-} from "lucide-react";
-import {
-  Reveal,
-  Stagger,
-  StaggerItem,
-  HoverCard,
-  Counter,
-  MagneticButton,
-} from "@/components/ui/Motion";
-import Testimonials from "@/components/Testimonials";
+import { HeroCanvas } from "@/components/site/HeroCanvas";
+import { RunningLine } from "@/components/site/RunningLine";
+import { ArrowIcon } from "@/components/site/ArrowIcon";
 
 const services = [
   {
-    icon: Code2,
-    title: "Web Development",
-    description:
-      "Custom websites and web applications built with modern frameworks. Fast, responsive, and scalable.",
+    num: "01 / Websites",
+    title: "Websites that don't make you cringe",
+    desc:
+      "Marketing sites, portfolios, and content-heavy publications. Built with whatever stack actually fits — not the one on a blog post.",
+    from: "From $1.5k",
+    span: "1–3 wks",
   },
   {
-    icon: Cloud,
-    title: "Cloud Solutions",
-    description:
-      "Infrastructure design, deployment, and management. AWS, GCP, Vercel. We optimize your stack.",
+    num: "02 / Product & Apps",
+    title: "Small apps that carry their weight",
+    desc:
+      "Internal tools, member portals, booking flows, dashboards. We design them, build them, and won't disappear after launch.",
+    from: "From $3.5k",
+    span: "2–4 wks",
   },
   {
-    icon: Palette,
-    title: "UI/UX Design",
-    description:
-      "Interfaces that convert. Data-driven design systems tailored to your brand and audience.",
+    num: "03 / Tech advisory",
+    title: "A fractional CTO who returns emails",
+    desc:
+      "Stack audits, vendor picks, hiring the first engineer, untangling the dashboard nobody remembers building.",
+    from: "$1.5k / mo",
+    span: "Ongoing",
   },
   {
-    icon: Cpu,
-    title: "Tech Consulting",
-    description:
-      "Strategic technology guidance. Architecture reviews, stack audits, and hands-on problem solving.",
+    num: "04 / Care & hosting",
+    title: "We keep the lights on",
+    desc:
+      "Hosting, backups, security updates, content edits, the occasional \u201Ccan you change the header real quick.\u201D On a friendly retainer.",
+    from: "From $180 / mo",
+    span: "Month-to-month",
+  },
+  {
+    num: "05 / Migrations",
+    title: "Move platforms without the all-nighter",
+    desc:
+      "WordPress \u2192 modern CMS, Squarespace \u2192 custom, Webflow \u2192 a stack your team can own. We plan it, you approve it, nothing breaks.",
+    from: "From $1.2k",
+    span: "1–2 wks",
+  },
+  {
+    num: "06 / Workshops",
+    title: "Half-days for your team",
+    desc:
+      "Design-system basics, \u201Chow our website actually works,\u201D picking an analytics stack you'll actually read.",
+    from: "$750 / session",
+    span: "Half-day",
   },
 ];
 
-const stats = [
-  { value: "2-4", label: "Week Delivery" },
-  { value: "< 1s", label: "Load Times" },
-  { value: "100%", label: "Client Retention" },
-  { value: "✓", label: "Hosting Included" },
-];
-
-const techCategories = [
+const workPreview = [
   {
-    label: "Frontend",
-    items: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
+    idx: "2026.04",
+    id: "church-of-saint-luke",
+    title: "Church of Saint Luke",
+    sum: "Parish website on Next.js + Vercel. Plain, fast, accessible. Service times and announcements in one place.",
+    meta: "Website · Next.js",
   },
   {
-    label: "Backend",
-    items: ["Node.js", "GraphQL", "PostgreSQL", "Supabase"],
+    idx: "2026.04",
+    id: "forteca-estate",
+    title: "Forteca Estate",
+    sum: "Brand site for a real-estate business. Quiet, editorial presentation with Supabase-backed contact.",
+    meta: "Website · Next.js",
   },
   {
-    label: "Infrastructure",
-    items: ["AWS", "Vercel", "Docker"],
-  },
-  {
-    label: "Payments & Auth",
-    items: ["Stripe"],
+    idx: "2026.03",
+    id: "pocono-property-care",
+    title: "Pocono Property Care",
+    sum: "Property-management inquiry site for Kacper Liszewski. Sub-second mobile load, inquiries land where they should.",
+    meta: "Website · Next.js + Supabase",
   },
 ];
 
 export default function HomePage() {
   return (
     <>
-      {/* Hero */}
-      <section
-        data-hero-gradient
-        className="relative min-h-[90vh] flex items-center overflow-hidden grid-bg"
-      >
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-accent/5 rounded-full blur-[120px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-brand-accent/3 rounded-full blur-[100px]" />
-        <div id="hero-gradient-overlay" />
-
-        <div className="relative mx-auto max-w-7xl px-6 py-32">
-          <div className="max-w-3xl">
-            <Reveal>
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-brand-accent/20 bg-brand-accent/5 px-4 py-1.5">
-                <span className="h-2 w-2 rounded-full bg-brand-accent animate-glow-pulse" />
-                <span className="font-mono text-xs text-brand-accent">
-                  Now Accepting New Projects
-                </span>
-              </div>
-            </Reveal>
-
-            <div data-parallax="0.3">
-              <Reveal delay={0.1}>
-                <div className="hero-glow relative">
-                  <h1 className="font-mono text-6xl font-bold leading-tight tracking-tight md:text-8xl">
-                    Websites & Tech
-                    <br />
-                    <span className="text-glow text-brand-accent">
-                      That Actually Work
-                    </span>
-                  </h1>
-                  <div className="hero-beam bottom-0" />
-                </div>
-              </Reveal>
-
-              <Reveal delay={0.2}>
-                <p className="mt-6 max-w-xl text-lg text-brand-text leading-relaxed">
-                  We design, build, and ship web applications and infrastructure
-                  for businesses that need things done right. No fluff. Just
-                  solid engineering.
-                </p>
-              </Reveal>
+      {/* HERO */}
+      <section className="hero wrap">
+        <HeroCanvas />
+        <div className="hero-inner">
+          <div className="hero-eyebrow">
+            <span>Sierra&#8209;117 · A small tech studio · Since 2026</span>
+          </div>
+          <h1 className="display">
+            We build <em>useful</em>
+            <br />
+            websites and untangle
+            <br />
+            the tech behind them.
+          </h1>
+          <p className="hero-sub">
+            A three-person studio helping small businesses and local organizations ship sites that actually work — and
+            the systems that keep them running. No buzzwords, no framework cosplay.
+          </p>
+          <div className="hero-ctas">
+            <Link href="/quote" className="btn btn-primary">
+              Start a project <ArrowIcon />
+            </Link>
+            <Link href="/work" className="btn btn-ghost">
+              See recent work
+            </Link>
+          </div>
+          <div className="hero-meta">
+            <div>
+              <div className="k">Est.</div>
+              <div className="v">2026</div>
             </div>
-
-            <div data-parallax="0.3">
-              <Reveal delay={0.3}>
-                <div className="mt-10 flex flex-wrap gap-4">
-                  <MagneticButton>
-                    <Link
-                      href="/book"
-                      className="inline-flex items-center gap-2 rounded-lg bg-brand-accent px-8 py-3.5 font-mono text-sm font-bold text-brand-bg hover:bg-brand-accent-light transition-all hover:shadow-[0_0_20px_rgba(34,211,238,0.2)]"
-                    >
-                      Book a Consultation
-                      <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </MagneticButton>
-                  <MagneticButton>
-                    <Link
-                      href="/services"
-                      className="inline-flex items-center gap-2 rounded-lg border border-brand-accent/30 px-8 py-3.5 font-mono text-sm font-bold text-brand-accent hover:bg-brand-accent/5 transition-all"
-                    >
-                      View Services
-                    </Link>
-                  </MagneticButton>
-                </div>
-              </Reveal>
+            <div>
+              <div className="k">Projects shipped</div>
+              <div className="v">3</div>
             </div>
-
-            <div data-parallax="0.3">
-            <Stagger className="mt-16 grid grid-cols-3 gap-4" stagger={0.12}>
-              {[
-                { step: "01", label: "Discover", desc: "Understand your goals" },
-                { step: "02", label: "Build", desc: "Ship production code" },
-                { step: "03", label: "Scale", desc: "Grow without limits" },
-              ].map((item) => (
-                <StaggerItem key={item.step}>
-                  <HoverCard>
-                    <div className="rounded-xl border border-white/[0.08] bg-brand-primary/50 p-5 backdrop-blur hover:border-white/[0.15] transition-all hover:shadow-[0_0_20px_rgba(34,211,238,0.06)]">
-                      <span className="font-mono text-xs text-brand-accent/50">
-                        {item.step}
-                      </span>
-                      <p className="mt-1 font-mono text-sm font-bold text-foreground">
-                        {item.label}
-                      </p>
-                      <p className="mt-1 text-xs text-brand-text">
-                        {item.desc}
-                      </p>
-                    </div>
-                  </HoverCard>
-                </StaggerItem>
-              ))}
-            </Stagger>
+            <div>
+              <div className="k">Typical timeline</div>
+              <div className="v">1–3 wks</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="border-y border-white/5 bg-brand-primary/50">
-        <div className="mx-auto max-w-7xl px-6 py-12">
-          <Stagger className="grid grid-cols-2 gap-8 md:grid-cols-4" stagger={0.08}>
-            {stats.map((stat) => (
-              <StaggerItem key={stat.label}>
-                <div className="text-center">
-                  <Counter
-                    value={stat.value}
-                    className="font-mono text-3xl font-bold text-brand-accent text-glow"
-                  />
-                  <p className="mt-1 font-mono text-xs uppercase tracking-widest text-brand-text">
-                    {stat.label}
-                  </p>
-                </div>
-              </StaggerItem>
-            ))}
-          </Stagger>
-        </div>
-      </section>
+      <RunningLine />
 
-      {/* Services */}
-      <section className="grain border-t border-white/5 bg-brand-bg px-6 py-24">
-        <div className="relative z-10 mx-auto max-w-7xl">
-          <Reveal>
-            <p className="font-mono text-xs font-semibold uppercase tracking-widest text-brand-accent mb-2">
-              // What We Do
-            </p>
-            <h2 className="font-mono text-3xl font-bold text-foreground md:text-4xl">
-              Our Services
-            </h2>
-            <p className="mt-4 max-w-2xl text-brand-text">
-              Everything your business needs online: from the website to
-              the servers behind it. Hosting and maintenance included.
-            </p>
-          </Reveal>
-
-          <Stagger className="mt-12 grid gap-6 md:grid-cols-2" stagger={0.1}>
-            {services.map((service) => (
-              <StaggerItem key={service.title}>
-                <HoverCard className="h-full">
-                  <div
-                    data-spotlight
-                    className="group glow-border rounded-xl bg-brand-primary/40 p-8 backdrop-blur hover:bg-brand-primary/60 transition-all h-full"
-                  >
-                    <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-brand-accent/10 border border-brand-accent/20 group-hover:bg-brand-accent/20 transition-colors">
-                      <service.icon className="h-6 w-6 text-brand-accent" />
-                    </div>
-                    <h3 className="font-mono text-lg font-bold text-foreground">
-                      {service.title}
-                    </h3>
-                    <p className="mt-2 text-sm text-brand-text leading-relaxed">
-                      {service.description}
-                    </p>
-                    <Link
-                      href="/services"
-                      className="mt-4 inline-flex items-center gap-1 font-mono text-xs text-brand-accent hover:text-brand-accent-light transition-colors"
-                    >
-                      Learn more <ChevronRight className="h-3 w-3" />
-                    </Link>
-                  </div>
-                </HoverCard>
-              </StaggerItem>
-            ))}
-          </Stagger>
-        </div>
-      </section>
-
-      {/* Why Sierra-117 */}
-      <section className="border-y border-white/5 bg-brand-bg-alt px-6 py-24 grid-bg">
-        <div className="mx-auto max-w-7xl">
-          <Reveal>
-            <p className="font-mono text-xs font-semibold uppercase tracking-widest text-brand-accent mb-2">
-              // Why Us
-            </p>
-            <h2 className="font-mono text-3xl font-bold text-foreground md:text-4xl">
-              Why Sierra-117
-            </h2>
-          </Reveal>
-
-          <Stagger className="mt-12 grid gap-8 md:grid-cols-3" stagger={0.12}>
-            {[
-              {
-                icon: Zap,
-                title: "Blazing Fast",
-                text: "Sub-second load times. Optimized bundles. Edge-deployed globally for instant delivery.",
-              },
-              {
-                icon: Shield,
-                title: "Secure by Default",
-                text: "Security best practices built into every project. Encrypted connections, input validation, and hardened infrastructure.",
-              },
-              {
-                icon: Globe,
-                title: "Scale Without Limits",
-                text: "Cloud-native infrastructure that grows with you. Auto-scaling, redundancy, zero downtime.",
-              },
-            ].map((item) => (
-              <StaggerItem key={item.title}>
-                <HoverCard className="h-full">
-                  <div
-                    data-spotlight
-                    className="rounded-xl border border-white/[0.08] bg-brand-bg/50 p-8 backdrop-blur h-full hover:border-white/[0.15] transition-all hover:shadow-[0_0_20px_rgba(34,211,238,0.06)]"
-                  >
-                    <item.icon className="h-8 w-8 text-brand-accent mb-4" />
-                    <h3 className="font-mono text-lg font-bold text-foreground">
-                      {item.title}
-                    </h3>
-                    <p className="mt-2 text-sm text-brand-text leading-relaxed">
-                      {item.text}
-                    </p>
-                  </div>
-                </HoverCard>
-              </StaggerItem>
-            ))}
-          </Stagger>
-        </div>
-      </section>
-
-      {/* Portfolio */}
-      <Testimonials />
-
-      {/* Tech Stack */}
-      <section className="border-t border-white/5 bg-brand-bg-alt px-6 py-24">
-        <div className="mx-auto max-w-7xl">
-          <Reveal>
-            <p className="font-mono text-xs font-semibold uppercase tracking-widest text-brand-accent mb-2">
-              // Our Stack
-            </p>
-            <h2 className="font-mono text-3xl font-bold text-foreground md:text-4xl">
-              Our Stack
-            </h2>
-          </Reveal>
-
-          <Stagger
-            className="mt-12 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
-            stagger={0.08}
+      {/* SERVICES */}
+      <section className="section">
+        <div className="wrap">
+          <header
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "end",
+              gap: 32,
+              marginBottom: 48,
+              flexWrap: "wrap",
+            }}
           >
-            {techCategories.map((cat) => (
-              <StaggerItem key={cat.label}>
-                <div
-                  data-spotlight
-                  className="glow-border rounded-xl bg-brand-primary/40 p-6 backdrop-blur h-full"
-                >
-                  <p className="font-mono text-xs font-semibold uppercase tracking-widest text-brand-accent mb-4">
-                    // {cat.label}
-                  </p>
-                  <ul className="space-y-2.5">
-                    {cat.items.map((item) => (
-                      <li
-                        key={item}
-                        className="group/item flex items-center gap-2.5 font-mono text-sm text-brand-text hover:text-white transition-colors cursor-default"
-                      >
-                        <span className="h-1.5 w-1.5 rounded-full bg-brand-accent/40 group-hover/item:bg-brand-accent transition-colors flex-shrink-0" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
+            <div>
+              <div className="eyebrow" style={{ marginBottom: 16 }}>
+                § 01 — What we do
+              </div>
+              <h2 className="display" style={{ fontSize: "clamp(36px, 5vw, 68px)", maxWidth: "18ch" }}>
+                Six ways we help.
+              </h2>
+            </div>
+            <Link href="/services" className="btn btn-ghost">
+              All services →
+            </Link>
+          </header>
+
+          <div className="svc-grid">
+            {services.map((s) => (
+              <article key={s.num} className="svc">
+                <div className="svc-num">{s.num}</div>
+                <div>
+                  <h3>{s.title}</h3>
+                  <p style={{ marginTop: 14 }}>{s.desc}</p>
                 </div>
-              </StaggerItem>
+                <div className="svc-foot">
+                  <span>{s.from}</span>
+                  <span>{s.span}</span>
+                </div>
+              </article>
             ))}
-          </Stagger>
+          </div>
+        </div>
+      </section>
+
+      {/* STATEMENT */}
+      <section className="section">
+        <div className="wrap grid-2" style={{ gap: 80, alignItems: "start" }}>
+          <div>
+            <div className="eyebrow" style={{ marginBottom: 16 }}>
+              § 02 — Why us
+            </div>
+            <p className="statement">
+              Most agencies sell you a <em>shape</em>. We build you something you can <em>live in</em>.
+            </p>
+          </div>
+          <div className="stack-lg" style={{ color: "var(--ink-soft)", fontSize: 17, lineHeight: 1.65 }}>
+            <p>
+              We&apos;re three people — two software engineers and a security engineer — building websites and small
+              tools for clients who want their software to work in a year, not just on launch day.
+            </p>
+            <p>
+              Sierra&#8209;117 is new, deliberately small, and based in the NY/NJ/PA area. We pick projects we can
+              actually commit to, ship quickly, and stay around to maintain. Every site we hand off is something your
+              team — or ours — can keep running without surprises.
+            </p>
+            <Link href="/about" className="inline" style={{ color: "var(--ink)" }}>
+              More about the studio →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* WORK PREVIEW */}
+      <section className="section">
+        <div className="wrap">
+          <header
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "end",
+              gap: 32,
+              marginBottom: 32,
+              flexWrap: "wrap",
+            }}
+          >
+            <div>
+              <div className="eyebrow" style={{ marginBottom: 16 }}>
+                § 03 — Recent work
+              </div>
+              <h2 className="display" style={{ fontSize: "clamp(36px, 5vw, 68px)", maxWidth: "14ch" }}>
+                A few we&apos;re proud of.
+              </h2>
+            </div>
+            <Link href="/work" className="btn btn-ghost">
+              All case studies →
+            </Link>
+          </header>
+
+          <div>
+            {workPreview.map((w) => (
+              <Link key={w.id} href={`/work#${w.id}`} className="work-row">
+                <div className="idx">{w.idx}</div>
+                <div className="ttl">{w.title}</div>
+                <div className="sum">{w.sum}</div>
+                <div className="meta">{w.meta}</div>
+                <div className="arrow-wrap">
+                  <svg width="20" height="20" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M4 4l8 8M12 4v8H4" stroke="currentColor" strokeWidth="1.5" />
+                  </svg>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="grain border-t border-white/5 bg-brand-primary px-6 py-24">
-        <div className="relative z-10 mx-auto max-w-4xl text-center">
-          <Reveal>
-            <div className="inline-flex items-center gap-2 mb-6">
-              <Terminal className="h-5 w-5 text-brand-accent" />
-              <span className="font-mono text-xs text-brand-accent">
-                Ready to start?
-              </span>
-            </div>
-            <h2 className="font-mono text-3xl font-bold text-white md:text-5xl">
-              Let&apos;s Build Something
-              <br />
-              <span className="text-brand-accent text-glow">Great</span>
-            </h2>
-            <p className="mx-auto mt-6 max-w-xl text-brand-text">
-              Send us your URL and we&apos;ll tell you what&apos;s slowing your
-              site down. Free, no strings. Or book a call to talk about your
-              next project.
-            </p>
-            <div className="mt-10 flex flex-wrap justify-center gap-4">
-              <MagneticButton>
+      <section className="section">
+        <div className="wrap">
+          <div className="cta-block">
+            <div className="arc2" />
+            <div className="arc" />
+            <div className="cta-inner">
+              <div
+                className="eyebrow"
+                style={{ color: "color-mix(in oklab, var(--bg) 60%, transparent)", marginBottom: 16 }}
+              >
+                § 04 — Let&apos;s talk
+              </div>
+              <h2>Have a project? Tell us about it.</h2>
+              <p
+                style={{
+                  marginTop: 24,
+                  maxWidth: "48ch",
+                  fontSize: 17,
+                  color: "color-mix(in oklab, var(--bg) 75%, transparent)",
+                }}
+              >
+                We read every inquiry personally and reply within two business days. If we&apos;re not the right fit,
+                we&apos;ll point you to someone who is.
+              </p>
+              <div style={{ marginTop: 36, display: "flex", gap: 12, flexWrap: "wrap" }}>
+                <Link href="/quote" className="btn btn-accent">
+                  Get a quote →
+                </Link>
                 <Link
                   href="/contact"
-                  className="inline-flex items-center gap-2 rounded-lg bg-brand-accent px-10 py-4 font-mono text-sm font-bold text-brand-bg hover:bg-brand-accent-light transition-all hover:shadow-[0_0_20px_rgba(34,211,238,0.2)]"
+                  className="btn btn-ghost"
+                  style={{
+                    borderColor: "color-mix(in oklab, var(--bg) 30%, transparent)",
+                    color: "var(--bg)",
+                  }}
                 >
-                  Get a Free Site Review
-                  <ArrowRight className="h-4 w-4" />
+                  Or just say hello
                 </Link>
-              </MagneticButton>
-              <MagneticButton>
-                <Link
-                  href="/book"
-                  className="inline-flex items-center gap-2 rounded-lg border border-brand-accent/30 px-10 py-4 font-mono text-sm font-bold text-brand-accent hover:bg-brand-accent/5 transition-all"
-                >
-                  Book a Consultation
-                </Link>
-              </MagneticButton>
+              </div>
             </div>
-          </Reveal>
+          </div>
         </div>
       </section>
     </>

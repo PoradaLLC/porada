@@ -41,95 +41,87 @@ export function PaymentsDashboard({ payments }: { payments: Payment[] }) {
 
   return (
     <>
-      {/* Revenue Stats */}
-      <div className="grid gap-4 md:grid-cols-3 mb-8">
-        <div className="rounded-xl border border-white/5 bg-white/5 p-6">
-          <p className="font-mono text-xs text-white/30 mb-1">TOTAL REVENUE</p>
-          <p className="font-mono text-2xl font-bold text-brand-accent">
+      <div className="admin-grid" style={{ marginBottom: 28 }}>
+        <div className="admin-card" style={{ cursor: "default" }}>
+          <div className="label">Total revenue</div>
+          <div className="value" style={{ color: "var(--accent)" }}>
             {formatCurrency(totalRevenue)}
-          </p>
+          </div>
         </div>
-        <div className="rounded-xl border border-white/5 bg-white/5 p-6">
-          <p className="font-mono text-xs text-white/30 mb-1">ONE-TIME PAYMENTS</p>
-          <p className="font-mono text-2xl font-bold text-white">{oneTimePayments.length}</p>
+        <div className="admin-card" style={{ cursor: "default" }}>
+          <div className="label">One-time payments</div>
+          <div className="value">{oneTimePayments.length}</div>
         </div>
-        <div className="rounded-xl border border-white/5 bg-white/5 p-6">
-          <p className="font-mono text-xs text-white/30 mb-1">SUBSCRIPTIONS</p>
-          <p className="font-mono text-2xl font-bold text-white">{subscriptions.length}</p>
+        <div className="admin-card" style={{ cursor: "default" }}>
+          <div className="label">Subscriptions</div>
+          <div className="value">{subscriptions.length}</div>
         </div>
       </div>
 
-      {/* Actions */}
-      <div className="mb-6">
+      <div style={{ marginBottom: 20 }}>
         <button
+          type="button"
+          className="admin-btn admin-btn-primary"
           onClick={() => {
             setShowCreateProduct(true);
             setResult(null);
           }}
-          className="inline-flex items-center gap-2 rounded-lg bg-brand-accent px-4 py-2.5 font-mono text-sm font-bold text-brand-bg hover:bg-brand-accent-light transition-all"
         >
-          <Plus className="h-4 w-4" />
-          Create Product / Price
+          <Plus aria-hidden="true" style={{ width: 14, height: 14 }} />
+          Create product / price
         </button>
       </div>
 
-      {/* Payments Table */}
-      <div className="rounded-xl border border-white/5 bg-white/5 overflow-hidden">
-        <table className="w-full">
+      <div style={{ overflowX: "auto" }}>
+        <table className="admin-table">
           <thead>
-            <tr className="border-b border-white/5">
-              <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-white/30">Customer</th>
-              <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-white/30">Amount</th>
-              <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-white/30">Description</th>
-              <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-white/30">Invoice ID</th>
-              <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-white/30">Type</th>
-              <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-white/30">Status</th>
-              <th className="px-6 py-3 text-left font-mono text-xs uppercase tracking-widest text-white/30">Date</th>
+            <tr>
+              <th>Customer</th>
+              <th>Amount</th>
+              <th>Description</th>
+              <th>Invoice ID</th>
+              <th>Type</th>
+              <th>Status</th>
+              <th>Date</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-white/5">
+          <tbody>
             {payments.length === 0 ? (
               <tr>
-                <td colSpan={7} className="px-6 py-12 text-center font-mono text-sm text-white/20">
+                <td colSpan={7} style={{ textAlign: "center", padding: "40px 20px", color: "var(--ink-soft)" }}>
                   No payments recorded yet.
                 </td>
               </tr>
             ) : (
               payments.map((payment) => (
-                <tr key={payment.id} className="hover:bg-white/5 transition-colors">
-                  <td className="px-6 py-4 font-mono text-sm text-white/50">{payment.customer_email ?? "-"}</td>
-                  <td className="px-6 py-4 font-mono text-sm text-white font-bold">
-                    {formatCurrency(payment.amount)}
+                <tr key={payment.id}>
+                  <td style={{ color: "var(--ink-soft)", fontFamily: "var(--font-mono-family)", fontSize: 13 }}>
+                    {payment.customer_email ?? "—"}
                   </td>
-                  <td className="px-6 py-4 font-mono text-sm text-white/50">{payment.description ?? "-"}</td>
-                  <td className="px-6 py-4 font-mono text-xs text-white/30">
-                    {payment.stripe_session_id ?? "-"}
+                  <td style={{ color: "var(--ink)", fontWeight: 500 }}>{formatCurrency(payment.amount)}</td>
+                  <td style={{ color: "var(--ink-soft)" }}>{payment.description ?? "—"}</td>
+                  <td style={{ color: "var(--ink-faint)", fontFamily: "var(--font-mono-family)", fontSize: 12 }}>
+                    {payment.stripe_session_id ?? "—"}
                   </td>
-                  <td className="px-6 py-4">
-                    <span
-                      className={`inline-flex rounded-full px-2 py-1 font-mono text-[10px] ${
-                        payment.mode === "subscription"
-                          ? "bg-blue-500/10 text-blue-400"
-                          : "bg-brand-accent/10 text-brand-accent"
-                      }`}
-                    >
+                  <td>
+                    <span className={`admin-badge ${payment.mode === "subscription" ? "accent" : "ok"}`}>
                       {payment.mode}
                     </span>
                   </td>
-                  <td className="px-6 py-4">
+                  <td>
                     <span
-                      className={`inline-flex rounded-full px-2 py-1 font-mono text-[10px] ${
+                      className={`admin-badge ${
                         payment.status === "completed"
-                          ? "bg-brand-accent/10 text-brand-accent"
+                          ? "ok"
                           : payment.status === "active"
-                            ? "bg-blue-500/10 text-blue-400"
-                            : "bg-yellow-500/10 text-yellow-400"
+                          ? "accent"
+                          : "warn"
                       }`}
                     >
                       {payment.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 font-mono text-xs text-white/30">
+                  <td style={{ color: "var(--ink-faint)", fontFamily: "var(--font-mono-family)", fontSize: 12 }}>
                     {new Date(payment.created_at).toLocaleDateString()}
                   </td>
                 </tr>
@@ -139,86 +131,131 @@ export function PaymentsDashboard({ payments }: { payments: Payment[] }) {
         </table>
       </div>
 
-      {/* Create Product Modal */}
       {showCreateProduct && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-xl border border-white/10 bg-[#080c10] p-8">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="font-mono text-lg font-bold text-white">Create Stripe Product</h3>
-              <button
-                onClick={() => setShowCreateProduct(false)}
-                className="text-white/30 hover:text-white transition-colors"
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Create Stripe product"
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 100,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 20,
+            background: "rgba(10, 10, 10, 0.55)",
+            backdropFilter: "blur(6px)",
+          }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowCreateProduct(false);
+          }}
+        >
+          <div
+            style={{
+              width: "100%",
+              maxWidth: 440,
+              borderRadius: 14,
+              border: "1px solid var(--rule-strong)",
+              background: "var(--bg-elev)",
+              padding: 28,
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
+              <h3
+                style={{
+                  fontFamily: "var(--font-display-family)",
+                  fontSize: 22,
+                  letterSpacing: "-0.015em",
+                  color: "var(--ink)",
+                  fontWeight: 400,
+                }}
               >
-                <X className="h-5 w-5" />
+                Create Stripe product
+              </h3>
+              <button
+                type="button"
+                aria-label="Close"
+                onClick={() => setShowCreateProduct(false)}
+                style={{
+                  background: "none",
+                  border: 0,
+                  color: "var(--ink-soft)",
+                  cursor: "pointer",
+                  padding: 4,
+                  lineHeight: 0,
+                }}
+              >
+                <X aria-hidden="true" style={{ width: 18, height: 18 }} />
               </button>
             </div>
 
             {result ? (
-              <div className="space-y-4">
-                <div className="rounded-lg border border-brand-accent/20 bg-brand-accent/5 p-4">
-                  <p className="font-mono text-sm text-brand-accent font-bold mb-2">Product Created!</p>
-                  <p className="font-mono text-xs text-white/50">
-                    Product ID: <span className="text-white/70">{result.productId}</span>
+              <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                <div
+                  style={{
+                    borderRadius: 10,
+                    border: "1px solid color-mix(in oklab, var(--accent) 40%, transparent)",
+                    background: "var(--accent-soft)",
+                    padding: 16,
+                  }}
+                >
+                  <p style={{ color: "var(--ink)", fontWeight: 500, marginBottom: 10 }}>Product created</p>
+                  <p style={{ fontFamily: "var(--font-mono-family)", fontSize: 12, color: "var(--ink-soft)" }}>
+                    Product ID: <span style={{ color: "var(--ink)" }}>{result.productId}</span>
                   </p>
-                  <p className="font-mono text-xs text-white/50 mt-1">
-                    Price ID: <span className="text-white/70">{result.priceId}</span>
+                  <p style={{ fontFamily: "var(--font-mono-family)", fontSize: 12, color: "var(--ink-soft)", marginTop: 4 }}>
+                    Price ID: <span style={{ color: "var(--ink)" }}>{result.priceId}</span>
                   </p>
                 </div>
-                <p className="font-mono text-[10px] text-white/30">
+                <p style={{ fontFamily: "var(--font-mono-family)", fontSize: 11, color: "var(--ink-faint)" }}>
                   Use this Price ID when creating subscriptions for customers.
                 </p>
                 <button
+                  type="button"
+                  className="admin-btn admin-btn-ghost"
+                  style={{ width: "100%", justifyContent: "center" }}
                   onClick={() => setShowCreateProduct(false)}
-                  className="w-full rounded-lg border border-white/10 px-4 py-2.5 font-mono text-sm text-white/50 hover:text-white hover:border-white/20 transition-all"
                 >
                   Close
                 </button>
               </div>
             ) : (
-              <form action={handleCreateProduct} className="space-y-4">
-                <div>
-                  <label className="block font-mono text-xs uppercase tracking-widest text-brand-accent mb-2">
-                    Product Name *
-                  </label>
-                  <input
-                    name="name"
-                    required
-                    placeholder="e.g. Website Maintenance"
-                    className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 font-mono text-sm text-white placeholder:text-white/20 focus:border-brand-accent/30 focus:outline-none transition-colors"
-                  />
+              <form action={handleCreateProduct}>
+                <div className="admin-field">
+                  <label htmlFor="pd-name">Product name *</label>
+                  <input id="pd-name" name="name" required placeholder="e.g. Website Maintenance" className="admin-input" />
                 </div>
-                <div>
-                  <label className="block font-mono text-xs uppercase tracking-widest text-brand-accent mb-2">
-                    Amount (cents) *
-                  </label>
+                <div className="admin-field">
+                  <label htmlFor="pd-amount">Amount (cents) *</label>
                   <input
+                    id="pd-amount"
                     name="amount"
                     type="number"
-                    min="50"
+                    min={50}
                     required
                     placeholder="e.g. 9900 = $99.00"
-                    className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 font-mono text-sm text-white placeholder:text-white/20 focus:border-brand-accent/30 focus:outline-none transition-colors"
+                    className="admin-input"
                   />
                 </div>
-                <div>
-                  <label className="flex items-center gap-3 cursor-pointer">
-                    <input
-                      name="recurring"
-                      type="checkbox"
-                      value="true"
-                      className="rounded border-white/10 bg-white/5 text-brand-accent focus:ring-brand-accent"
-                    />
-                    <span className="font-mono text-sm text-white/50">Recurring subscription</span>
-                  </label>
-                </div>
-                <div>
-                  <label className="block font-mono text-xs uppercase tracking-widest text-brand-accent mb-2">
-                    Billing Interval
-                  </label>
-                  <select
-                    name="interval"
-                    className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 font-mono text-sm text-white focus:border-brand-accent/30 focus:outline-none transition-colors"
-                  >
+                <label
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 10,
+                    cursor: "pointer",
+                    marginTop: 14,
+                    fontFamily: "var(--font-mono-family)",
+                    fontSize: 13,
+                    color: "var(--ink-soft)",
+                  }}
+                >
+                  <input name="recurring" type="checkbox" value="true" style={{ accentColor: "var(--accent)" }} />
+                  Recurring subscription
+                </label>
+                <div className="admin-field" style={{ marginTop: 14 }}>
+                  <label htmlFor="pd-interval">Billing interval</label>
+                  <select id="pd-interval" name="interval" className="admin-input">
                     <option value="month">Monthly</option>
                     <option value="year">Yearly</option>
                     <option value="week">Weekly</option>
@@ -227,15 +264,16 @@ export function PaymentsDashboard({ payments }: { payments: Payment[] }) {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full rounded-lg bg-brand-accent px-6 py-3 font-mono text-sm font-bold text-brand-bg hover:bg-brand-accent-light transition-all disabled:opacity-50"
+                  className="admin-btn admin-btn-primary"
+                  style={{ width: "100%", justifyContent: "center", marginTop: 18 }}
                 >
                   {loading ? (
-                    <span className="inline-flex items-center gap-2">
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                      Creating...
-                    </span>
+                    <>
+                      <Loader2 aria-hidden="true" style={{ width: 14, height: 14 }} className="animate-spin" />
+                      Creating…
+                    </>
                   ) : (
-                    "Create Product"
+                    "Create product"
                   )}
                 </button>
               </form>

@@ -29,13 +29,13 @@ export default async function CustomersPage() {
   const customers = await getCustomers();
 
   return (
-    <div className="p-8">
-      <div className="mb-8">
-        <h1 className="font-mono text-2xl font-bold text-white">Customers</h1>
-        <p className="mt-1 font-mono text-sm text-white/40">
-          &gt; manage client accounts & billing
-        </p>
-      </div>
+    <div className="admin-page">
+      <header className="admin-page-head">
+        <div>
+          <h1>Customers</h1>
+          <div className="sub">§ client accounts · {customers.length} total</div>
+        </div>
+      </header>
       <CustomerList customers={customers} />
     </div>
   );
