@@ -36,7 +36,10 @@ export const metadata: Metadata = {
     "Sierra-117 is a small studio that builds websites and untangles tech for small businesses, mid-market teams, and agency partners.",
 };
 
-const themeBootstrap = `(function(){try{var t=localStorage.getItem('s117-theme');if(t!=='atlas'&&t!=='signal')t='atlas';document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','atlas');}})();`;
+// Runs before paint: picks the stored theme, sets the data attribute,
+// and syncs the <meta name="theme-color"> so mobile status bars and the
+// notch letterbox tint the correct color from the very first frame.
+const themeBootstrap = `(function(){try{var t=localStorage.getItem('s117-theme');if(t!=='atlas'&&t!=='signal')t='atlas';document.documentElement.setAttribute('data-theme',t);var c=t==='signal'?'#0c0e0d':'#f3efe7';var m=document.querySelector('meta[name="theme-color"]');if(!m){m=document.createElement('meta');m.setAttribute('name','theme-color');document.head.appendChild(m);}m.setAttribute('content',c);}catch(e){document.documentElement.setAttribute('data-theme','atlas');}})();`;
 
 export default function RootLayout({
   children,
@@ -51,6 +54,7 @@ export default function RootLayout({
       className={`${jetbrains.variable} ${inter.variable} ${fraunces.variable} ${spaceGrotesk.variable} h-full`}
     >
       <head>
+        <meta name="theme-color" content="#f3efe7" />
         <script dangerouslySetInnerHTML={{ __html: themeBootstrap }} />
       </head>
       <body className="flex min-h-full flex-col antialiased">{children}</body>

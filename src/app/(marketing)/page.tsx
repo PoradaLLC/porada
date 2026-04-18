@@ -251,7 +251,7 @@ export default function HomePage() {
             <div className="cta-inner">
               <div
                 className="eyebrow"
-                style={{ color: "color-mix(in oklab, var(--bg) 60%, transparent)", marginBottom: 16 }}
+                style={{ color: "var(--cta-fg-faint)", marginBottom: 16 }}
               >
                 § 04 — Let&apos;s talk
               </div>
@@ -261,7 +261,7 @@ export default function HomePage() {
                   marginTop: 24,
                   maxWidth: "48ch",
                   fontSize: 17,
-                  color: "color-mix(in oklab, var(--bg) 75%, transparent)",
+                  color: "var(--cta-fg-soft)",
                 }}
               >
                 We read every inquiry personally and reply within two business days. If we&apos;re not the right fit,
@@ -275,8 +275,8 @@ export default function HomePage() {
                   href="/contact"
                   className="btn btn-ghost"
                   style={{
-                    borderColor: "color-mix(in oklab, var(--bg) 30%, transparent)",
-                    color: "var(--bg)",
+                    borderColor: "var(--cta-fg-border)",
+                    color: "var(--cta-fg)",
                   }}
                 >
                   Or just say hello

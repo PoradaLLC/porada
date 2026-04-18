@@ -4,11 +4,26 @@ import { useEffect, useState } from "react";
 
 type Theme = "atlas" | "signal";
 const THEME_KEY = "s117-theme";
+const THEME_COLORS: Record<Theme, string> = {
+  atlas: "#f3efe7",
+  signal: "#0c0e0d",
+};
 
 function readInitialTheme(): Theme {
   if (typeof document === "undefined") return "atlas";
   const attr = document.documentElement.getAttribute("data-theme");
   return attr === "signal" ? "signal" : "atlas";
+}
+
+function syncThemeColor(theme: Theme) {
+  if (typeof document === "undefined") return;
+  let meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+  if (!meta) {
+    meta = document.createElement("meta");
+    meta.name = "theme-color";
+    document.head.appendChild(meta);
+  }
+  meta.setAttribute("content", THEME_COLORS[theme]);
 }
 
 export function Tweaks() {
@@ -22,6 +37,7 @@ export function Tweaks() {
   function apply(next: Theme) {
     setTheme(next);
     document.documentElement.setAttribute("data-theme", next);
+    syncThemeColor(next);
     try {
       localStorage.setItem(THEME_KEY, next);
     } catch {

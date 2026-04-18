@@ -95,6 +95,12 @@ body.legacy-body {
 
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
+html {
+  /* Match <html> background to the theme so iOS overscroll bounce and
+     notch letterboxing don't flash the UA's default white behind the
+     app. body already sets this, but overscroll renders html's bg. */
+  background: var(--bg);
+}
 html { scroll-behavior: smooth; }
 
 body {
@@ -534,13 +540,31 @@ textarea.textarea { min-height: 120px; resize: vertical; }
 .testimonial::after { content: "\201D"; color: var(--accent); }
 
 .cta-block {
+  /* Scoped tokens so descendants can get theme-correct foreground colors
+     without guessing at var(--bg) vs var(--ink). In Atlas the block is a
+     dark slab (ink bg + cream fg); in Signal it's an elevated dark panel
+     (bg-elev + ink fg). The vars flip, the rules that reference them
+     don't. */
+  --cta-fg: var(--bg);
+  --cta-fg-soft: color-mix(in oklab, var(--bg) 75%, transparent);
+  --cta-fg-faint: color-mix(in oklab, var(--bg) 60%, transparent);
+  --cta-fg-border: color-mix(in oklab, var(--bg) 30%, transparent);
   padding: clamp(60px, 8vw, 100px);
   background: var(--ink);
-  color: var(--bg);
+  color: var(--cta-fg);
   border-radius: var(--radius-lg);
   position: relative; overflow: hidden;
 }
-[data-theme="signal"] .cta-block { background: var(--bg-elev); border: 1px solid var(--rule-strong); border-radius: 8px; }
+[data-theme="signal"] .cta-block {
+  --cta-fg: var(--ink);
+  --cta-fg-soft: var(--ink-soft);
+  --cta-fg-faint: var(--ink-faint);
+  --cta-fg-border: var(--rule-strong);
+  background: var(--bg-elev);
+  border: 1px solid var(--rule-strong);
+  border-radius: 8px;
+  color: var(--cta-fg);
+}
 .cta-block h2 {
   font-family: var(--font-display-family);
   font-size: clamp(40px, 6vw, 80px);
