@@ -36,15 +36,17 @@ export const metadata: Metadata = {
     "Sierra-117 is a small studio that builds websites and untangles tech for small businesses, mid-market teams, and agency partners.",
 };
 
-// Runs before paint: picks the stored theme, sets the data attribute,
-// and injects a fresh <meta name="theme-color"> so mobile status bars
-// and the notch letterbox tint the correct color from the very first
-// frame. We remove-and-recreate the tag (not just mutate its content)
-// because iOS Safari sometimes caches the initial theme-color and
-// ignores subsequent attribute updates to the same element. Also sets
-// the iOS PWA status-bar style so users who save-to-home-screen get a
-// matching chrome.
-const themeBootstrap = `(function(){try{var t=localStorage.getItem('s117-theme');if(t!=='atlas'&&t!=='signal')t='atlas';document.documentElement.setAttribute('data-theme',t);var c=t==='signal'?'#0c0e0d':'#f3efe7';var old=document.querySelector('meta[name="theme-color"]');if(old)old.parentNode.removeChild(old);var m=document.createElement('meta');m.setAttribute('name','theme-color');m.setAttribute('content',c);document.head.appendChild(m);var s=document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');if(s)s.parentNode.removeChild(s);var sb=document.createElement('meta');sb.setAttribute('name','apple-mobile-web-app-status-bar-style');sb.setAttribute('content',t==='signal'?'black-translucent':'default');document.head.appendChild(sb);}catch(e){document.documentElement.setAttribute('data-theme','atlas');}})();`;
+// Runs before paint: reads the persisted theme from localStorage and
+// sets data-theme on <html>. We render two <meta name="theme-color">
+// tags with prefers-color-scheme media queries; the globals.css rule
+// `:root[data-theme="atlas"] { color-scheme: light; }` /
+// `:root[data-theme="signal"] { color-scheme: dark; }` determines the
+// effective UA color scheme, which selects which meta applies. iOS
+// Safari honors color-scheme re-evaluation but ignores direct
+// mutations of a theme-color tag, so we let CSS do the flipping.
+// We do still need to manipulate apple-mobile-web-app-status-bar-style
+// directly since iOS PWA status-bar metas don't support media queries.
+const themeBootstrap = `(function(){try{var t=localStorage.getItem('s117-theme');if(t!=='atlas'&&t!=='signal')t='atlas';document.documentElement.setAttribute('data-theme',t);var s=document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');if(s)s.parentNode.removeChild(s);var sb=document.createElement('meta');sb.setAttribute('name','apple-mobile-web-app-status-bar-style');sb.setAttribute('content',t==='signal'?'black-translucent':'default');document.head.appendChild(sb);}catch(e){document.documentElement.setAttribute('data-theme','atlas');}})();`;
 
 export default function RootLayout({
   children,
@@ -59,11 +61,13 @@ export default function RootLayout({
       className={`${jetbrains.variable} ${inter.variable} ${fraunces.variable} ${spaceGrotesk.variable} h-full`}
     >
       <head>
-        {/* Note: no static theme-color tag here — the bootstrap script
-            below injects a fresh <meta> with the correct color based on
-            the persisted theme. iOS Safari locks in the initial static
-            theme-color and then ignores later mutations of the same
-            tag, so we let the script create it from scratch. */}
+        {/* Two theme-color metas — the one whose media matches the
+            current color-scheme wins. color-scheme is set by
+            data-theme via CSS, so toggling Atlas/Signal re-runs the
+            media evaluation and flips the browser-chrome tint without
+            needing to mutate the DOM. */}
+        <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f3efe7" />
+        <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0c0e0d" />
         <script dangerouslySetInnerHTML={{ __html: themeBootstrap }} />
       </head>
       <body className="flex min-h-full flex-col antialiased">{children}</body>

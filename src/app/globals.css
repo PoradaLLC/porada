@@ -7,6 +7,12 @@
 
 :root,
 :root[data-theme="atlas"] {
+  /* Tell the UA this document is rendered in a light scheme — this
+     flips which <meta name="theme-color" media="..."> applies on iOS
+     and Android, which is how we get the notch/status-bar tint to
+     follow the user's Tweaks-panel choice instead of the OS default. */
+  color-scheme: light;
+
   --bg: #f3efe7;
   --bg-elev: #ede8dd;
   --ink: #1a1815;
@@ -36,6 +42,8 @@
 }
 
 :root[data-theme="signal"] {
+  color-scheme: dark;
+
   --bg: #0c0e0d;
   --bg-elev: #141716;
   --ink: #e8ebe8;

@@ -4,10 +4,6 @@ import { useEffect, useState } from "react";
 
 type Theme = "atlas" | "signal";
 const THEME_KEY = "s117-theme";
-const THEME_COLORS: Record<Theme, string> = {
-  atlas: "#f3efe7",
-  signal: "#0c0e0d",
-};
 
 function readInitialTheme(): Theme {
   if (typeof document === "undefined") return "atlas";
@@ -15,19 +11,16 @@ function readInitialTheme(): Theme {
   return attr === "signal" ? "signal" : "atlas";
 }
 
-function syncThemeColor(theme: Theme) {
+// theme-color now comes from two static <meta> tags with
+// prefers-color-scheme media queries; globals.css's color-scheme rule
+// (light on Atlas, dark on Signal) re-runs the media eval when the
+// user toggles, so we don't need to mutate that tag from JS.
+// apple-mobile-web-app-status-bar-style doesn't support media queries,
+// so we still manage it imperatively for the save-to-home-screen case.
+function syncAppleStatusBar(theme: Theme) {
   if (typeof document === "undefined") return;
-  // Remove-and-recreate (not mutate) because iOS Safari may ignore
-  // dynamic updates to an existing theme-color element's attributes.
-  const existing = document.querySelector('meta[name="theme-color"]');
+  const existing = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
   if (existing) existing.parentNode?.removeChild(existing);
-  const meta = document.createElement("meta");
-  meta.setAttribute("name", "theme-color");
-  meta.setAttribute("content", THEME_COLORS[theme]);
-  document.head.appendChild(meta);
-
-  const existingBar = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
-  if (existingBar) existingBar.parentNode?.removeChild(existingBar);
   const bar = document.createElement("meta");
   bar.setAttribute("name", "apple-mobile-web-app-status-bar-style");
   bar.setAttribute("content", theme === "signal" ? "black-translucent" : "default");
@@ -45,7 +38,7 @@ export function Tweaks() {
   function apply(next: Theme) {
     setTheme(next);
     document.documentElement.setAttribute("data-theme", next);
-    syncThemeColor(next);
+    syncAppleStatusBar(next);
     try {
       localStorage.setItem(THEME_KEY, next);
     } catch {
