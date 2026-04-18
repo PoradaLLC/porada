@@ -54,7 +54,9 @@ ${preheader}
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
               <tr>
                 <td align="center" style="padding-bottom: 12px;">
-                  <span style="font-family: 'Courier New', monospace; font-size: 12px; color: #22d3ee;">sierra-117.dev</span>
+                  <a href="https://sierra-117.net" style="font-family: 'Courier New', monospace; font-size: 12px; color: #22d3ee; text-decoration: none;">sierra-117.net</a>
+                  <span style="font-family: 'Courier New', monospace; font-size: 12px; color: rgba(255,255,255,0.15); padding: 0 8px;">|</span>
+                  <a href="https://sierra-117.net/book" style="font-family: 'Courier New', monospace; font-size: 12px; color: #22d3ee; text-decoration: none;">Book a Call</a>
                 </td>
               </tr>
               <tr>

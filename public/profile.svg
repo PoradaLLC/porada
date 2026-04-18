@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" fill="none">
+  <!-- Dark background circle -->
+  <circle cx="64" cy="64" r="64" fill="#080c10"/>
+  <!-- Cyan ring -->
+  <circle cx="64" cy="64" r="62" fill="none" stroke="#22d3ee" stroke-opacity="0.15" stroke-width="1.5"/>
+  <!-- Inner glow circle -->
+  <circle cx="64" cy="64" r="44" fill="#22d3ee" fill-opacity="0.06"/>
+  <!-- Terminal prompt >_ (centered, large) -->
+  <polyline points="42,50 58,64 42,78" fill="none" stroke="#22d3ee" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="64" y1="78" x2="86" y2="78" stroke="#22d3ee" stroke-width="5" stroke-linecap="round"/>
+</svg>

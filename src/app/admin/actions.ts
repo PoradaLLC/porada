@@ -354,12 +354,16 @@ Business: ${lead.business_name}
 Their website: ${lead.current_website ?? "None found"}
 About them: ${lead.summary}
 
+SCENARIO (pick the one that fits and tailor the email accordingly):
+1. NO WEBSITE: They have no online presence. Lead with "I looked you up and couldn't find a site." Offer to show them what one could look like. Emphasize that most customers Google before they visit or call.
+2. OUTDATED/STATIC SITE: They have a basic, old, or template site (e.g. not mobile-friendly, looks dated, generic Wix/Squarespace template). Point out ONE specific thing that's holding them back (slow load time, not mobile-friendly, no clear call-to-action, etc). Offer a free review.
+3. DECENT SITE: They have a reasonable website but there's room to improve. Find ONE specific improvement opportunity (SEO, page speed, conversion rate, missing feature). Position us as a specialist upgrade, not a full replacement.
+
 Rules:
 - Under 150 words. Shorter is better.
 - Sound like a real person, not a sales team. No buzzwords ("leverage", "elevate", "empower", "in today's digital landscape").
-- Be specific about one thing we noticed about their current site (or lack of one).
-- Mention our free website review offer: "We'll review your site and tell you what's slowing it down, free, no strings."
-- If they don't have a site, offer to show them what one could look like.
+- Be specific — reference something real about their business from the summary.
+- Include a personalized line about what we'd specifically do for them based on the scenario above.
 - CTA: reply to this email or book a call at sierra-117.dev/book
 - Sign off as "Marcin" (from Sierra-117)
 - Plain text only. No HTML, no markdown, no formatting.

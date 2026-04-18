@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "Get in touch with Sierra-117. We'd love to hear about your project.",
 };
 
-const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "hello@sierra-117.dev";
+const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "team@sierra-117.net";
 
 const contactInfo = [
   {
@@ -89,7 +89,7 @@ export default function ContactPage() {
                 <div className="font-mono text-xs space-y-1.5 text-brand-text/70">
                   <p>
                     <span className="text-brand-accent">$</span> ping
-                    sierra-117.dev
+                    sierra-117.net
                   </p>
                   <p>64 bytes: time=0.42ms</p>
                   <p>64 bytes: time=0.38ms</p>

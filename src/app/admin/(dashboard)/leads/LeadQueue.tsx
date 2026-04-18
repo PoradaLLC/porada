@@ -87,12 +87,15 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
   const [editForm, setEditForm] = useState(emptyForm);
   const [editSaving, setEditSaving] = useState(false);
 
-  async function handleGeneratePitch(lead: Lead) {
+  async function handleGeneratePitch(lead: Lead, forceRegenerate = false) {
     setPitchModal(lead);
-    setPitchText(lead.pitch_email ?? "");
+    if (!forceRegenerate) {
+      setPitchText(lead.pitch_email ?? "");
+    }
 
-    if (!lead.pitch_email) {
+    if (!lead.pitch_email || forceRegenerate) {
       setGenerating(true);
+      setPitchText("");
       try {
         const result = await generatePitchEmail(lead.id);
         setPitchText(result.pitchEmail);
@@ -422,49 +425,7 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                         )}
                         {!lead.job_status && (
                           <>
-                            <button
-                              onClick={() => startEdit(lead)}
-                              title="Edit lead"
-                              className="rounded-lg border border-white/5 p-2 text-white/30 hover:text-white hover:border-white/20 transition-colors"
-                            >
-                              <Pencil className="h-3.5 w-3.5" />
-                            </button>
-                            {/* Enrich contact info */}
-                            {!lead.contact_email &&
-                              (lead.status === "new" ||
-                                lead.status === "pitched") && (
-                                <button
-                                  onClick={() => handleEnrich(lead.id)}
-                                  title="Find contact info"
-                                  className="rounded-lg border border-white/5 p-2 text-white/30 hover:text-cyan-400 hover:border-cyan-400/20 transition-colors"
-                                >
-                                  <Search className="h-3.5 w-3.5" />
-                                </button>
-                              )}
-                            {/* Generate demo site */}
-                            {!lead.demo_url &&
-                              (lead.status === "new" ||
-                                lead.status === "pitched") && (
-                                <button
-                                  onClick={() => handleGenerateDemo(lead.id)}
-                                  title="Generate demo site"
-                                  className="rounded-lg border border-white/5 p-2 text-white/30 hover:text-purple-400 hover:border-purple-400/20 transition-colors"
-                                >
-                                  <Globe className="h-3.5 w-3.5" />
-                                </button>
-                              )}
-                            {/* Launch: demo + pitch + send in one click */}
-                            {!lead.demo_url &&
-                              lead.contact_email &&
-                              lead.status === "new" && (
-                                <button
-                                  onClick={() => handleLaunch(lead.id)}
-                                  title="Generate demo, pitch, and send email"
-                                  className="rounded-lg border border-white/5 p-2 text-white/30 hover:text-amber-400 hover:border-amber-400/20 transition-colors"
-                                >
-                                  <Rocket className="h-3.5 w-3.5" />
-                                </button>
-                              )}
+                            {/* Primary actions: Pitch & Launch */}
                             {(lead.status === "new" ||
                               lead.status === "pitched") && (
                               <button
@@ -472,16 +433,59 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                                 title={
                                   lead.pitch_email ? "View pitch" : "Generate pitch"
                                 }
-                                className="rounded-lg border border-white/5 p-2 text-white/30 hover:text-brand-accent hover:border-brand-accent/20 transition-colors"
+                                className="inline-flex items-center gap-1.5 rounded-lg border border-brand-accent/30 bg-brand-accent/10 px-3 py-1.5 font-mono text-xs text-brand-accent hover:bg-brand-accent/20 transition-colors"
                               >
                                 <Sparkles className="h-3.5 w-3.5" />
+                                {lead.pitch_email ? "View Pitch" : "Pitch"}
                               </button>
                             )}
+                            {!lead.demo_url &&
+                              lead.contact_email &&
+                              lead.status === "new" && (
+                                <button
+                                  onClick={() => handleLaunch(lead.id)}
+                                  title="Generate demo, pitch, and send email"
+                                  className="inline-flex items-center gap-1.5 rounded-lg border border-amber-400/30 bg-amber-400/10 px-3 py-1.5 font-mono text-xs text-amber-400 hover:bg-amber-400/20 transition-colors"
+                                >
+                                  <Rocket className="h-3.5 w-3.5" />
+                                  Launch
+                                </button>
+                              )}
+                            {/* Secondary actions */}
+                            <button
+                              onClick={() => startEdit(lead)}
+                              title="Edit lead"
+                              className="rounded-lg border border-white/5 p-2 text-white/40 hover:text-white hover:border-white/20 transition-colors"
+                            >
+                              <Pencil className="h-3.5 w-3.5" />
+                            </button>
+                            {!lead.contact_email &&
+                              (lead.status === "new" ||
+                                lead.status === "pitched") && (
+                                <button
+                                  onClick={() => handleEnrich(lead.id)}
+                                  title="Find contact info"
+                                  className="rounded-lg border border-white/5 p-2 text-white/40 hover:text-cyan-400 hover:border-cyan-400/20 transition-colors"
+                                >
+                                  <Search className="h-3.5 w-3.5" />
+                                </button>
+                              )}
+                            {!lead.demo_url &&
+                              (lead.status === "new" ||
+                                lead.status === "pitched") && (
+                                <button
+                                  onClick={() => handleGenerateDemo(lead.id)}
+                                  title="Generate demo site"
+                                  className="rounded-lg border border-white/5 p-2 text-white/40 hover:text-purple-400 hover:border-purple-400/20 transition-colors"
+                                >
+                                  <Globe className="h-3.5 w-3.5" />
+                                </button>
+                              )}
                             {lead.status === "pitched" && (
                               <button
                                 onClick={() => handleConvert(lead.id)}
                                 title="Mark as converted"
-                                className="rounded-lg border border-white/5 p-2 text-white/30 hover:text-brand-accent hover:border-brand-accent/20 transition-colors"
+                                className="rounded-lg border border-white/5 p-2 text-white/40 hover:text-brand-accent hover:border-brand-accent/20 transition-colors"
                               >
                                 <CheckCircle2 className="h-3.5 w-3.5" />
                               </button>
@@ -490,7 +494,7 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                               <button
                                 onClick={() => handleDismiss(lead.id)}
                                 title="Dismiss"
-                                className="rounded-lg border border-white/5 p-2 text-white/30 hover:text-red-400 hover:border-red-400/20 transition-colors"
+                                className="rounded-lg border border-white/5 p-2 text-white/40 hover:text-red-400 hover:border-red-400/20 transition-colors"
                               >
                                 <XCircle className="h-3.5 w-3.5" />
                               </button>
@@ -734,6 +738,14 @@ export function LeadQueue({ leads }: { leads: Lead[] }) {
                         Send Email
                       </>
                     )}
+                  </button>
+                  <button
+                    onClick={() => handleGeneratePitch(pitchModal, true)}
+                    disabled={generating}
+                    className="rounded-lg border border-white/10 px-4 py-3 font-mono text-sm text-white/50 hover:text-brand-accent hover:border-brand-accent/20 transition-all disabled:opacity-50 inline-flex items-center justify-center gap-2"
+                  >
+                    <Sparkles className="h-4 w-4" />
+                    Regenerate
                   </button>
                   <button
                     onClick={() => {
