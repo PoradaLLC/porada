@@ -691,9 +691,7 @@ textarea.textarea { min-height: 120px; resize: vertical; }
   padding: 0;
 }
 [data-theme="signal"] .case { border-radius: 10px; }
-.case-toggle { all: unset; display: block; width: 100%; cursor: pointer; text-align: left; }
 .case:hover { transform: translateY(-4px); border-color: var(--accent); }
-.case-detail { padding: 0 28px 28px; }
 .case.hidden { display: none; }
 .case .thumb { aspect-ratio: 1440 / 900; position: relative; overflow: hidden; background: var(--bg); }
 .case .thumb svg { width: 100%; height: 100%; }
@@ -710,13 +708,6 @@ textarea.textarea { min-height: 120px; resize: vertical; }
 [data-theme="signal"] .case .stat .v { font-weight: 500; }
 .case .stat .l { font-family: var(--font-mono-family); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); margin-top: 4px; }
 
-.case-detail h4 { font-family: var(--font-mono-family); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); margin: 32px 0 12px; }
-.case-detail p { color: var(--ink-soft); margin-top: 16px; font-size: 16px; line-height: 1.6; }
-.case-detail .quote {
-  padding: 20px; border-left: 3px solid var(--accent); background: var(--bg-elev);
-  font-family: var(--font-display-family); font-size: 18px; line-height: 1.4;
-  margin: 24px 0; border-radius: 4px;
-}
 
 /* =============================================================
    Process page

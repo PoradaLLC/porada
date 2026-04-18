@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CASES } from "./cases";
 
@@ -45,100 +44,54 @@ function SitePreview({ url }: { url: string }) {
 }
 
 export function WorkGrid() {
-  const [expandedId, setExpandedId] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const h = window.location.hash.replace("#", "");
-    if (h && CASES.find((c) => c.id === h)) setExpandedId(h);
-  }, []);
-
-  function toggle(id: string) {
-    setExpandedId((prev) => (prev === id ? null : id));
-  }
-
   return (
     <div className="case-grid" id="caseGrid" style={{ marginTop: 48 }}>
-      {CASES.map((c) => {
-        const open = expandedId === c.id;
-        const q = c.body.quote;
-        return (
-          <div key={c.id} className="case" id={c.id}>
-            <button type="button" className="case-toggle" onClick={() => toggle(c.id)}>
-              <div className="thumb">
-                {c.url && <SitePreview url={c.url} />}
-              </div>
-              <div className="case-body">
-                <div
-                  className="mono"
-                  style={{ fontSize: 11, color: "var(--ink-faint)", letterSpacing: "0.08em" }}
-                >
-                  {c.year}
+      {CASES.map((c) => (
+        <div key={c.id} className="case" id={c.id}>
+          <div className="thumb">
+            {c.url && <SitePreview url={c.url} />}
+          </div>
+          <div className="case-body">
+            <div
+              className="mono"
+              style={{ fontSize: 11, color: "var(--ink-faint)", letterSpacing: "0.08em" }}
+            >
+              {c.year}
+            </div>
+            <h3 style={{ marginTop: 6 }}>{c.title}</h3>
+            <div className="meta-row">
+              {c.tags.map((t) => (
+                <span key={t} className="chip">{t}</span>
+              ))}
+            </div>
+            <p className="excerpt">{c.excerpt}</p>
+            <div className="stats">
+              {c.stats.map(([v, l], j) => (
+                <div key={j} className="stat">
+                  <div className="v">{v}</div>
+                  <div className="l">{l}</div>
                 </div>
-                <h3 style={{ marginTop: 6 }}>{c.title}</h3>
-                <div className="meta-row">
-                  {c.tags.map((t) => (
-                    <span key={t} className="chip">{t}</span>
-                  ))}
-                </div>
-                <p className="excerpt">{c.excerpt}</p>
-                <div className="stats">
-                  {c.stats.map(([v, l], j) => (
-                    <div key={j} className="stat">
-                      <div className="v">{v}</div>
-                      <div className="l">{l}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </button>
-            {open && (
-              <div className="case-detail">
-                {c.url && (
-                  <div style={{ marginBottom: 8 }}>
-                    <a
-                      href={c.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline"
-                      style={{ fontFamily: "var(--font-mono-family)", fontSize: 13 }}
-                    >
-                      {c.url.replace(/^https?:\/\//, "")} ↗
-                    </a>
-                  </div>
-                )}
-                <h4>The challenge</h4>
-                <p>{c.body.challenge}</p>
-                <h4>How we approached it</h4>
-                <p>{c.body.approach}</p>
-                <h4>What happened</h4>
-                <p>{c.body.outcome}</p>
-                {q && (
-                  <div className="quote">
-                    &quot;{q.text}&quot;
-                    <div
-                      style={{
-                        marginTop: 12,
-                        fontFamily: "var(--font-mono-family)",
-                        fontSize: 12,
-                        color: "var(--ink-soft)",
-                        letterSpacing: "0.04em",
-                      }}
-                    >
-                      - {q.who}
-                    </div>
-                  </div>
-                )}
-                <div style={{ marginTop: 32 }}>
-                  <Link href="/quote" className="btn btn-primary">
-                    Start a similar project →
-                  </Link>
-                </div>
-              </div>
+              ))}
+            </div>
+            {c.url && (
+              <a
+                href={c.url}
+                target="_blank"
+                rel="noreferrer"
+                className="inline"
+                style={{
+                  display: "inline-block",
+                  marginTop: 16,
+                  fontFamily: "var(--font-mono-family)",
+                  fontSize: 13,
+                }}
+              >
+                {c.url.replace(/^https?:\/\//, "")} ↗
+              </a>
             )}
           </div>
-        );
-      })}
+        </div>
+      ))}
     </div>
   );
 }
