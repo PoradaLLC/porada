@@ -10,8 +10,6 @@ interface Lead {
   status: string;
   pitch_email: string | null;
   pitched_at: string | null;
-  demo_url: string | null;
-  job_status: string | null;
   created_at: string;
 }
 
@@ -38,7 +36,7 @@ export default async function LeadsPage() {
       <header className="admin-page-head">
         <div>
           <h1>Lead queue</h1>
-          <div className="sub">§ outbound · {leads.length} total</div>
+          <div className="sub">§ outbound · {leads.length} total · cron runs daily at 13:00 UTC</div>
         </div>
       </header>
       <LeadQueue leads={leads} />
