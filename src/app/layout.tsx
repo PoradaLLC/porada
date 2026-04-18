@@ -37,9 +37,14 @@ export const metadata: Metadata = {
 };
 
 // Runs before paint: picks the stored theme, sets the data attribute,
-// and syncs the <meta name="theme-color"> so mobile status bars and the
-// notch letterbox tint the correct color from the very first frame.
-const themeBootstrap = `(function(){try{var t=localStorage.getItem('s117-theme');if(t!=='atlas'&&t!=='signal')t='atlas';document.documentElement.setAttribute('data-theme',t);var c=t==='signal'?'#0c0e0d':'#f3efe7';var m=document.querySelector('meta[name="theme-color"]');if(!m){m=document.createElement('meta');m.setAttribute('name','theme-color');document.head.appendChild(m);}m.setAttribute('content',c);}catch(e){document.documentElement.setAttribute('data-theme','atlas');}})();`;
+// and injects a fresh <meta name="theme-color"> so mobile status bars
+// and the notch letterbox tint the correct color from the very first
+// frame. We remove-and-recreate the tag (not just mutate its content)
+// because iOS Safari sometimes caches the initial theme-color and
+// ignores subsequent attribute updates to the same element. Also sets
+// the iOS PWA status-bar style so users who save-to-home-screen get a
+// matching chrome.
+const themeBootstrap = `(function(){try{var t=localStorage.getItem('s117-theme');if(t!=='atlas'&&t!=='signal')t='atlas';document.documentElement.setAttribute('data-theme',t);var c=t==='signal'?'#0c0e0d':'#f3efe7';var old=document.querySelector('meta[name="theme-color"]');if(old)old.parentNode.removeChild(old);var m=document.createElement('meta');m.setAttribute('name','theme-color');m.setAttribute('content',c);document.head.appendChild(m);var s=document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');if(s)s.parentNode.removeChild(s);var sb=document.createElement('meta');sb.setAttribute('name','apple-mobile-web-app-status-bar-style');sb.setAttribute('content',t==='signal'?'black-translucent':'default');document.head.appendChild(sb);}catch(e){document.documentElement.setAttribute('data-theme','atlas');}})();`;
 
 export default function RootLayout({
   children,
@@ -54,7 +59,11 @@ export default function RootLayout({
       className={`${jetbrains.variable} ${inter.variable} ${fraunces.variable} ${spaceGrotesk.variable} h-full`}
     >
       <head>
-        <meta name="theme-color" content="#f3efe7" />
+        {/* Note: no static theme-color tag here — the bootstrap script
+            below injects a fresh <meta> with the correct color based on
+            the persisted theme. iOS Safari locks in the initial static
+            theme-color and then ignores later mutations of the same
+            tag, so we let the script create it from scratch. */}
         <script dangerouslySetInnerHTML={{ __html: themeBootstrap }} />
       </head>
       <body className="flex min-h-full flex-col antialiased">{children}</body>

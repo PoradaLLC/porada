@@ -17,13 +17,21 @@ function readInitialTheme(): Theme {
 
 function syncThemeColor(theme: Theme) {
   if (typeof document === "undefined") return;
-  let meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
-  if (!meta) {
-    meta = document.createElement("meta");
-    meta.name = "theme-color";
-    document.head.appendChild(meta);
-  }
+  // Remove-and-recreate (not mutate) because iOS Safari may ignore
+  // dynamic updates to an existing theme-color element's attributes.
+  const existing = document.querySelector('meta[name="theme-color"]');
+  if (existing) existing.parentNode?.removeChild(existing);
+  const meta = document.createElement("meta");
+  meta.setAttribute("name", "theme-color");
   meta.setAttribute("content", THEME_COLORS[theme]);
+  document.head.appendChild(meta);
+
+  const existingBar = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+  if (existingBar) existingBar.parentNode?.removeChild(existingBar);
+  const bar = document.createElement("meta");
+  bar.setAttribute("name", "apple-mobile-web-app-status-bar-style");
+  bar.setAttribute("content", theme === "signal" ? "black-translucent" : "default");
+  document.head.appendChild(bar);
 }
 
 export function Tweaks() {
