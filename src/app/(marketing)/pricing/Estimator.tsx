@@ -78,14 +78,16 @@ export function Estimator() {
     }
     subtotal += addonsOne;
     subtotal *= rush.mul;
-    const r: [string, string][] = [
-      [`Base · ${kind.label.toLowerCase()}`, fmt(kind.base)],
-      [`Pages (${pages})`, "×" + pageMul.toFixed(2)],
-      ["Design bar", "×" + design.mul.toFixed(2)],
-      ["Timeline", "×" + rush.mul.toFixed(2)],
+    const r: { id: string; k: string; v: string }[] = [
+      { id: "base", k: `Base · ${kind.label.toLowerCase()}`, v: fmt(kind.base) },
+      { id: "pages", k: `Pages (${pages})`, v: "×" + pageMul.toFixed(2) },
+      { id: "design", k: "Design bar", v: "×" + design.mul.toFixed(2) },
+      { id: "rush", k: "Timeline", v: "×" + rush.mul.toFixed(2) },
     ];
     for (const a of addons) {
-      if (checked[a.id] && !a.recurring) r.push([a.label, "+" + fmt(a.cost)]);
+      if (checked[a.id] && !a.recurring) {
+        r.push({ id: `addon-${a.id}`, k: a.label, v: "+" + fmt(a.cost) });
+      }
     }
     return {
       total: subtotal,
@@ -139,7 +141,10 @@ export function Estimator() {
                 min={3}
                 max={40}
                 value={pages}
-                onChange={(e) => setPages(parseInt(e.currentTarget.value, 10))}
+                onChange={(e) => {
+                  const n = parseInt(e.target.value, 10);
+                  if (Number.isFinite(n)) setPages(n);
+                }}
               />
               <div className="val">
                 <span>{pages}</span> pages
@@ -171,7 +176,10 @@ export function Estimator() {
                 <input
                   type="checkbox"
                   checked={!!checked[a.id]}
-                  onChange={(e) => setChecked((c) => ({ ...c, [a.id]: e.currentTarget.checked }))}
+                  onChange={(e) => {
+                    const next = e.target.checked;
+                    setChecked((c) => ({ ...c, [a.id]: next }));
+                  }}
                 />
                 <div>
                   <div className="t">{a.label}</div>
@@ -207,10 +215,10 @@ export function Estimator() {
             approx. range <span>{`${fmtK(lo)} – ${fmtK(hi)}`}</span>
           </div>
           <div className="est-break">
-            {rows.map(([k, v]) => (
-              <div key={k} className="row">
-                <span>{k}</span>
-                <span>{v}</span>
+            {rows.map((row) => (
+              <div key={row.id} className="row">
+                <span>{row.k}</span>
+                <span>{row.v}</span>
               </div>
             ))}
           </div>

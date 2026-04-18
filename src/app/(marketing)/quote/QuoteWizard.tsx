@@ -254,7 +254,10 @@ export function QuoteWizard() {
                   <input
                     type="checkbox"
                     checked={!!addons[a.id]}
-                    onChange={(e) => setAddons((s) => ({ ...s, [a.id]: e.currentTarget.checked }))}
+                    onChange={(e) => {
+                      const next = e.target.checked;
+                      setAddons((s) => ({ ...s, [a.id]: next }));
+                    }}
                   />
                   <div style={{ flex: 1 }}>
                     <div style={{ fontSize: 14, fontWeight: 500 }}>{a.t}</div>
