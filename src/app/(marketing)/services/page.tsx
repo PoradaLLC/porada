@@ -1,228 +1,221 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  Code2,
-  Cloud,
-  Palette,
-  Cpu,
-  ArrowRight,
-  Globe,
-  Database,
-  Lock,
-  Gauge,
-  Smartphone,
-  Search,
-  GitBranch,
-  LayoutDashboard,
-} from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Web development, cloud solutions, UI/UX design, and tech consulting. Sierra-117 delivers full-spectrum technology services.",
+    "Websites, small apps, advisory, care & hosting, migrations, and workshops - the six things Sierra-117 does with care.",
 };
 
-const services = [
+const serviceBlocks = [
   {
-    icon: Code2,
-    title: "Custom Web Development",
-    description:
-      "Your business needs a site that loads fast, looks professional, and actually brings in customers. We build that with modern tools and clean code.",
-    features: [
-      "Marketing sites & landing pages",
-      "Online booking & scheduling",
-      "E-commerce with Stripe payments",
-      "Contact forms & lead capture",
-      "Mobile-friendly on every device",
+    num: "01 / 06",
+    title: "Websites that don't make you cringe six months later.",
+    desc:
+      "Marketing sites, portfolios, content publications. We design with your team in mind \u2014 not a template marketplace \u2014 and build on whatever stack is actually right for what you're doing.",
+    bullets: [
+      "Discovery, IA, and copy consultation",
+      "Custom visual design (no themes, no kits)",
+      "Built on Astro, Next, Eleventy, or good old Rails",
+      "A CMS your team can actually use \u2014 Sanity, Payload, Decap, WP",
+      "Analytics, forms, SEO basics all set up",
+      "Handoff doc and 30 days of post-launch support",
+    ],
+    side: [
+      ["Starting at", "$1,500"],
+      ["Timeline", "1–3 weeks"],
+      ["Team", "2–3 people"],
+      ["Best for", "Small business · Local org"],
     ],
   },
   {
-    icon: LayoutDashboard,
-    title: "CRM Development",
-    description:
-      "Custom dashboards and tools to manage your clients, leads, and day-to-day operations. Built around how you actually work.",
-    features: [
-      "Client & lead management",
-      "Custom admin dashboards",
-      "Automated email & follow-ups",
-      "Reporting & analytics",
-      "Integration with your existing tools",
+    num: "02 / 06",
+    title: "Small apps that actually carry their weight.",
+    desc:
+      "Internal tools, member portals, booking systems, lightweight dashboards. Built with the same care as a public site \u2014 because your team deserves that too.",
+    bullets: [
+      'Product-shaping workshops (not just "we\u2019ll build what you say")',
+      "Auth, roles, billing, whatever shape it needs",
+      "Postgres-first, no surprise vendor lock-in",
+      "Accessible, keyboard-friendly, screen-reader tested",
+      "Observability + error reporting set up on day one",
+    ],
+    side: [
+      ["Starting at", "$3,500"],
+      ["Timeline", "2–4 weeks"],
+      ["Team", "2–3 people"],
+      ["Best for", "Small business · Internal tools"],
     ],
   },
   {
-    icon: Cloud,
-    title: "Cloud Infrastructure",
-    description:
-      "We set up, deploy, and manage the servers and databases behind your site so you never have to think about it.",
-    features: [
-      "AWS, Vercel & cloud deployments",
-      "Database setup & management",
-      "Automated backups & monitoring",
-      "Domain & DNS configuration",
-      "Performance optimization",
+    num: "03 / 06",
+    title: 'Tech advisory, without the "strategic framework."',
+    desc:
+      'We act as your outside technical brain. You bring questions, we bring fifteen years of opinions and a warm, plainspoken "here\u2019s what I\u2019d do" attitude.',
+    bullets: [
+      "Stack audits and migration plans",
+      "Hiring your first (or next) engineer",
+      "Vendor selection \u2014 CMSs, analytics, payments, email",
+      "Code review + architecture sanity checks",
+      "Weekly office hours, async by default",
+    ],
+    side: [
+      ["Rate", "$1,500 / mo"],
+      ["Commitment", "2 mo min"],
+      ["Hours", "~8 / mo"],
+      ["Best for", "Founders · Small teams"],
     ],
   },
   {
-    icon: Palette,
-    title: "UI/UX Design",
-    description:
-      "Design that converts visitors into customers. Clean layouts, clear calls to action, and a look that builds trust.",
-    features: [
-      "Custom designs tailored to your brand",
-      "Wireframes & prototypes before we build",
-      "Responsive design for all screen sizes",
-      "Built with accessibility in mind",
-      "Modern animations & interactions",
+    num: "04 / 06",
+    title: "Care & hosting - we keep the lights on.",
+    desc:
+      'The unglamorous, essential part. Hosting, backups, security updates, small content changes, "can we add a page" requests. Predictable monthly pricing, no hostage relationships.',
+    bullets: [
+      "Managed hosting (our infra or yours)",
+      "Daily backups, tested restores",
+      "Weekly dependency + security patches",
+      "Up to 2 hours/month of small content or design edits",
+      "One human as your point of contact \u2014 no ticket roulette",
+    ],
+    side: [
+      ["Starts at", "$180 / mo"],
+      ["Commitment", "Month-to-month"],
+      ["Response time", "< 1 business day"],
+      ["Best for", "Everyone"],
     ],
   },
   {
-    icon: Cpu,
-    title: "Tech Consulting",
-    description:
-      "Not sure what you need? We can review your current setup, recommend the right tools, and help you make smart technical decisions.",
-    features: [
-      "Website & tech stack audits",
-      "Performance reviews",
-      "Security best practices",
-      "Tool & platform recommendations",
-      "Ongoing technical guidance",
+    num: "05 / 06",
+    title: "Migrations without the all-nighter.",
+    desc:
+      'Move off a platform you\u2019ve outgrown \u2014 carefully, with a real plan, and zero "oh no, we forgot the old blog posts." We\u2019ve done WordPress, Squarespace, Webflow, Wix, Ghost, and a few things that didn\u2019t have names.',
+    bullets: [
+      "Content audit + URL mapping (no broken links)",
+      "Data export, normalization, and import",
+      'Parallel staging until you say "go"',
+      "DNS, email, analytics cutover plan",
+      "30 days of monitoring after launch",
+    ],
+    side: [
+      ["Starting at", "$1,200"],
+      ["Timeline", "1–2 weeks"],
+      ["Downtime", "Target: zero"],
+      ["Best for", "Anyone stuck"],
+    ],
+  },
+  {
+    num: "06 / 06",
+    title: "Workshops - half-days for your team.",
+    desc:
+      "Sometimes the best deliverable is your team knowing what we know. We run small, pragmatic sessions on the things that come up most often.",
+    bullets: [
+      '"How our website actually works" \u2014 for non-technical teams',
+      "Design-system basics for marketing & content folks",
+      "Picking analytics you\u2019ll actually read",
+      "Briefing a developer without losing your mind",
+    ],
+    side: [
+      ["Rate", "$750 / session"],
+      ["Format", "Remote or on-site"],
+      ["Team size", "Up to 12"],
+      ["Best for", "In-house teams"],
     ],
   },
 ];
 
-const capabilities = [
-  { icon: Globe, label: "Global CDN Deployment" },
-  { icon: Database, label: "Database Architecture" },
-  { icon: Lock, label: "Security First" },
-  { icon: Gauge, label: "Performance Optimized" },
-  { icon: Smartphone, label: "Mobile Responsive" },
-  { icon: Search, label: "SEO Optimized" },
-  { icon: GitBranch, label: "Version Controlled" },
-  { icon: Code2, label: "Clean Code" },
+const matrix: { row: string; cells: ("y" | "n")[] }[] = [
+  { row: "Marketing site refresh", cells: ["y", "n", "n", "y", "n"] },
+  { row: "Internal tool / portal", cells: ["n", "y", "y", "y", "n"] },
+  { row: '"Our CMS is a nightmare"', cells: ["n", "n", "y", "n", "y"] },
+  { row: "Hiring our first dev", cells: ["n", "n", "y", "n", "n"] },
+  { row: "Sleep better about hosting", cells: ["n", "n", "n", "y", "n"] },
+  { row: '"We outgrew our platform"', cells: ["y", "n", "y", "n", "y"] },
 ];
 
 export default function ServicesPage() {
   return (
     <>
-      {/* Hero */}
-      <section className="relative grid-bg px-6 py-24">
-        <div className="absolute top-1/3 right-1/4 w-72 h-72 bg-brand-accent/5 rounded-full blur-[100px]" />
-        <div className="relative mx-auto max-w-7xl">
-          <p className="font-mono text-xs font-semibold uppercase tracking-widest text-brand-accent mb-2">
-            // Services
-          </p>
-          <h1 className="font-mono text-4xl font-bold text-foreground md:text-6xl">
-            What We <span className="text-brand-accent text-glow">Build</span>
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg text-brand-text leading-relaxed">
-            Websites, apps, and infrastructure for businesses that need things
-            done right. Every project includes hosting and ongoing maintenance.
-          </p>
+      <section className="page-hero wrap">
+        <div className="eyebrow" style={{ marginBottom: 20 }}>
+          § Services · 01-06
         </div>
+        <h1 className="display">
+          Six ways we can <em>help</em>.
+        </h1>
+        <p className="lede">
+          We only do work we&apos;re genuinely good at - which means we&apos;ll tell you if a project isn&apos;t ours,
+          and who to call instead. Here&apos;s the full list, honest pricing, and what to expect when we work together.
+        </p>
       </section>
 
-      {/* Services Detail */}
-      <section className="border-t border-white/5 bg-brand-bg px-6 py-24">
-        <div className="mx-auto max-w-7xl space-y-16">
-          {services.map((service, i) => (
-            <div
-              key={service.title}
-              data-reveal
-              data-reveal-delay={String(i + 1)}
-              data-spotlight
-              className="glow-border rounded-2xl bg-brand-primary/30 p-8 md:p-12 backdrop-blur"
-            >
-              <div className="flex flex-col md:flex-row gap-8 md:gap-16">
-                <div className="flex-1">
-                  <div className="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-brand-accent/10 border border-brand-accent/20 mb-6">
-                    <service.icon className="h-7 w-7 text-brand-accent" />
-                  </div>
-                  <div className="font-mono text-xs text-brand-accent/60 mb-2">
-                    {String(i + 1).padStart(2, "0")}
-                  </div>
-                  <h2 className="font-mono text-2xl font-bold text-foreground md:text-3xl">
-                    {service.title}
-                  </h2>
-                  <p className="mt-4 text-brand-text leading-relaxed">
-                    {service.description}
-                  </p>
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-mono text-xs uppercase tracking-widest text-brand-accent mb-4">
-                    Capabilities
-                  </h3>
-                  <ul className="space-y-3">
-                    {service.features.map((feature) => (
-                      <li
-                        key={feature}
-                        className="flex items-start gap-3 text-sm text-brand-text"
-                      >
-                        <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-brand-accent flex-shrink-0" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+      <section className="section" style={{ paddingTop: 0 }}>
+        <div className="wrap">
+          {serviceBlocks.map((b) => (
+            <article key={b.num} className="svc-block">
+              <div className="num">{b.num}</div>
+              <div>
+                <h2>{b.title}</h2>
+                <p className="desc">{b.desc}</p>
+                <ul>
+                  {b.bullets.map((bl) => (
+                    <li key={bl}>{bl}</li>
+                  ))}
+                </ul>
               </div>
-            </div>
+              <div className="side">
+                <h4>At a glance</h4>
+                {b.side.map(([k, v]) => (
+                  <div key={k} className="row">
+                    <span>{k}</span>
+                    <span>{v}</span>
+                  </div>
+                ))}
+              </div>
+            </article>
           ))}
-        </div>
-      </section>
 
-      {/* Capabilities Grid */}
-      <section className="border-y border-white/5 bg-brand-bg-alt px-6 py-24">
-        <div className="mx-auto max-w-7xl">
-          <div data-reveal>
-            <p className="font-mono text-xs font-semibold uppercase tracking-widest text-brand-accent mb-2">
-              // Standards
-            </p>
-            <h2 className="font-mono text-3xl font-bold text-foreground">
-              Every Project Includes
-            </h2>
+          <div className="matrix">
+            <table>
+              <thead>
+                <tr>
+                  <th>What you need</th>
+                  <th>Website</th>
+                  <th>Product</th>
+                  <th>Advisory</th>
+                  <th>Care</th>
+                  <th>Migration</th>
+                </tr>
+              </thead>
+              <tbody>
+                {matrix.map((r) => (
+                  <tr key={r.row}>
+                    <td>{r.row}</td>
+                    {r.cells.map((c, i) => (
+                      <td key={i} className={c}>
+                        {c === "y" ? "●" : "-"}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
 
-          <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4">
-            {capabilities.map((cap, i) => (
-              <div
-                key={cap.label}
-                data-reveal
-                data-reveal-delay={String(i + 1)}
-                className="flex flex-col items-center gap-3 rounded-xl border border-white/[0.08] bg-brand-bg/50 p-6 text-center hover:border-white/[0.15] hover:-translate-y-0.5 transition-all hover:shadow-[0_0_15px_rgba(34,211,238,0.06)]"
-              >
-                <cap.icon className="h-6 w-6 text-brand-accent" />
-                <span className="font-mono text-xs text-brand-text">
-                  {cap.label}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="grain border-t border-white/5 bg-brand-primary px-6 py-24">
-        <div className="relative z-10 mx-auto max-w-4xl text-center" data-reveal>
-          <h2 className="font-mono text-3xl font-bold text-white md:text-4xl">
-            Ready to Start Your{" "}
-            <span className="text-brand-accent text-glow">Project</span>?
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-brand-text">
-            Book a free consultation to discuss your requirements. We&apos;ll
-            scope the project, recommend a stack, and provide a timeline.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Link
-              href="/book"
-              className="inline-flex items-center gap-2 rounded-lg bg-brand-accent px-8 py-3.5 font-mono text-sm font-bold text-brand-bg hover:bg-brand-accent-light transition-all hover:shadow-[0_0_20px_rgba(34,211,238,0.2)]"
-            >
-              Book a Consultation
-              <ArrowRight className="h-4 w-4" />
+          <div
+            style={{
+              marginTop: 64,
+              display: "flex",
+              gap: 12,
+              flexWrap: "wrap",
+              justifyContent: "center",
+            }}
+          >
+            <Link href="/quote" className="btn btn-primary">
+              Get a tailored quote →
             </Link>
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 rounded-lg border border-brand-accent/30 px-8 py-3.5 font-mono text-sm font-bold text-brand-accent hover:bg-brand-accent/5 transition-all"
-            >
-              Send a Message
+            <Link href="/contact" className="btn btn-ghost">
+              Not sure? Ask us
             </Link>
           </div>
         </div>

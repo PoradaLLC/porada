@@ -1,114 +1,63 @@
 import type { Metadata } from "next";
-import { ContactForm } from "@/components/ui/ContactForm";
-import { Mail, MapPin, Clock } from "lucide-react";
+import { LocalClock } from "@/components/site/LocalClock";
+import { ContactFormClient } from "./ContactFormClient";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Get in touch with Sierra-117. We'd love to hear about your project.",
+  description:
+    "Send Sierra-117 a note. No CAPTCHAs, no lead forms, no auto-responder robot - we read everything personally.",
 };
-
-const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "team@sierra-117.net";
-
-const contactInfo = [
-  {
-    icon: Mail,
-    label: "Email",
-    value: contactEmail,
-    href: `mailto:${contactEmail}`,
-  },
-  {
-    icon: MapPin,
-    label: "Location",
-    value: "NYC Tri-State Area",
-    href: null,
-  },
-  {
-    icon: Clock,
-    label: "Response Time",
-    value: "Within 24 hours",
-    href: null,
-  },
-];
 
 export default function ContactPage() {
   return (
     <>
-      {/* Hero */}
-      <section className="relative grid-bg px-6 py-24">
-        <div className="absolute top-1/3 left-1/3 w-72 h-72 bg-brand-accent/5 rounded-full blur-[100px]" />
-        <div className="relative mx-auto max-w-7xl">
-          <p className="font-mono text-xs font-semibold uppercase tracking-widest text-brand-accent mb-2">
-            // Contact
-          </p>
-          <h1 className="font-mono text-4xl font-bold text-foreground md:text-6xl">
-            Get In <span className="text-brand-accent text-glow">Touch</span>
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg text-brand-text leading-relaxed">
-            Have a project in mind? Need technical guidance? Drop us a line and
-            we&apos;ll get back to you within 24 hours.
-          </p>
+      <section className="page-hero wrap">
+        <div className="eyebrow" style={{ marginBottom: 20 }}>
+          § Contact · We reply within 2 business days
         </div>
+        <h1 className="display">
+          Say <em>hi</em>, ask a question.
+        </h1>
+        <p className="lede">
+          No CAPTCHAs, no lead forms, no auto-responder robot. Fill in a few fields below and one of us - Michal,
+          Marcin, or Daniel - will read it and reply personally.
+        </p>
       </section>
 
-      {/* Form + Info */}
-      <section className="border-t border-white/5 bg-brand-bg px-6 py-24">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid gap-16 lg:grid-cols-3">
-            {/* Contact Info */}
-            <div className="lg:col-span-1 space-y-6">
-              {contactInfo.map((info, i) => (
-                <div
-                  key={info.label}
-                  data-reveal
-                  data-reveal-delay={String(i + 1)}
-                  className="glow-border rounded-xl bg-brand-primary/30 p-6"
-                >
-                  <div className="flex items-center gap-3 mb-2">
-                    <info.icon className="h-5 w-5 text-brand-accent" />
-                    <span className="font-mono text-xs uppercase tracking-widest text-brand-accent">
-                      {info.label}
-                    </span>
-                  </div>
-                  {info.href ? (
-                    <a
-                      href={info.href}
-                      className="font-mono text-sm text-foreground hover:text-brand-accent transition-colors"
-                    >
-                      {info.value}
-                    </a>
-                  ) : (
-                    <p className="font-mono text-sm text-foreground">
-                      {info.value}
-                    </p>
-                  )}
-                </div>
-              ))}
-
-              {/* Terminal decoration */}
-              <div data-reveal data-reveal-delay="4" className="rounded-xl border border-white/[0.08] bg-brand-primary/20 p-6">
-                <div className="font-mono text-xs space-y-1.5 text-brand-text/70">
-                  <p>
-                    <span className="text-brand-accent">$</span> ping
-                    sierra-117.net
-                  </p>
-                  <p>64 bytes: time=0.42ms</p>
-                  <p>64 bytes: time=0.38ms</p>
-                  <p className="text-brand-accent">
-                    --- connection established ---
-                  </p>
-                </div>
-              </div>
+      <section className="wrap" style={{ paddingBottom: 120 }}>
+        <div className="contact-grid">
+          <aside className="contact-meta">
+            <div className="block">
+              <h4>Email</h4>
+              <p>
+                <a href="mailto:team@sierra-117.net" className="inline">
+                  team@sierra-117.net
+                </a>
+              </p>
             </div>
-
-            {/* Form */}
-            <div className="lg:col-span-2" data-reveal data-reveal-delay="2">
-              <div className="glow-border rounded-xl bg-brand-primary/30 p-8 md:p-10 backdrop-blur">
-                <h2 className="font-mono text-xl font-bold text-foreground mb-8">
-                  Send Us a Message
-                </h2>
-                <ContactForm />
-              </div>
+            <div className="block">
+              <h4>Hours</h4>
+              <p>
+                Mon – Fri · 9am – 6pm Eastern
+                <br />
+                We answer on weekends too, just more slowly.
+              </p>
             </div>
+            <div className="block">
+              <h4>For students / juniors</h4>
+              <p>
+                We&apos;re a three-person studio so we don&apos;t have internships right now - but we always reply to
+                student email with a short list of studios we&apos;d recommend instead.
+              </p>
+            </div>
+            <div className="block">
+              <h4>Local time</h4>
+              <LocalClock />
+            </div>
+          </aside>
+
+          <div>
+            <ContactFormClient />
           </div>
         </div>
       </section>

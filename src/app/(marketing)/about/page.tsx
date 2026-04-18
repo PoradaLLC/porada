@@ -1,173 +1,217 @@
 import type { Metadata } from "next";
-import type React from "react";
 import Link from "next/link";
-import { ArrowRight, Code2, Shield, GraduationCap, Terminal } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Meet the Sierra-117 team. Engineers and builders based in the NYC Tri-State area.",
+    "Sierra-117 is Michal Bienias, Marcin Bienias, and Daniel Bzura - a three-person studio based in the NY/NJ/PA area, building careful websites and tools.",
 };
 
-const team: { name: string; role: string; icon: React.ElementType }[] = [
+const team = [
   {
     name: "Michal Bienias",
     role: "Software Engineer",
-    icon: Code2,
-  },
-  {
-    name: "Daniel Bzura",
-    role: "Cybersecurity Engineer",
-    icon: Shield,
+    blurb:
+      "Michal builds and ships the end-to-end work - front-end, back-end, infrastructure. Lead on the Pocono Property Care and Church of Saint Luke builds.",
+    chips: ["Next.js", "Supabase", "Vercel"],
+    art: "warm" as const,
   },
   {
     name: "Marcin Bienias",
     role: "Software Engineer",
-    icon: GraduationCap,
+    blurb:
+      "Marcin works alongside Michal on full-stack implementation, with a focus on integrations and data. Lead on the Forteca Estate build.",
+    chips: ["Next.js", "Supabase", "Integrations"],
+    art: "cool" as const,
+  },
+  {
+    name: "Daniel Bzura",
+    role: "Cybersecurity Engineer",
+    blurb:
+      "Daniel handles security reviews, auth, and infrastructure hardening across every project before it ships. He's the reason our sites don't embarrass us later.",
+    chips: ["Security", "Auth", "Infra"],
+    art: "warm" as const,
   },
 ];
 
-const timeline = [
-  { phase: "01", title: "Discovery", text: "We learn your business, audience, and goals. Deep dive into requirements and competitive landscape." },
-  { phase: "02", title: "Architecture", text: "Design the technical blueprint. Stack selection, database schema, API design, and infrastructure planning." },
-  { phase: "03", title: "Build", text: "Agile development with weekly demos. You see progress in real-time and can adjust priorities as we go." },
-  { phase: "04", title: "Launch & Scale", text: "Deployment, monitoring, and optimization. We don't disappear after launch. We make sure your product thrives." },
+const values = [
+  {
+    num: "01",
+    title: "Care over craft theater.",
+    text: '"Craft" as performance gets old. We care whether the thing works in a year.',
+  },
+  {
+    num: "02",
+    title: "Boring tech, sharp design.",
+    text: "New tools need to earn their place. New ideas can go anywhere.",
+  },
+  {
+    num: "03",
+    title: "Small is the point.",
+    text: "Three of us doing careful work beats twelve of us doing a lot of work.",
+  },
+  {
+    num: "04",
+    title: "Write everything down.",
+    text: "If it's not written, it didn't happen. Two-years-from-now you will thank us.",
+  },
 ];
+
+const numbers = [
+  { n: "2026", lbl: "Founded" },
+  { n: "3", lbl: "Projects shipped" },
+  { n: "3", lbl: "Humans, full stop" },
+];
+
+const clients = ["Pocono Property Care", "Forteca Estate", "Church of Saint Luke"];
+
+function TeamArt({ theme }: { theme: "warm" | "cool" }) {
+  if (theme === "warm") {
+    return (
+      <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="300" fill="#ede8dd" />
+        <circle cx="200" cy="155" r="95" fill="#c6623a" />
+        <circle cx="255" cy="105" r="50" fill="#f0d8b8" opacity="0.85" />
+        <rect x="50" y="20" width="80" height="260" fill="#e8a88a" opacity="0.7" />
+        <path d="M 20 260 Q 200 180 380 260" fill="none" stroke="#1a1815" strokeWidth="1.5" opacity="0.4" />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="300" fill="#d5dfe6" />
+      <rect x="120" y="60" width="180" height="180" fill="#5a6c7a" />
+      <circle cx="120" cy="60" r="40" fill="#9ab0bd" />
+      <circle cx="300" cy="240" r="40" fill="#c6623a" />
+      <path d="M 0 180 L 400 180" stroke="#1a1815" strokeWidth="1" opacity="0.3" />
+      <path d="M 0 200 L 400 200" stroke="#1a1815" strokeWidth="1" opacity="0.15" />
+    </svg>
+  );
+}
 
 export default function AboutPage() {
   return (
     <>
-      {/* Hero */}
-      <section className="relative grid-bg px-6 py-24">
-        <div className="absolute top-1/2 left-1/3 w-80 h-80 bg-brand-accent/5 rounded-full blur-[120px]" />
-        <div className="relative mx-auto max-w-7xl">
-          <p className="font-mono text-xs font-semibold uppercase tracking-widest text-brand-accent mb-2">
-            // About
-          </p>
-          <h1 className="font-mono text-4xl font-bold text-foreground md:text-6xl">
-            The <span className="text-brand-accent text-glow">Team</span>
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg text-brand-text leading-relaxed">
-            Three engineers based in the NYC Tri-State area. We build
-            websites and tech for local businesses that need things done
-            right.
-          </p>
+      <section className="page-hero wrap">
+        <div className="eyebrow" style={{ marginBottom: 20 }}>
+          § About · Three people, a small studio
+        </div>
+        <h1 className="display">
+          A studio built by <em>people</em> who still reply to their own emails.
+        </h1>
+        <p className="lede">
+          Sierra&#8209;117 is Michal Bienias, Marcin Bienias, and Daniel Bzura - two software engineers and a security
+          engineer based in the NY/NJ/PA area. We started the studio in 2026 because the kind of work we wanted to do
+          didn&apos;t really exist in the middle of the market: careful, small, maintainable websites and tools, shipped
+          by the people who actually build them.
+        </p>
+      </section>
+
+      <section className="wrap">
+        <div className="team team-3">
+          {team.map((p) => (
+            <article key={p.name} className="person">
+              <div className="avatar">
+                <TeamArt theme={p.art} />
+              </div>
+              <div className="person-body">
+                <h3>{p.name}</h3>
+                <div className="role">{p.role}</div>
+                <p>{p.blurb}</p>
+                <div className="meta">
+                  {p.chips.map((c) => (
+                    <span key={c} className="chip">
+                      {c}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </article>
+          ))}
         </div>
       </section>
 
-      {/* Team */}
-      <section className="border-y border-white/5 bg-brand-primary/50 px-6 py-24">
-        <div className="mx-auto max-w-7xl">
-          <div data-reveal>
-            <p className="font-mono text-xs font-semibold uppercase tracking-widest text-brand-accent mb-2">
-              // Who We Are
-            </p>
-            <h2 className="font-mono text-3xl font-bold text-foreground md:text-4xl">
-              Engineers First
-            </h2>
-            <p className="mt-4 max-w-2xl text-brand-text leading-relaxed">
-              We all have day jobs in software and cybersecurity. Sierra-117
-              is how we put that experience to work for businesses that need
-              reliable, well-built websites without the agency markup.
-            </p>
+      <section className="section">
+        <div className="wrap">
+          <div className="story">
+            <div>
+              <div className="eyebrow" style={{ marginBottom: 16 }}>
+                § Origin
+              </div>
+              <h2>We wanted a studio that didn&apos;t exist yet.</h2>
+            </div>
+            <div className="story-body">
+              <p>
+                We kept seeing the same pattern: a small business or local organization would hire someone to build them
+                a site, and within six months nobody knew how to change the phone number on the homepage. The work was
+                either too expensive, too abandoned, or both.
+              </p>
+              <p className="emph">It wasn&apos;t a design problem or an engineering problem - it was a care problem.</p>
+              <p>
+                Sierra&#8209;117 is our answer to that. We keep the studio small on purpose so the people you meet in
+                the kickoff are the people doing the work. We pick technology a regular team can maintain. We&apos;re
+                based in the NY/NJ/PA area, so for local clients we can actually show up.
+              </p>
+              <p>
+                Three people, a small number of careful projects, and a commitment to still being around in a year. That
+                is the size and shape of the thing.
+              </p>
+            </div>
           </div>
 
-          <div className="mt-12 grid gap-8 md:grid-cols-3">
-            {team.map((member, i) => (
-              <div
-                key={member.name}
-                data-reveal
-                data-reveal-delay={String(i + 1)}
-                data-spotlight
-                className="glow-border rounded-xl bg-brand-primary/30 p-8 hover:-translate-y-0.5 transition-all"
-              >
-                <div className="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-brand-accent/10 border border-brand-accent/20 mb-4">
-                  <member.icon className="h-6 w-6 text-brand-accent" />
-                </div>
-                <h3 className="font-mono text-lg font-bold text-foreground">
-                  {member.name}
-                </h3>
-                <p className="mt-1 font-mono text-sm text-brand-accent">
-                  {member.role}
-                </p>
+          <div className="values">
+            {values.map((v) => (
+              <div key={v.num}>
+                <div className="big">{v.num}</div>
+                <h4>{v.title}</h4>
+                <p>{v.text}</p>
               </div>
             ))}
           </div>
 
-          {/* Terminal decoration */}
-          <div data-reveal data-reveal-delay="4" className="mt-12 max-w-md rounded-xl border border-white/[0.08] bg-brand-bg/50 p-8">
-            <div className="flex items-center gap-2 mb-4">
-              <Terminal className="h-5 w-5 text-brand-accent" />
-              <span className="font-mono text-xs text-brand-accent">
-                team.log
-              </span>
-            </div>
-            <div className="font-mono text-sm space-y-2">
-              <p className="text-brand-text/80">
-                <span className="text-brand-accent">&gt;</span> location: &quot;NYC Tri-State Area&quot;
-              </p>
-              <p className="text-brand-text/80">
-                <span className="text-brand-accent">&gt;</span> stack: &quot;Next.js, React, TypeScript&quot;
-              </p>
-              <p className="text-brand-text/80">
-                <span className="text-brand-accent">&gt;</span> delivery: &quot;2-4 weeks, hosting included&quot;
-              </p>
-              <p className="text-brand-text/80">
-                <span className="text-brand-accent">&gt;</span> status: &quot;accepting new projects&quot;
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Process Timeline */}
-      <section className="border-y border-white/5 bg-brand-bg-alt px-6 py-24">
-        <div className="mx-auto max-w-7xl">
-          <div data-reveal>
-            <p className="font-mono text-xs font-semibold uppercase tracking-widest text-brand-accent mb-2">
-              // Process
-            </p>
-            <h2 className="font-mono text-3xl font-bold text-foreground">
-              How We Work
-            </h2>
-          </div>
-
-          <div className="mt-12 grid gap-6 md:grid-cols-4">
-            {timeline.map((step, i) => (
-              <div key={step.phase} data-reveal data-reveal-delay={String(i + 1)} className="relative">
-                <div className="font-mono text-4xl font-bold text-brand-accent/20 mb-2">
-                  {step.phase}
-                </div>
-                <h3 className="font-mono text-lg font-bold text-foreground">
-                  {step.title}
-                </h3>
-                <p className="mt-2 text-sm text-brand-text leading-relaxed">
-                  {step.text}
-                </p>
+          <div className="numbers numbers-3">
+            {numbers.map((n) => (
+              <div key={n.lbl}>
+                <div className="n">{n.n}</div>
+                <div className="lbl">{n.lbl}</div>
               </div>
             ))}
           </div>
+
+          <div style={{ marginTop: 80 }}>
+            <div className="eyebrow" style={{ marginBottom: 20 }}>
+              § Clients to date
+            </div>
+            <div className="clients clients-3">
+              {clients.map((c) => (
+                <div key={c}>{c}</div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="grain border-t border-white/5 bg-brand-primary px-6 py-24">
-        <div className="relative z-10 mx-auto max-w-4xl text-center" data-reveal>
-          <h2 className="font-mono text-3xl font-bold text-white md:text-4xl">
-            Want to Work{" "}
-            <span className="text-brand-accent text-glow">Together</span>?
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-brand-text">
-            We take on a handful of projects at a time so we can give each
-            one our full attention. Let&apos;s talk.
-          </p>
-          <Link
-            href="/book"
-            className="mt-8 inline-flex items-center gap-2 rounded-lg bg-brand-accent px-10 py-4 font-mono text-sm font-bold text-brand-bg hover:bg-brand-accent-light transition-all hover:shadow-[0_0_20px_rgba(34,211,238,0.2)]"
+      <section className="section">
+        <div className="wrap" style={{ textAlign: "center" }}>
+          <h2
+            className="display"
+            style={{
+              fontSize: "clamp(36px, 5vw, 72px)",
+              letterSpacing: "-0.03em",
+              maxWidth: "22ch",
+              margin: "0 auto",
+            }}
           >
-            Book a Consultation
-            <ArrowRight className="h-4 w-4" />
-          </Link>
+            If this sounds like the kind of studio you&apos;d like to work with, let&apos;s talk.
+          </h2>
+          <div style={{ marginTop: 32, display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+            <Link href="/quote" className="btn btn-primary">
+              Start a project →
+            </Link>
+            <Link href="/contact" className="btn btn-ghost">
+              Or just say hi
+            </Link>
+          </div>
         </div>
       </section>
     </>

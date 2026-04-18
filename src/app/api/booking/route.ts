@@ -46,25 +46,25 @@ export async function POST(req: Request) {
           `,
         }),
         // Confirm to customer
-        (async () => {
-          const { wrapEmailTemplate } = await import("@/lib/email-template");
-          return resend.emails.send({
-            from: `Sierra-117 <${from}>`,
-            to: data.email,
-            subject: "Consultation Confirmed | Sierra-117",
-            html: wrapEmailTemplate(`
-              <h1 style="font-family: 'Courier New', monospace; font-size: 24px; font-weight: bold; color: #22d3ee; margin: 0 0 16px 0;">Consultation Confirmed</h1>
-              <p style="margin: 8px 0; line-height: 1.6; font-size: 14px; color: #cbd5e1;">Hey ${data.name},</p>
-              <p style="margin: 8px 0; line-height: 1.6; font-size: 14px; color: #cbd5e1;">Your consultation has been booked. Here are the details:</p>
-              <div style="background: #161e27; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 3px solid #22d3ee;">
-                <p style="margin: 6px 0; font-size: 14px; color: #cbd5e1;"><strong style="color: #dce4ec;">Service:</strong> ${data.service}</p>
-                <p style="margin: 6px 0; font-size: 14px; color: #cbd5e1;"><strong style="color: #dce4ec;">Date:</strong> ${data.date}</p>
-                <p style="margin: 6px 0; font-size: 14px; color: #cbd5e1;"><strong style="color: #dce4ec;">Time:</strong> ${data.time} EST</p>
+        resend.emails.send({
+          from: `Sierra-117 <${from}>`,
+          to: data.email,
+          subject: "Consultation confirmed | Sierra-117",
+          html: `
+            <div style="font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; max-width: 560px; margin: 0 auto; padding: 32px 24px; color: #1a1815; background: #f3efe7;">
+              <h1 style="font-family: Georgia, serif; font-size: 28px; font-weight: 400; color: #1a1815; margin: 0 0 20px 0;">Consultation confirmed</h1>
+              <p style="margin: 12px 0; line-height: 1.55; font-size: 15px;">Hey ${data.name},</p>
+              <p style="margin: 12px 0; line-height: 1.55; font-size: 15px;">Your consultation has been booked. Here are the details:</p>
+              <div style="background: #ede8dd; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 3px solid #c6623a;">
+                <p style="margin: 6px 0; font-size: 14px;"><strong>Service:</strong> ${data.service}</p>
+                <p style="margin: 6px 0; font-size: 14px;"><strong>Date:</strong> ${data.date}</p>
+                <p style="margin: 6px 0; font-size: 14px;"><strong>Time:</strong> ${data.time} EST</p>
               </div>
-              <p style="margin: 8px 0; line-height: 1.6; font-size: 14px; color: #cbd5e1;">We'll send you a meeting link before your scheduled time.</p>
-            `),
-          });
-        })(),
+              <p style="margin: 12px 0; line-height: 1.55; font-size: 15px;">We'll send you a meeting link before your scheduled time.</p>
+              <p style="margin: 24px 0 0 0; font-size: 13px; color: #5a554c;">- The Sierra-117 team</p>
+            </div>
+          `,
+        }),
       ]);
     }
 
