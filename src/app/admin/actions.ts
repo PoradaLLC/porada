@@ -14,6 +14,99 @@ async function requireAdmin() {
   return user;
 }
 
+export interface LeadInput {
+  business_name: string;
+  contact_email: string | null;
+  phone: string | null;
+  current_website: string | null;
+  summary: string;
+  status?: string;
+}
+
+function normalize(input: LeadInput) {
+  const clean = (v: string | null | undefined) => {
+    const trimmed = (v ?? "").trim();
+    return trimmed.length > 0 ? trimmed : null;
+  };
+  return {
+    business_name: (input.business_name ?? "").trim(),
+    contact_email: clean(input.contact_email),
+    phone: clean(input.phone),
+    current_website: clean(input.current_website),
+    summary: (input.summary ?? "").trim(),
+    status: input.status && ["new", "pitched", "converted", "dismissed"].includes(input.status)
+      ? input.status
+      : undefined,
+  };
+}
+
+export async function createLead(input: LeadInput) {
+  await requireAdmin();
+
+  const row = normalize(input);
+  if (!row.business_name) throw new Error("Business name is required");
+  if (!row.summary) throw new Error("Summary is required");
+
+  const { createServiceClient } = await import("@/lib/supabase/server");
+  const supabase = await createServiceClient();
+
+  const { error } = await supabase.from("leads").insert({
+    business_name: row.business_name,
+    contact_email: row.contact_email,
+    phone: row.phone,
+    current_website: row.current_website,
+    summary: row.summary,
+    status: row.status ?? "new",
+  });
+
+  if (error) throw new Error(error.message);
+
+  revalidatePath("/admin/leads");
+  return { success: true };
+}
+
+export async function updateLead(id: string, input: LeadInput) {
+  await requireAdmin();
+
+  const row = normalize(input);
+  if (!row.business_name) throw new Error("Business name is required");
+  if (!row.summary) throw new Error("Summary is required");
+
+  const { createServiceClient } = await import("@/lib/supabase/server");
+  const supabase = await createServiceClient();
+
+  const { error } = await supabase
+    .from("leads")
+    .update({
+      business_name: row.business_name,
+      contact_email: row.contact_email,
+      phone: row.phone,
+      current_website: row.current_website,
+      summary: row.summary,
+      ...(row.status ? { status: row.status } : {}),
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", id);
+
+  if (error) throw new Error(error.message);
+
+  revalidatePath("/admin/leads");
+  return { success: true };
+}
+
+export async function deleteLead(id: string) {
+  await requireAdmin();
+
+  const { createServiceClient } = await import("@/lib/supabase/server");
+  const supabase = await createServiceClient();
+
+  const { error } = await supabase.from("leads").delete().eq("id", id);
+  if (error) throw new Error(error.message);
+
+  revalidatePath("/admin/leads");
+  return { success: true };
+}
+
 export async function generatePitchEmail(leadId: string) {
   await requireAdmin();
 
