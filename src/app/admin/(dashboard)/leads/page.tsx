@@ -14,7 +14,7 @@ interface Lead {
 }
 
 async function getLeads(): Promise<Lead[]> {
-  if (!process.env.SUPABASE_SERVICE_ROLE_KEY) return [];
+  if (!process.env.SUPABASE_SECRET_KEY) return [];
   try {
     const { createServiceClient } = await import("@/lib/supabase/server");
     const supabase = await createServiceClient();

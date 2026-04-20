@@ -8,14 +8,14 @@ export default async function DashboardLayout({
 }) {
   if (
     !process.env.NEXT_PUBLIC_SUPABASE_URL ||
-    !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
   ) {
     return (
       <div className="admin-login-shell">
         <div className="admin-login-card">
           <h1>Supabase not configured</h1>
           <p className="hint" style={{ marginTop: 12 }}>
-            Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY to enable admin.
+            Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY to enable admin.
           </p>
         </div>
       </div>

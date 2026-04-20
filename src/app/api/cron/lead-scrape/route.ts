@@ -68,7 +68,7 @@ export async function GET(req: Request) {
       );
     }
 
-    if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    if (!process.env.SUPABASE_SECRET_KEY) {
       return NextResponse.json(
         { error: "Supabase not configured" },
         { status: 500 }
