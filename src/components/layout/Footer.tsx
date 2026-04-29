@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Terminal, Mail } from "lucide-react";
+import Image from "next/image";
+import { Mail } from "lucide-react";
 
 export function Footer() {
   return (
@@ -8,13 +9,14 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-12 md:grid-cols-4">
           {/* Brand */}
           <div className="md:col-span-1">
-            <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-accent/10 border border-brand-accent/20">
-                <Terminal className="h-4 w-4 text-brand-accent" />
-              </div>
-              <span className="font-mono text-base font-bold text-foreground">
-                SIERRA-117
-              </span>
+            <Link href="/" className="flex items-center gap-2 mb-4" aria-label="Porada">
+              <Image
+                src="/porada-logo.png"
+                alt="Porada"
+                width={32}
+                height={32}
+                className="h-8 w-8"
+              />
             </Link>
             <p className="text-sm text-brand-text leading-relaxed">
               Web development and tech solutions for businesses that need reliable, well-built software.
@@ -53,21 +55,18 @@ export function Footer() {
               Connect
             </h4>
             <a
-              href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "team@sierra-117.net"}`}
+              href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "team@poradasolutions.com"}`}
               className="inline-flex items-center gap-2 font-mono text-sm text-brand-text hover:text-brand-accent transition-colors"
             >
               <Mail className="h-4 w-4" />
-              {process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "team@sierra-117.net"}
+              {process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "team@poradasolutions.com"}
             </a>
           </div>
         </div>
 
         <div className="mt-12 border-t border-brand-accent/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="font-mono text-xs text-brand-text/60">
-            &copy; {new Date().getFullYear()} Sierra-117. All rights reserved.
-          </p>
-          <p className="font-mono text-xs text-brand-text/30">
-            A product of Schtubbs LLC
+            &copy; {new Date().getFullYear()} Porada LLC. All rights reserved.
           </p>
         </div>
       </div>

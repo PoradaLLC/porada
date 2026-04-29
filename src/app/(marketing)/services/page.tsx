@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Websites, small apps, advisory, care & hosting, migrations, and workshops - the six things Sierra-117 does with care.",
+    "Websites, small apps, advisory, care & hosting, migrations, and workshops - the six things Porada does with care.",
 };
 
 const serviceBlocks = [

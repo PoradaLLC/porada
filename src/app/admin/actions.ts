@@ -132,7 +132,7 @@ export async function generatePitchEmail(leadId: string) {
     messages: [
       {
         role: "user",
-        content: `Write a short cold outreach email from Sierra-117, a small web dev team based in the NY/NJ/PA area. We build websites and tech for local businesses.
+        content: `Write a short cold outreach email from Porada, a small web dev team based in the NY/NJ/PA area. We build websites and tech for local businesses.
 
 Business: ${lead.business_name}
 Their website: ${lead.current_website ?? "None found"}
@@ -144,8 +144,8 @@ Rules:
 - Be specific about one thing we noticed about their current site (or lack of one).
 - Mention our free website review offer: "We'll review your site and tell you what's slowing it down, free, no strings."
 - If they don't have a site, offer to show them what one could look like.
-- CTA: reply to this email or book a call at sierra-117.net/book
-- Sign off as "Marcin" (from Sierra-117)
+- CTA: reply to this email or book a call at poradasolutions.com/book
+- Sign off as "Marcin" (from Porada)
 - Plain text only. No HTML, no markdown, no formatting.
 - No subject line, just the body.`,
       },

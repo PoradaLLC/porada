@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Sierra-117 is Michal Bienias, Marcin Bienias, and Daniel Bzura - a three-person studio based in the NY/NJ/PA area, building careful websites and tools.",
+    "Porada is Michal Bienias, Marcin Bienias, and Daniel Bzura - a three-person studio based in the NY/NJ/PA area, building careful websites and tools.",
 };
 
 const team = [
@@ -70,9 +70,9 @@ function TeamArt({ theme }: { theme: "warm" | "cool" }) {
     return (
       <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
         <rect width="400" height="300" fill="#ede8dd" />
-        <circle cx="200" cy="155" r="95" fill="#c6623a" />
+        <circle cx="200" cy="155" r="95" fill="#800020" />
         <circle cx="255" cy="105" r="50" fill="#f0d8b8" opacity="0.85" />
-        <rect x="50" y="20" width="80" height="260" fill="#e8a88a" opacity="0.7" />
+        <rect x="50" y="20" width="80" height="260" fill="#c97a8c" opacity="0.7" />
         <path d="M 20 260 Q 200 180 380 260" fill="none" stroke="#1a1815" strokeWidth="1.5" opacity="0.4" />
       </svg>
     );
@@ -82,7 +82,7 @@ function TeamArt({ theme }: { theme: "warm" | "cool" }) {
       <rect width="400" height="300" fill="#d5dfe6" />
       <rect x="120" y="60" width="180" height="180" fill="#5a6c7a" />
       <circle cx="120" cy="60" r="40" fill="#9ab0bd" />
-      <circle cx="300" cy="240" r="40" fill="#c6623a" />
+      <circle cx="300" cy="240" r="40" fill="#800020" />
       <path d="M 0 180 L 400 180" stroke="#1a1815" strokeWidth="1" opacity="0.3" />
       <path d="M 0 200 L 400 200" stroke="#1a1815" strokeWidth="1" opacity="0.15" />
     </svg>
@@ -100,7 +100,7 @@ export default function AboutPage() {
           A studio built by <em>people</em> who still reply to their own emails.
         </h1>
         <p className="lede">
-          Sierra&#8209;117 is Michal Bienias, Marcin Bienias, and Daniel Bzura - two software engineers and a security
+          Porada is Michal Bienias, Marcin Bienias, and Daniel Bzura - two software engineers and a security
           engineer based in the NY/NJ/PA area. We started the studio in 2026 because the kind of work we wanted to do
           didn&apos;t really exist in the middle of the market: careful, small, maintainable websites and tools, shipped
           by the people who actually build them.
@@ -148,7 +148,7 @@ export default function AboutPage() {
               </p>
               <p className="emph">It wasn&apos;t a design problem or an engineering problem - it was a care problem.</p>
               <p>
-                Sierra&#8209;117 is our answer to that. We keep the studio small on purpose so the people you meet in
+                Porada is our answer to that. We keep the studio small on purpose so the people you meet in
                 the kickoff are the people doing the work. We pick technology a regular team can maintain. We&apos;re
                 based in the NY/NJ/PA area, so for local clients we can actually show up.
               </p>

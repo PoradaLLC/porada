@@ -80,7 +80,7 @@ export default function AdminLoginPage() {
               color: "var(--ink)",
             }}
           >
-            SIERRA&nbsp;·&nbsp;117
+            PORADA
           </div>
           <div
             style={{
@@ -111,7 +111,7 @@ export default function AdminLoginPage() {
                 className="admin-input"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@sierra-117.net"
+                placeholder="you@poradasolutions.com"
                 autoComplete="email"
                 required
               />

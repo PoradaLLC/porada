@@ -6,6 +6,7 @@ export type CaseStudy = {
   kind: CaseKind;
   year: string;
   url?: string;
+  thumb?: string;
   excerpt: string;
   tags: string[];
   stats: [string, string][];
@@ -25,6 +26,7 @@ export const CASES: CaseStudy[] = [
     kind: "website",
     year: "2026.03",
     url: "https://poconopropertycare.com",
+    thumb: "/work/pocono-property-care.png",
     excerpt:
       "Modern marketing and inquiry site for a Poconos-based property management company. Fast mobile load, inquiries piped straight into a real inbox.",
     tags: ["Website", "Property management", "Next.js"],
@@ -50,6 +52,7 @@ export const CASES: CaseStudy[] = [
     kind: "website",
     year: "2026.04",
     url: "https://fortecaestate.com",
+    thumb: "/work/forteca-estate.png",
     excerpt:
       "Brand site for Forteca Estate - clear, considered presentation of what the business does, built on Next.js and Vercel with Supabase-backed contact.",
     tags: ["Website", "Real estate", "Next.js"],
@@ -75,6 +78,7 @@ export const CASES: CaseStudy[] = [
     kind: "website",
     year: "2026.04",
     url: "https://churchofsaintluke.vercel.app",
+    thumb: "/work/church-of-saint-luke.png",
     excerpt:
       "Parish website for Church of Saint Luke - service times, announcements, and contact in one place. Easy for parishioners of any age to navigate.",
     tags: ["Website", "Non-profit", "Next.js"],

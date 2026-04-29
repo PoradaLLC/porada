@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X, Terminal } from "lucide-react";
+import Image from "next/image";
+import { Menu, X } from "lucide-react";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -33,13 +34,15 @@ export function Header() {
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <Link href="/" className="flex items-center gap-2 group">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-accent/10 border border-brand-accent/20 group-hover:bg-brand-accent/20 transition-all group-hover:rotate-6">
-            <Terminal className="h-5 w-5 text-brand-accent" />
-          </div>
-          <span className="font-mono text-lg font-bold tracking-tight text-foreground">
-            SIERRA-117
-          </span>
+        <Link href="/" className="flex items-center gap-2 group" aria-label="Porada">
+          <Image
+            src="/porada-logo.png"
+            alt="Porada"
+            width={56}
+            height={56}
+            priority
+            className="h-14 w-14 transition-transform group-hover:rotate-6"
+          />
         </Link>
 
         {/* Desktop Nav */}

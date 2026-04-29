@@ -15,7 +15,7 @@ const securityHeaders = [
       "style-src 'self' 'unsafe-inline'",
       "font-src 'self' data:",
       "connect-src 'self' https://*.supabase.co wss://*.supabase.co",
-      "frame-src 'self' https://poconopropertycare.com https://fortecaestate.com https://www.fortecaestate.com https://churchofsaintluke.vercel.app",
+      "frame-src 'self'",
     ].join("; "),
   },
   { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },

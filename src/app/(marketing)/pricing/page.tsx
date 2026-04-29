@@ -5,7 +5,7 @@ import { Estimator } from "./Estimator";
 export const metadata: Metadata = {
   title: "Pricing",
   description:
-    'Transparent pricing for Sierra-117 websites, apps, and care. Three tiers, a live estimator, no "contact us" games.',
+    'Transparent pricing for Porada websites, apps, and care. Three tiers, a live estimator, no "contact us" games.',
 };
 
 const tiers = [

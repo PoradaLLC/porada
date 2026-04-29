@@ -23,7 +23,7 @@ export function AdminSidebar({ userEmail }: { userEmail: string }) {
     <aside className="admin-sidebar">
       <Link href="/admin/leads" className="admin-sidebar-brand">
         <Logo size={22} />
-        <b>SIERRA&nbsp;·&nbsp;117</b>
+        <b>PORADA</b>
       </Link>
       <nav className="admin-sidebar-nav" aria-label="Admin">
         {navItems.map((item) => {

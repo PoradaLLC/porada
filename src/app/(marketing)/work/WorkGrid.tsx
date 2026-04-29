@@ -1,44 +1,35 @@
-"use client";
-
-import { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { CASES } from "./cases";
 
-const IFRAME_W = 1440;
-const IFRAME_H = 900;
-
-function SitePreview({ url }: { url: string }) {
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(0.3);
-
-  const measure = useCallback(() => {
-    if (wrapRef.current) setScale(wrapRef.current.offsetWidth / IFRAME_W);
-  }, []);
-
-  useEffect(() => {
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
-  }, [measure]);
-
-  return (
-    <div ref={wrapRef} style={{ position: "absolute", inset: 0 }}>
-      <iframe
-        src={url}
-        title={`Preview of ${url}`}
-        loading="lazy"
-        tabIndex={-1}
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: IFRAME_W,
-          height: IFRAME_H,
-          border: 0,
-          transformOrigin: "top left",
-          transform: `scale(${scale})`,
-          pointerEvents: "none",
-        }}
+function SitePreview({ thumb, title, url }: { thumb?: string; title: string; url?: string }) {
+  if (thumb) {
+    return (
+      <Image
+        src={thumb}
+        alt={`${title} preview`}
+        fill
+        sizes="(max-width: 720px) 100vw, (max-width: 1240px) 50vw, 600px"
+        style={{ objectFit: "cover", objectPosition: "top" }}
       />
+    );
+  }
+  return (
+    <div
+      style={{
+        position: "absolute",
+        inset: 0,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "var(--bg-elev)",
+        color: "var(--ink-faint)",
+        fontFamily: "var(--font-mono-family)",
+        fontSize: 12,
+        letterSpacing: "0.08em",
+        textTransform: "uppercase",
+      }}
+    >
+      {url ? url.replace(/^https?:\/\//, "") : "Preview"}
     </div>
   );
 }
@@ -49,7 +40,7 @@ export function WorkGrid() {
       {CASES.map((c) => (
         <div key={c.id} className="case" id={c.id}>
           <div className="thumb">
-            {c.url && <SitePreview url={c.url} />}
+            <SitePreview thumb={c.thumb} title={c.title} url={c.url} />
           </div>
           <div className="case-body">
             <div

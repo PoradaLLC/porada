@@ -5,7 +5,7 @@ export function SiteFooter() {
   return (
     <footer className="footer">
       <div className="wrap">
-        <div className="footer-wordmark">Sierra&#8209;117</div>
+        <div className="footer-wordmark">Porada</div>
         <div className="footer-grid footer-grid-3">
           <div>
             <h4>Based in</h4>
@@ -36,7 +36,7 @@ export function SiteFooter() {
           </div>
         </div>
         <div className="footer-bottom">
-          <div>© {new Date().getFullYear()} Sierra&#8209;117 · A product of Schtubbs LLC</div>
+          <div>© {new Date().getFullYear()} Porada LLC</div>
           <div>Made by humans · hosted on Vercel</div>
         </div>
       </div>

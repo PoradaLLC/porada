@@ -5,7 +5,7 @@ import { ContactFormClient } from "./ContactFormClient";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Send Sierra-117 a note. No CAPTCHAs, no lead forms, no auto-responder robot - we read everything personally.",
+    "Send Porada a note. No CAPTCHAs, no lead forms, no auto-responder robot - we read everything personally.",
 };
 
 export default function ContactPage() {
@@ -30,8 +30,8 @@ export default function ContactPage() {
             <div className="block">
               <h4>Email</h4>
               <p>
-                <a href="mailto:team@sierra-117.net" className="inline">
-                  team@sierra-117.net
+                <a href="mailto:team@poradasolutions.com" className="inline">
+                  team@poradasolutions.com
                 </a>
               </p>
             </div>

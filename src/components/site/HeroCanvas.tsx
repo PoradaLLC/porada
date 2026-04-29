@@ -24,7 +24,7 @@ export function HeroCanvas() {
     function readAccent() {
       const s = getComputedStyle(document.documentElement);
       return {
-        accent: s.getPropertyValue("--accent").trim() || "#c6623a",
+        accent: s.getPropertyValue("--accent").trim() || "#800020",
         ink: s.getPropertyValue("--ink").trim() || "#1a1815",
       };
     }

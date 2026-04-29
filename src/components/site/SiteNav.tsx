@@ -20,8 +20,8 @@ export function SiteNav() {
     <header className="nav">
       <div className="nav-inner">
         <Link href="/" className="brand">
-          <Logo size={26} />
-          <b>SIERRA&nbsp;·&nbsp;117</b>
+          <Logo size={44} />
+          <b>PORADA</b>
         </Link>
         <nav className="nav-links">
           {links.map((l) => (

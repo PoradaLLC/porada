@@ -85,7 +85,7 @@ export async function GET(req: Request) {
       messages: [
         {
           role: "user",
-          content: `You are a lead generation assistant for Schtubbs LLC, a web development and software engineering company.
+          content: `You are a lead generation assistant for Porada LLC, a web development and software engineering company.
 
 Search the web for 2 local businesses in Pennsylvania, New Jersey, or New York that appear to need a new or better website. Look for businesses that:
 - Have no website at all

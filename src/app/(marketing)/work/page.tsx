@@ -5,7 +5,7 @@ import { WorkGrid } from "./WorkGrid";
 export const metadata: Metadata = {
   title: "Work",
   description:
-    "Selected Sierra-117 projects, 2023-2026. A small studio ships a small number of projects - here's an honest sample.",
+    "Selected Porada projects, 2023-2026. A small studio ships a small number of projects - here's an honest sample.",
 };
 
 export default function WorkPage() {
