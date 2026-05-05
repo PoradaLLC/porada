@@ -1,0 +1,90 @@
+name: Security Detection
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 6 * * 1" # Every Monday at 6am UTC
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  # ── Gitleaks: scan for secrets / credentials in git history ──────────────
+  gitleaks:
+    name: Gitleaks — Secret Detection
+    runs-on: ubuntu-latest
+    continue-on-error: true # detection only — findings won't block the workflow
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history so Gitleaks can scan all commits
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_ENABLE_COMMENTS: "false"
+
+  # ── Snyk: dependency vulnerabilities + SAST code scanning ────────────────
+  snyk:
+    name: Snyk — Dependencies & Code (SAST)
+    runs-on: ubuntu-latest
+    continue-on-error: true # detection only
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Install Snyk CLI
+        run: npm install -g snyk
+
+      - name: Dependency vulnerability scan
+        run: snyk test --json > snyk-deps.json || true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Code scan (SAST)
+        run: snyk code test --json > snyk-code.json || true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: snyk-reports
+          path: |
+            snyk-deps.json
+            snyk-code.json
+          retention-days: 30
+
+  # ── Prowler: cloud security posture (AWS) ────────────────────────────────
+  prowler:
+    name: Prowler — Cloud Security Posture
+    runs-on: ubuntu-latest
+    continue-on-error: true # detection only
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Prowler
+        run: pip install prowler
+
+      - name: Run Prowler
+        run: |
+          prowler aws \
+            --output-formats json html \
+            --output-directory prowler-output || true
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: prowler-report
+          path: prowler-output/
+          retention-days: 30
