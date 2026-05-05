@@ -34,10 +34,10 @@ export function Header() {
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <Link href="/" className="flex items-center gap-2 group" aria-label="Porada">
+        <Link href="/" className="flex items-center gap-2 group" aria-label="Porada Solutions">
           <Image
             src="/porada-logo.png"
-            alt="Porada"
+            alt="Porada Solutions"
             width={56}
             height={56}
             priority

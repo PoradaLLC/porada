@@ -7,7 +7,7 @@ export function Logo({ size = 26 }: { size?: number }) {
       src="/porada-logo.png"
       width={size}
       height={size}
-      alt="Porada"
+      alt="Porada Solutions"
       priority
     />
   );

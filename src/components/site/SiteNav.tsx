@@ -21,7 +21,7 @@ export function SiteNav() {
       <div className="nav-inner">
         <Link href="/" className="brand">
           <Logo size={44} />
-          <b>PORADA</b>
+          <b>PORADA SOLUTIONS</b>
         </Link>
         <nav className="nav-links">
           {links.map((l) => (

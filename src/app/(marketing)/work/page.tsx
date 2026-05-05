@@ -3,9 +3,15 @@ import Link from "next/link";
 import { WorkGrid } from "./WorkGrid";
 
 export const metadata: Metadata = {
-  title: "Work",
+  title: "Work — Selected websites & apps by Porada Solutions",
   description:
-    "Selected Porada projects, 2023-2026. A small studio ships a small number of projects - here's an honest sample.",
+    "Selected Porada Solutions case studies, 2023–2026. A small studio ships a small number of projects — websites, small apps, and platform migrations for clients in the NY/NJ/PA area and beyond.",
+  alternates: { canonical: "/work" },
+  openGraph: {
+    title: "Work | Porada Solutions",
+    description: "Selected case studies — websites, small apps, and platform migrations.",
+    url: "/work",
+  },
 };
 
 export default function WorkPage() {
