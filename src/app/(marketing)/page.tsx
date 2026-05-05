@@ -86,7 +86,7 @@ export default function HomePage() {
         <HeroCanvas />
         <div className="hero-inner">
           <div className="hero-eyebrow">
-            <span>Porada · A small tech studio · Since 2026</span>
+            <span>Porada Solutions · A small tech studio · Since 2026</span>
           </div>
           <h1 className="display">
             We build <em>useful</em>
@@ -187,7 +187,7 @@ export default function HomePage() {
               tools for clients who want their software to work in a year, not just on launch day.
             </p>
             <p>
-              Porada is new, deliberately small, and based in the NY/NJ/PA area. We pick projects we can
+              Porada Solutions is new, deliberately small, and based in the NY/NJ/PA area. We pick projects we can
               actually commit to, ship quickly, and stay around to maintain. Every site we hand off is something your
               team - or ours - can keep running without surprises.
             </p>

@@ -9,10 +9,10 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-12 md:grid-cols-4">
           {/* Brand */}
           <div className="md:col-span-1">
-            <Link href="/" className="flex items-center gap-2 mb-4" aria-label="Porada">
+            <Link href="/" className="flex items-center gap-2 mb-4" aria-label="Porada Solutions">
               <Image
                 src="/porada-logo.png"
-                alt="Porada"
+                alt="Porada Solutions"
                 width={32}
                 height={32}
                 className="h-8 w-8"

@@ -2,9 +2,16 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "About",
+  title: "About — A three-person studio in NY/NJ/PA",
   description:
-    "Porada is Michal Bienias, Marcin Bienias, and Daniel Bzura - a three-person studio based in the NY/NJ/PA area, building careful websites and tools.",
+    "Porada Solutions is Michal Bienias, Marcin Bienias, and Daniel Bzura — a three-person studio based in the NY/NJ/PA area, building careful websites and small tools.",
+  alternates: { canonical: "/about" },
+  openGraph: {
+    title: "About | Porada Solutions",
+    description:
+      "Two software engineers and a security engineer building careful websites and small tools. NY/NJ/PA, remote by default.",
+    url: "/about",
+  },
 };
 
 const team = [
@@ -100,7 +107,7 @@ export default function AboutPage() {
           A studio built by <em>people</em> who still reply to their own emails.
         </h1>
         <p className="lede">
-          Porada is Michal Bienias, Marcin Bienias, and Daniel Bzura - two software engineers and a security
+          Porada Solutions is Michal Bienias, Marcin Bienias, and Daniel Bzura - two software engineers and a security
           engineer based in the NY/NJ/PA area. We started the studio in 2026 because the kind of work we wanted to do
           didn&apos;t really exist in the middle of the market: careful, small, maintainable websites and tools, shipped
           by the people who actually build them.
@@ -148,7 +155,7 @@ export default function AboutPage() {
               </p>
               <p className="emph">It wasn&apos;t a design problem or an engineering problem - it was a care problem.</p>
               <p>
-                Porada is our answer to that. We keep the studio small on purpose so the people you meet in
+                Porada Solutions is our answer to that. We keep the studio small on purpose so the people you meet in
                 the kickoff are the people doing the work. We pick technology a regular team can maintain. We&apos;re
                 based in the NY/NJ/PA area, so for local clients we can actually show up.
               </p>

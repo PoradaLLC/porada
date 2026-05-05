@@ -2,9 +2,16 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Services",
+  title: "Services — Web design, development, fractional CTO & more",
   description:
-    "Websites, small apps, advisory, care & hosting, migrations, and workshops - the six things Porada does with care.",
+    "Websites, small apps, fractional CTO advisory, care & hosting, platform migrations, and workshops — six services Porada Solutions delivers for small businesses and agency partners.",
+  alternates: { canonical: "/services" },
+  openGraph: {
+    title: "Services | Porada Solutions",
+    description:
+      "Web design, development, fractional CTO, hosting, migrations, and workshops — for small businesses and agency partners.",
+    url: "/services",
+  },
 };
 
 const serviceBlocks = [

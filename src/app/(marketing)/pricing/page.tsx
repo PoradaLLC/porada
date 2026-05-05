@@ -3,9 +3,15 @@ import Link from "next/link";
 import { Estimator } from "./Estimator";
 
 export const metadata: Metadata = {
-  title: "Pricing",
+  title: "Pricing — Websites, apps & care, transparent",
   description:
-    'Transparent pricing for Porada websites, apps, and care. Three tiers, a live estimator, no "contact us" games.',
+    'Transparent pricing for Porada Solutions websites, small apps, and ongoing care. Three tiers, a live estimator, no "contact us" games.',
+  alternates: { canonical: "/pricing" },
+  openGraph: {
+    title: "Pricing | Porada Solutions",
+    description: "Three tiers, a live estimator, no hidden fees — pricing for websites, small apps, and ongoing care.",
+    url: "/pricing",
+  },
 };
 
 const tiers = [

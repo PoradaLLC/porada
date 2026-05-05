@@ -3,9 +3,15 @@ import { LocalClock } from "@/components/site/LocalClock";
 import { ContactFormClient } from "./ContactFormClient";
 
 export const metadata: Metadata = {
-  title: "Contact",
+  title: "Contact — Talk to Porada Solutions",
   description:
-    "Send Porada a note. No CAPTCHAs, no lead forms, no auto-responder robot - we read everything personally.",
+    "Send Porada Solutions a note about a project, audit, or fractional CTO engagement. No CAPTCHAs, no lead forms, no auto-responder robot — we read everything personally.",
+  alternates: { canonical: "/contact" },
+  openGraph: {
+    title: "Contact | Porada Solutions",
+    description: "Tell us about your project — we read every inquiry personally and reply within two business days.",
+    url: "/contact",
+  },
 };
 
 export default function ContactPage() {

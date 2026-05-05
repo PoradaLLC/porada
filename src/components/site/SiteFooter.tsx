@@ -5,7 +5,7 @@ export function SiteFooter() {
   return (
     <footer className="footer">
       <div className="wrap">
-        <div className="footer-wordmark">Porada</div>
+        <div className="footer-wordmark">Porada Solutions</div>
         <div className="footer-grid footer-grid-3">
           <div>
             <h4>Based in</h4>
