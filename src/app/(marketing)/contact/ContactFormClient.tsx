@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { ArrowIcon } from "@/components/site/ArrowIcon";
+import { trackEvent } from "@/lib/capi";
 
 type Errors = Partial<Record<"name" | "email" | "message", string>>;
 
@@ -31,6 +32,7 @@ export function ContactFormClient() {
     }
     setErrors({});
     setSent(true);
+    trackEvent("Contact", { em: email, fn: name });
     setTimeout(() => {
       const el = document.getElementById("contact-form-anchor");
       if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });

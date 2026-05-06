@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { trackEvent } from "@/lib/capi";
 
 type KindVal =
   | "marketing"
@@ -511,7 +512,14 @@ export function QuoteWizard() {
             <div className="progress">
               <div style={{ width: `${progressPct}%` }} />
             </div>
-            <button type="button" className="btn btn-primary" onClick={() => go(6)}>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => {
+                trackEvent("Lead", { em: form.email, fn: form.name });
+                go(6);
+              }}
+            >
               Send quote request →
             </button>
           </div>
