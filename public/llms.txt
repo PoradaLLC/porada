@@ -1,0 +1,31 @@
+# Porada
+
+> Porada is a small tech studio that builds websites and untangles tech for small businesses, local organizations, and agency partners. Three humans — two software engineers and a security engineer — based in the NY/NJ/PA area.
+
+## Services
+
+- [Websites](/services): Marketing sites, portfolios, and content-heavy publications. Built with whatever stack fits.
+- [Product & Apps](/services): Internal tools, member portals, booking flows, and dashboards.
+- [Tech Advisory](/services): Stack audits, vendor selection, fractional CTO, and infrastructure untangling.
+- [Care & Hosting](/services): Hosting, backups, security updates, and ongoing content edits on retainer.
+- [Migrations](/services): Platform migrations from WordPress, Squarespace, Webflow, and legacy CMS.
+- [Workshops](/services): Half-day team sessions on design systems, analytics, and how your website works.
+
+## Work
+
+- [Recent Projects](/work): Church of Saint Luke, Forteca Estate, Pocono Property Care.
+
+## Studio
+
+- [About](/about): Michal Bienias (software), Marcin Bienias (software), Daniel Bzura (security). Founded 2026.
+- [Pricing](/pricing): Transparent pricing — websites from $1.5k, apps from $3.5k, care from $180/mo.
+
+## Contact
+
+- [Contact](/contact): team@poradasolutions.com — we reply within two business days.
+- [Get a Quote](/quote): Start a project inquiry.
+- [Book a Call](/book): Schedule a call with the team.
+- Phone: (201) 969-5875
+- Address: 1960 PA-611, Swiftwater, PA 18370
+- [Facebook](https://www.facebook.com/profile.php?id=61589297094692)
+- [Instagram](https://www.instagram.com/poradasolutions/)

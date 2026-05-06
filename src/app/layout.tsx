@@ -113,6 +113,40 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "ProfessionalService",
+              name: "Porada Solutions",
+              legalName: "Porada LLC",
+              description:
+                "A small tech studio that builds websites and untangles tech for small businesses, local organizations, and agency partners.",
+              url: SITE_URL,
+              telephone: "+12019695875",
+              email: "team@poradasolutions.com",
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: "1960 PA-611",
+                addressLocality: "Swiftwater",
+                addressRegion: "PA",
+                postalCode: "18370",
+                addressCountry: "US",
+              },
+              sameAs: [
+                "https://www.facebook.com/profile.php?id=61589297094692",
+                "https://www.instagram.com/poradasolutions/",
+              ],
+              openingHoursSpecification: {
+                "@type": "OpeningHoursSpecification",
+                dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                opens: "09:00",
+                closes: "18:00",
+              },
+            }),
+          }}
+        />
       </head>
       <body suppressHydrationWarning className="flex min-h-full flex-col antialiased">
         {children}
