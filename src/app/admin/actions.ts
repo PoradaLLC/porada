@@ -1,6 +1,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { InvoiceCreateSchema } from "@/lib/validators";
+import { sendInvoiceEmail } from "@/lib/email";
+import { siteUrl } from "@/lib/stripe";
 
 async function requireAdmin() {
   const { createClient } = await import("@/lib/supabase/server");
@@ -166,4 +170,62 @@ Rules:
 
   revalidatePath("/admin/leads");
   return { success: true, pitchEmail };
+}
+
+export async function createInvoice(formData: FormData) {
+  const admin = await requireAdmin();
+
+  const rawAmountDollars = (formData.get("amount_dollars") as string | null) ?? "";
+  const amount_cents = Math.round(Number(rawAmountDollars) * 100);
+
+  const parsed = InvoiceCreateSchema.parse({
+    customer_email: ((formData.get("customer_email") as string | null) ?? "").trim(),
+    customer_name: ((formData.get("customer_name") as string | null) ?? "").trim() || undefined,
+    description: ((formData.get("description") as string | null) ?? "").trim(),
+    amount_cents,
+  });
+
+  const { createServiceClient } = await import("@/lib/supabase/server");
+  const supabase = await createServiceClient();
+
+  const { data: row, error } = await supabase
+    .from("invoices")
+    .insert({
+      customer_email: parsed.customer_email.toLowerCase(),
+      customer_name: parsed.customer_name ?? null,
+      description: parsed.description,
+      amount_cents: parsed.amount_cents,
+      created_by: admin.id,
+    })
+    .select("id")
+    .single();
+
+  if (error || !row) throw new Error(error?.message ?? "Failed to create invoice");
+
+  const invoiceUrl = `${siteUrl()}/payment/${row.id}`;
+
+  sendInvoiceEmail({
+    to: parsed.customer_email,
+    invoiceUrl,
+    amountCents: parsed.amount_cents,
+    description: parsed.description,
+    customerName: parsed.customer_name ?? null,
+  }).catch((err) => console.error("[invoice] email send failed", err));
+
+  revalidatePath("/admin/invoices");
+  redirect(`/admin/invoices?created=${row.id}`);
+}
+
+export async function cancelInvoice(id: string) {
+  await requireAdmin();
+  const { createServiceClient } = await import("@/lib/supabase/server");
+  const supabase = await createServiceClient();
+  const { error } = await supabase
+    .from("invoices")
+    .update({ status: "cancelled" })
+    .eq("id", id)
+    .eq("status", "open");
+  if (error) throw new Error(error.message);
+  revalidatePath("/admin/invoices");
+  return { success: true };
 }

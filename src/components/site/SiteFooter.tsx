@@ -45,6 +45,7 @@ export function SiteFooter() {
               <li><Link href="/services">Services</Link></li>
               <li><Link href="/work">Work</Link></li>
               <li><Link href="/pricing">Pricing</Link></li>
+              <li><Link href="/blog">Notes</Link></li>
               <li><Link href="/about">About</Link></li>
             </ul>
           </div>

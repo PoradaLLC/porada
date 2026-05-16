@@ -65,16 +65,30 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
+  verification: {
+    // Replace with the actual content values from Google Search Console / Bing Webmaster Tools.
+    // google: "google-site-verification-token-here",
+    // other: { "msvalidate.01": "bing-verification-token-here" },
+  },
+  category: "technology",
 };
 
-const organizationJsonLd = {
+const professionalServiceJsonLd = {
   "@context": "https://schema.org",
-  "@type": "Organization",
+  "@type": "ProfessionalService",
+  "@id": `${SITE_URL}/#organization`,
   name: "Porada Solutions",
   legalName: "Porada LLC",
   url: SITE_URL,
-  logo: `${SITE_URL}/porada-logo@2x.png`,
+  logo: {
+    "@type": "ImageObject",
+    url: `${SITE_URL}/porada-logo@2x.png`,
+    width: 512,
+    height: 512,
+  },
+  image: `${SITE_URL}/opengraph-image`,
   email: "team@poradasolutions.com",
+  priceRange: "$$",
   description:
     "A small studio building websites and untangling tech for small businesses, mid-market teams, and agency partners.",
   foundingDate: "2026",
@@ -83,6 +97,14 @@ const organizationJsonLd = {
     { "@type": "AdministrativeArea", name: "New Jersey" },
     { "@type": "AdministrativeArea", name: "Pennsylvania" },
     { "@type": "Country", name: "United States" },
+  ],
+  serviceType: [
+    "Web design",
+    "Web development",
+    "Fractional CTO services",
+    "Website hosting and maintenance",
+    "Platform migrations",
+    "Technical workshops",
   ],
   knowsAbout: [
     "Web design",
@@ -100,6 +122,16 @@ const organizationJsonLd = {
   ],
 };
 
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${SITE_URL}/#website`,
+  url: SITE_URL,
+  name: "Porada Solutions",
+  publisher: { "@id": `${SITE_URL}/#organization` },
+  inLanguage: "en-US",
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -111,7 +143,11 @@ export default function RootLayout({
         <meta name="theme-color" content="#f3efe7" />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(professionalServiceJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
         <script
           type="application/ld+json"

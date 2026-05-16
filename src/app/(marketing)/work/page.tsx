@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { WorkGrid } from "./WorkGrid";
+import { TracingBeam } from "@/components/ui/aceternity/tracing-beam";
 
 export const metadata: Metadata = {
   title: "Work — Selected websites & apps by Porada Solutions",
@@ -31,7 +32,9 @@ export default function WorkPage() {
       </section>
 
       <section className="wrap">
-        <WorkGrid />
+        <TracingBeam>
+          <WorkGrid />
+        </TracingBeam>
       </section>
 
       <section className="section">
