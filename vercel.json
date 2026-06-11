@@ -1,8 +1,5 @@
 {
   "crons": [
     { "path": "/api/cron/expire-invoices", "schedule": "0 6 * * *" }
-  ],
-  "git": {
-    "deploymentEnabled": false
-  }
+  ]
 }
