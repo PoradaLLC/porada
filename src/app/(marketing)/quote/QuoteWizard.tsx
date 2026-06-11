@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { trackEvent } from "@/lib/capi";
 
 type KindVal =
@@ -83,6 +83,120 @@ function fmt(n: number) {
   return "$" + Math.round(n).toLocaleString();
 }
 
+function easeOutCubic(t: number) {
+  return 1 - Math.pow(1 - t, 3);
+}
+
+function useAnimatedNumber(target: number, duration = 450): number {
+  const [value, setValue] = useState(target);
+  const fromRef = useRef(target);
+  const startRef = useRef<number | null>(null);
+  const rafRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const from = value;
+    fromRef.current = from;
+    startRef.current = null;
+    if (from === target) return;
+
+    function tick(t: number) {
+      if (startRef.current === null) startRef.current = t;
+      const elapsed = t - startRef.current;
+      const k = Math.min(1, elapsed / duration);
+      const eased = easeOutCubic(k);
+      const next = fromRef.current + (target - fromRef.current) * eased;
+      setValue(next);
+      if (k < 1) {
+        rafRef.current = requestAnimationFrame(tick);
+      }
+    }
+
+    rafRef.current = requestAnimationFrame(tick);
+    return () => {
+      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [target, duration]);
+
+  return value;
+}
+
+interface Breakdown {
+  base: number;
+  designUplift: number;
+  addonsTotal: number;
+  timelineUplift: number;
+  total: number;
+}
+
+function LiveEstimate({
+  breakdown,
+  animated,
+  timeline,
+}: {
+  breakdown: Breakdown;
+  animated: number;
+  timeline: Timeline;
+}) {
+  const totalPositive = Math.max(breakdown.total, 1);
+  const segs = [
+    { cls: "base", val: Math.max(0, breakdown.base) },
+    { cls: "design", val: Math.max(0, breakdown.designUplift) },
+    { cls: "addons", val: Math.max(0, breakdown.addonsTotal) },
+    { cls: "timing", val: Math.max(0, breakdown.timelineUplift) },
+  ];
+  return (
+    <aside className="quote-aside" aria-live="polite">
+      <div className="lab">Live estimate</div>
+      <div className="amt">{fmt(animated)}</div>
+      <div className="sub">
+        {TIMELINE_LABEL[timeline]} · range {fmt(breakdown.total * 0.9)} – {fmt(breakdown.total * 1.1)}
+      </div>
+      <div className="bar" role="presentation">
+        {segs.map((s, i) => (
+          <span
+            key={i}
+            className={s.cls}
+            style={{ flexBasis: `${(s.val / totalPositive) * 100}%` }}
+          />
+        ))}
+      </div>
+      <div className="legend">
+        <span className="base">Base</span>
+        <span className="design">Design</span>
+        <span className="addons">Add-ons</span>
+        <span className="timing">Timing</span>
+      </div>
+    </aside>
+  );
+}
+
+function SpotlightGrid({
+  children,
+  className,
+  style,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  function handleMove(e: React.MouseEvent<HTMLDivElement>) {
+    const target = e.currentTarget;
+    const cards = target.querySelectorAll<HTMLElement>(".opt-card");
+    cards.forEach((card) => {
+      const rect = card.getBoundingClientRect();
+      card.style.setProperty("--mx", `${e.clientX - rect.left}px`);
+      card.style.setProperty("--my", `${e.clientY - rect.top}px`);
+    });
+  }
+
+  return (
+    <div className={className} style={style} onMouseMove={handleMove}>
+      {children}
+    </div>
+  );
+}
+
 export function QuoteWizard() {
   const [step, setStep] = useState(1);
   const [kind, setKind] = useState<KindVal | null>(null);
@@ -96,13 +210,19 @@ export function QuoteWizard() {
   const selectedKind = useMemo(() => KINDS.find((k) => k.val === kind) ?? null, [kind]);
   const selectedDesign = useMemo(() => DESIGN_BARS.find((d) => d.val === design) ?? DESIGN_BARS[1], [design]);
 
-  const estimate = useMemo(() => {
+  const breakdown = useMemo(() => {
     if (!selectedKind) return null;
-    let sub = selectedKind.base * selectedDesign.mul;
-    for (const a of ADDONS) if (addons[a.id]) sub += a.cost;
-    sub *= TIMELINE_MUL[timeline];
-    return sub;
+    const base = selectedKind.base;
+    const designUplift = base * (selectedDesign.mul - 1);
+    const addonsTotal = ADDONS.reduce((sum, a) => sum + (addons[a.id] ? a.cost : 0), 0);
+    const subtotal = base + designUplift + addonsTotal;
+    const timelineUplift = subtotal * (TIMELINE_MUL[timeline] - 1);
+    const total = subtotal + timelineUplift;
+    return { base, designUplift, addonsTotal, timelineUplift, total };
   }, [selectedKind, selectedDesign, addons, timeline]);
+
+  const estimate = breakdown?.total ?? null;
+  const animatedEstimate = useAnimatedNumber(estimate ?? 0);
 
   function go(n: number) {
     const bounded = Math.max(1, Math.min(6, n));
@@ -171,6 +291,9 @@ export function QuoteWizard() {
             );
           })}
         </ol>
+        {breakdown && step >= 2 && step <= 5 && (
+          <LiveEstimate breakdown={breakdown} animated={animatedEstimate} timeline={timeline} />
+        )}
       </nav>
 
       <div className="stage">
@@ -178,7 +301,7 @@ export function QuoteWizard() {
         <div className={`panel${step === 1 ? " on" : ""}`}>
           <h2>What are we making?</h2>
           <p className="sub">Pick the closest match - we&apos;ll refine together.</p>
-          <div className="opt-grid">
+          <SpotlightGrid className="opt-grid">
             {KINDS.map((k) => (
               <button
                 key={k.val}
@@ -190,7 +313,7 @@ export function QuoteWizard() {
                 <span className="s">{k.s}</span>
               </button>
             ))}
-          </div>
+          </SpotlightGrid>
           <div className="step-foot">
             <div
               className="mono"
@@ -219,7 +342,7 @@ export function QuoteWizard() {
             >
               Design bar
             </label>
-            <div className="opt-grid" style={{ marginTop: 10 }}>
+            <SpotlightGrid className="opt-grid" style={{ marginTop: 10 } as React.CSSProperties}>
               {DESIGN_BARS.map((d) => (
                 <button
                   key={d.val}
@@ -231,7 +354,7 @@ export function QuoteWizard() {
                   <span className="s">{d.s}</span>
                 </button>
               ))}
-            </div>
+            </SpotlightGrid>
           </div>
 
           <div style={{ marginTop: 8 }}>
@@ -297,7 +420,7 @@ export function QuoteWizard() {
             >
               Timeline
             </label>
-            <div className="opt-grid" style={{ marginTop: 10 }}>
+            <SpotlightGrid className="opt-grid" style={{ marginTop: 10 } as React.CSSProperties}>
               {TIMELINES.map((t) => (
                 <button
                   key={t.val}
@@ -309,7 +432,7 @@ export function QuoteWizard() {
                   <span className="s">{t.s}</span>
                 </button>
               ))}
-            </div>
+            </SpotlightGrid>
           </div>
 
           <div style={{ marginTop: 8 }}>
@@ -319,7 +442,7 @@ export function QuoteWizard() {
             >
               Budget range (rough is fine)
             </label>
-            <div className="opt-grid" style={{ marginTop: 10 }}>
+            <SpotlightGrid className="opt-grid" style={{ marginTop: 10 } as React.CSSProperties}>
               {BUDGETS.map((b) => (
                 <button
                   key={b.val}
@@ -331,7 +454,7 @@ export function QuoteWizard() {
                   <span className="s">{b.s}</span>
                 </button>
               ))}
-            </div>
+            </SpotlightGrid>
           </div>
 
           <div className="step-foot">
@@ -492,7 +615,7 @@ export function QuoteWizard() {
                 ? "$1.5k / mo"
                 : estimate == null
                 ? "-"
-                : fmt(estimate)}
+                : fmt(animatedEstimate)}
             </div>
             <div
               className="mono"
@@ -505,6 +628,55 @@ export function QuoteWizard() {
                 : `approx. range · ${fmt(estimate * 0.9)} – ${fmt(estimate * 1.1)}`}
             </div>
           </div>
+          {breakdown && kind !== "advisory" && (
+            <div className="breakdown">
+              <div className="title">Why this number</div>
+              <ul>
+                <li>
+                  <span>Project base · {selectedKind?.t}</span>
+                  <span className="v">{fmt(breakdown.base)}</span>
+                </li>
+                {Math.abs(breakdown.designUplift) > 0.5 && (
+                  <li>
+                    <span>
+                      Design bar · {selectedDesign.t}{" "}
+                      ({selectedDesign.mul >= 1 ? "+" : ""}
+                      {Math.round((selectedDesign.mul - 1) * 100)}%)
+                    </span>
+                    <span className="v">
+                      {breakdown.designUplift >= 0 ? "+" : "−"}
+                      {fmt(Math.abs(breakdown.designUplift))}
+                    </span>
+                  </li>
+                )}
+                {ADDONS.filter((a) => addons[a.id]).map((a) => (
+                  <li key={a.id}>
+                    <span>Add-on · {a.t}</span>
+                    <span className="v">+{fmt(a.cost)}</span>
+                  </li>
+                ))}
+                {Math.abs(breakdown.timelineUplift) > 0.5 && (
+                  <li>
+                    <span>
+                      Timeline · {TIMELINE_LABEL[timeline]}{" "}
+                      ({TIMELINE_MUL[timeline] >= 1 ? "+" : ""}
+                      {Math.round((TIMELINE_MUL[timeline] - 1) * 100)}%)
+                    </span>
+                    <span className="v">
+                      {breakdown.timelineUplift >= 0 ? "+" : "−"}
+                      {fmt(Math.abs(breakdown.timelineUplift))}
+                    </span>
+                  </li>
+                )}
+                <li>
+                  <span style={{ color: "var(--ink)", fontWeight: 500 }}>Total</span>
+                  <span className="v" style={{ color: "var(--ink)", fontWeight: 600 }}>
+                    {fmt(breakdown.total)}
+                  </span>
+                </li>
+              </ul>
+            </div>
+          )}
           <div className="step-foot">
             <button type="button" className="btn btn-ghost" onClick={() => go(step - 1)}>
               ← Back

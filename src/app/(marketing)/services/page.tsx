@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+const SITE_URL = "https://poradasolutions.com";
+
 export const metadata: Metadata = {
   title: "Services — Web design, development, fractional CTO & more",
   description:
@@ -140,9 +142,83 @@ const matrix: { row: string; cells: ("y" | "n")[] }[] = [
   { row: '"We outgrew our platform"', cells: ["y", "n", "y", "n", "y"] },
 ];
 
+const SERVICE_OFFERINGS: { name: string; category: string; description: string }[] = [
+  {
+    name: "Web design and development",
+    category: "Web Development",
+    description:
+      "Marketing sites, portfolios, and content publications. Custom design built on modern stacks like Next.js, Astro, or Eleventy, with a CMS your team can actually use.",
+  },
+  {
+    name: "Small app development",
+    category: "Software Development",
+    description:
+      "Internal tools, member portals, booking systems, and lightweight dashboards. Auth, billing, roles, and observability set up on day one.",
+  },
+  {
+    name: "Fractional CTO and tech advisory",
+    category: "Technology Consulting",
+    description:
+      "Stack audits, migration plans, vendor selection, engineering hiring, and architecture reviews. Weekly async office hours.",
+  },
+  {
+    name: "Website care and managed hosting",
+    category: "Website Maintenance",
+    description:
+      "Managed hosting, daily backups, security updates, dependency patches, and small content edits. One human as your point of contact.",
+  },
+  {
+    name: "Platform migrations",
+    category: "Website Migration",
+    description:
+      "Move off WordPress, Squarespace, Webflow, Wix, or Ghost without losing content or links. Content audit, URL mapping, and a zero-downtime cutover plan.",
+  },
+  {
+    name: "Workshops for in-house teams",
+    category: "Training",
+    description:
+      "Half-day, pragmatic sessions for non-technical teams: how your website works, design-system basics, analytics, and briefing a developer.",
+  },
+];
+
+const servicesJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": SERVICE_OFFERINGS.map((s) => ({
+    "@type": "Service",
+    name: s.name,
+    serviceType: s.category,
+    description: s.description,
+    provider: { "@id": `${SITE_URL}/#organization` },
+    areaServed: [
+      { "@type": "AdministrativeArea", name: "New York" },
+      { "@type": "AdministrativeArea", name: "New Jersey" },
+      { "@type": "AdministrativeArea", name: "Pennsylvania" },
+      { "@type": "Country", name: "United States" },
+    ],
+    url: `${SITE_URL}/services`,
+  })),
+};
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+    { "@type": "ListItem", position: 2, name: "Services", item: `${SITE_URL}/services` },
+  ],
+};
+
 export default function ServicesPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <section className="page-hero wrap">
         <div className="eyebrow" style={{ marginBottom: 20 }}>
           § Services · 01-06

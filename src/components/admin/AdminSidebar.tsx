@@ -2,11 +2,14 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LogOut, Target } from "lucide-react";
+import { LogOut, Target, Receipt } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { Logo } from "@/components/site/Logo";
 
-const navItems = [{ href: "/admin/leads", label: "Lead Queue", icon: Target }];
+const navItems = [
+  { href: "/admin/leads", label: "Lead Queue", icon: Target },
+  { href: "/admin/invoices", label: "Invoices", icon: Receipt },
+];
 
 export function AdminSidebar({ userEmail }: { userEmail: string }) {
   const pathname = usePathname();

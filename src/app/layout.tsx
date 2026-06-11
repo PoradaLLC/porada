@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Playfair_Display } from "next/font/google";
-import Script from "next/script";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -65,16 +64,30 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
+  verification: {
+    // Replace with the actual content values from Google Search Console / Bing Webmaster Tools.
+    // google: "google-site-verification-token-here",
+    // other: { "msvalidate.01": "bing-verification-token-here" },
+  },
+  category: "technology",
 };
 
-const organizationJsonLd = {
+const professionalServiceJsonLd = {
   "@context": "https://schema.org",
-  "@type": "Organization",
+  "@type": "ProfessionalService",
+  "@id": `${SITE_URL}/#organization`,
   name: "Porada Solutions",
   legalName: "Porada LLC",
   url: SITE_URL,
-  logo: `${SITE_URL}/porada-logo@2x.png`,
+  logo: {
+    "@type": "ImageObject",
+    url: `${SITE_URL}/porada-logo@2x.png`,
+    width: 512,
+    height: 512,
+  },
+  image: `${SITE_URL}/opengraph-image`,
   email: "team@poradasolutions.com",
+  priceRange: "$$",
   description:
     "A small studio building websites and untangling tech for small businesses, mid-market teams, and agency partners.",
   foundingDate: "2026",
@@ -83,6 +96,14 @@ const organizationJsonLd = {
     { "@type": "AdministrativeArea", name: "New Jersey" },
     { "@type": "AdministrativeArea", name: "Pennsylvania" },
     { "@type": "Country", name: "United States" },
+  ],
+  serviceType: [
+    "Web design",
+    "Web development",
+    "Fractional CTO services",
+    "Website hosting and maintenance",
+    "Platform migrations",
+    "Technical workshops",
   ],
   knowsAbout: [
     "Web design",
@@ -100,6 +121,16 @@ const organizationJsonLd = {
   ],
 };
 
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${SITE_URL}/#website`,
+  url: SITE_URL,
+  name: "Porada Solutions",
+  publisher: { "@id": `${SITE_URL}/#organization` },
+  inLanguage: "en-US",
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -111,7 +142,11 @@ export default function RootLayout({
         <meta name="theme-color" content="#f3efe7" />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(professionalServiceJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
         <script
           type="application/ld+json"
@@ -149,32 +184,12 @@ export default function RootLayout({
         />
       </head>
       <body suppressHydrationWarning className="flex min-h-full flex-col antialiased">
+        {/*
+          Google Analytics and the Meta Pixel are intentionally NOT loaded here.
+          They load only after the visitor accepts cookies — see
+          src/components/site/CookieConsent.tsx, rendered in the marketing layout.
+        */}
         {children}
-        {/* Google Analytics */}
-        <Script src="https://www.googletagmanager.com/gtag/js?id=G-BMKN0D6K7M" strategy="afterInteractive" />
-        <Script id="google-analytics" strategy="afterInteractive">{`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-BMKN0D6K7M');
-        `}</Script>
-        {/* Meta Pixel */}
-        <Script id="meta-pixel" strategy="afterInteractive">{`
-          !function(f,b,e,v,n,t,s)
-          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-          n.queue=[];t=b.createElement(e);t.async=!0;
-          t.src=v;s=b.getElementsByTagName(e)[0];
-          s.parentNode.insertBefore(t,s)}(window, document,'script',
-          'https://connect.facebook.net/en_US/fbevents.js');
-          fbq('init', '1456728696136491');
-          fbq('track', 'PageView');
-        `}</Script>
-        <noscript>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img height="1" width="1" style={{display:"none"}} src="https://www.facebook.com/tr?id=1456728696136491&ev=PageView&noscript=1" alt="" />
-        </noscript>
       </body>
     </html>
   );

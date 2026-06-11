@@ -23,3 +23,16 @@ export const BookingSchema = z.object({
 });
 
 export type BookingFormData = z.infer<typeof BookingSchema>;
+
+export const InvoiceCreateSchema = z.object({
+  customer_email: z.string().email("Invalid email address"),
+  customer_name: z.string().trim().min(1).max(200).optional(),
+  description: z.string().trim().min(1, "Description is required").max(500),
+  amount_cents: z.coerce
+    .number()
+    .int("Amount must be a whole number of cents")
+    .positive("Amount must be greater than zero")
+    .max(10_000_000, "Amount may not exceed $100,000"),
+});
+
+export type InvoiceCreateInput = z.infer<typeof InvoiceCreateSchema>;

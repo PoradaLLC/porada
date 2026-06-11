@@ -254,6 +254,48 @@ p { margin: 0; text-wrap: pretty; }
 @media (max-width: 820px) { .footer-grid, .footer-grid.footer-grid-3 { grid-template-columns: 1fr 1fr; gap: 32px; } }
 
 /* =============================================================
+   Cookie consent banner
+   ============================================================= */
+
+.cookie-consent {
+  position: fixed;
+  z-index: 60;
+  left: 50%;
+  bottom: clamp(16px, 3vw, 28px);
+  transform: translateX(-50%);
+  width: min(680px, calc(100vw - 32px));
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 16px 20px;
+  background: var(--bg-elev);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.cookie-consent-text {
+  flex: 1;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+.cookie-consent-link {
+  color: var(--accent);
+  border-bottom: 1px solid var(--rule-strong);
+}
+.cookie-consent-link:hover { border-color: var(--accent); }
+.cookie-consent-actions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+@media (max-width: 600px) {
+  .cookie-consent { flex-direction: column; align-items: stretch; gap: 14px; }
+  .cookie-consent-actions { justify-content: flex-end; }
+}
+
+/* =============================================================
    Chips / cards / inputs
    ============================================================= */
 
@@ -316,6 +358,17 @@ textarea.textarea { min-height: 120px; resize: vertical; }
 @keyframes marq {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
+}
+
+/* Aceternity InfiniteMovingCards — scroll utility */
+.animate-scroll {
+  animation: scroll var(--animation-duration, 60s) var(--animation-direction, forwards) linear infinite;
+}
+@keyframes scroll {
+  to { transform: translateX(calc(-50% - 1.25rem)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-scroll { animation: none; }
 }
 
 /* =============================================================
@@ -1396,6 +1449,7 @@ html, body { overflow-x: hidden; }
 .admin-badge.warn    { color: var(--warn);     border-color: color-mix(in oklab, var(--warn) 40%, transparent); }
 .admin-badge.danger  { color: var(--accent);   border-color: color-mix(in oklab, var(--accent) 40%, transparent); }
 .admin-badge.accent  { color: var(--accent);   border-color: color-mix(in oklab, var(--accent) 40%, transparent); background: var(--accent-soft); }
+.admin-badge.muted   { color: var(--ink-faint); border-color: var(--rule); }
 
 .admin-input {
   width: 100%;
@@ -1513,3 +1567,528 @@ textarea.admin-input { min-height: 90px; resize: vertical; }
   .admin-sidebar-foot .email { margin: 0; max-width: 180px; }
   .admin-page { padding: 20px 16px; }
 }
+
+/* =============================================================
+   Customer-facing invoice / payment surfaces
+   ============================================================= */
+
+.payment-shell {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 80px 24px 120px;
+}
+.payment-card {
+  background: var(--bg-elev);
+  border: 1px solid var(--rule);
+  border-radius: 18px;
+  padding: 44px 36px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.payment-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 18px;
+  padding: 1px;
+  background: linear-gradient(135deg,
+    color-mix(in oklab, var(--accent) 40%, transparent),
+    transparent 40%,
+    color-mix(in oklab, var(--ink) 20%, transparent));
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+  opacity: 0.6;
+}
+.payment-card h1 {
+  font-family: var(--font-display-family);
+  font-size: clamp(28px, 5vw, 40px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  margin-top: 12px;
+}
+.payment-card p {
+  color: var(--ink-soft);
+  font-size: 15px;
+  line-height: 1.55;
+  margin-top: 14px;
+}
+.payment-card .invoice-amount {
+  font-family: var(--font-display-family);
+  font-size: clamp(48px, 9vw, 72px);
+  letter-spacing: -0.03em;
+  font-weight: 400;
+  margin-top: 8px;
+}
+.payment-card .invoice-desc {
+  color: var(--ink-soft);
+  font-size: 15px;
+  margin-top: 4px;
+  line-height: 1.5;
+}
+.payment-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  margin: 0 auto;
+  display: grid;
+  place-items: center;
+}
+.payment-icon svg { width: 32px; height: 32px; }
+.payment-icon.ok {
+  background: color-mix(in oklab, var(--positive) 14%, transparent);
+  color: var(--positive);
+  border: 1px solid color-mix(in oklab, var(--positive) 30%, transparent);
+}
+.payment-icon.warn {
+  background: color-mix(in oklab, var(--warn) 14%, transparent);
+  color: var(--warn);
+  border: 1px solid color-mix(in oklab, var(--warn) 30%, transparent);
+}
+
+.invoice-summary {
+  margin-top: 28px;
+  text-align: left;
+  border-top: 1px solid var(--rule);
+}
+.invoice-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 12px 0;
+  border-bottom: 1px dashed var(--rule);
+  font-size: 14px;
+  gap: 16px;
+}
+.invoice-summary-row:last-child { border-bottom: 0; }
+.invoice-summary-row span:first-child {
+  color: var(--ink-faint);
+  font-family: var(--font-mono-family);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.pay-btn { width: 100%; justify-content: center; padding: 16px 24px; font-size: 15px; }
+
+/* =============================================================
+   Quote wizard — Aceternity-style polish
+   ============================================================= */
+
+.quote-shell {
+  position: relative;
+  isolation: isolate;
+}
+.quote-shell::before,
+.quote-shell::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.4;
+  animation: aurora-drift 18s ease-in-out infinite;
+}
+.quote-shell::before {
+  width: 460px; height: 460px;
+  left: -120px; top: -80px;
+  background: radial-gradient(circle at center,
+    color-mix(in oklab, var(--accent) 55%, transparent),
+    transparent 70%);
+}
+.quote-shell::after {
+  width: 380px; height: 380px;
+  right: -100px; bottom: -120px;
+  background: radial-gradient(circle at center,
+    color-mix(in oklab, var(--ink) 35%, transparent),
+    transparent 70%);
+  animation-delay: -9s;
+}
+@keyframes aurora-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%      { transform: translate(30px, -20px) scale(1.08); }
+  66%      { transform: translate(-20px, 25px) scale(0.96); }
+}
+
+/* Step panel transitions */
+.panel { display: flex; flex-direction: column; gap: 24px; flex: 1; }
+.panel:not(.on) {
+  display: none;
+}
+.panel.on {
+  display: flex;
+  animation: panel-enter 0.36s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+@keyframes panel-enter {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Mouse-tracked spotlight on option cards */
+.opt-grid {
+  position: relative;
+  --mx: 50%;
+  --my: 50%;
+}
+.opt-card {
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+.opt-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(280px circle at var(--mx) var(--my),
+    color-mix(in oklab, var(--accent) 22%, transparent),
+    transparent 50%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  border-radius: inherit;
+}
+.opt-grid:hover .opt-card::before { opacity: 1; }
+.opt-card > * { position: relative; z-index: 1; }
+.opt-card:hover { transform: translateY(-1px); }
+
+/* Gradient sweep border on selected cards */
+.opt-card.on { position: relative; }
+.opt-card.on::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(from var(--angle, 0deg),
+    color-mix(in oklab, var(--accent) 80%, transparent),
+    transparent 30%,
+    color-mix(in oklab, var(--bg) 70%, transparent) 60%,
+    color-mix(in oklab, var(--accent) 80%, transparent));
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  animation: card-border-spin 6s linear infinite;
+  pointer-events: none;
+}
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes card-border-spin {
+  to { --angle: 360deg; }
+}
+
+/* Animated count-up number */
+.estimate-amt-wrap {
+  position: relative;
+  display: inline-block;
+}
+.estimate-amt-wrap.flash::after {
+  content: "";
+  position: absolute;
+  inset: -8px -16px;
+  border-radius: 12px;
+  background: radial-gradient(closest-side,
+    color-mix(in oklab, var(--accent) 30%, transparent),
+    transparent 70%);
+  animation: estimate-flash 0.5s ease-out forwards;
+  pointer-events: none;
+}
+@keyframes estimate-flash {
+  from { opacity: 0; transform: scale(0.95); }
+  50%  { opacity: 1; }
+  to   { opacity: 0; transform: scale(1.05); }
+}
+
+/* Shimmer sweep across the big estimate */
+.estimate-big {
+  position: relative;
+  overflow: hidden;
+}
+.estimate-big::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg,
+    transparent 0%,
+    transparent 40%,
+    color-mix(in oklab, var(--bg) 22%, transparent) 50%,
+    transparent 60%,
+    transparent 100%);
+  background-size: 250% 100%;
+  animation: estimate-shimmer 6s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes estimate-shimmer {
+  0%, 100% { background-position: 200% 0; }
+  50%      { background-position: -50% 0; }
+}
+
+/* Live estimate sidebar */
+.quote-aside {
+  margin-top: 16px;
+  padding: 18px;
+  border-radius: 14px;
+  background: color-mix(in oklab, var(--ink) 96%, transparent);
+  color: var(--bg);
+  position: sticky;
+  top: 120px;
+}
+.quote-aside .lab {
+  font-family: var(--font-mono-family);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--bg) 55%, transparent);
+}
+.quote-aside .amt {
+  font-family: var(--font-display-family);
+  font-size: 30px;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  margin-top: 4px;
+}
+.quote-aside .sub {
+  font-family: var(--font-mono-family);
+  font-size: 11px;
+  color: color-mix(in oklab, var(--bg) 60%, transparent);
+  margin-top: 4px;
+}
+.quote-aside .bar {
+  margin-top: 14px;
+  height: 8px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: color-mix(in oklab, var(--bg) 12%, transparent);
+  display: flex;
+}
+.quote-aside .bar > span {
+  display: block;
+  height: 100%;
+  transition: flex-basis 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.quote-aside .bar > span.base    { background: color-mix(in oklab, var(--accent) 75%, white); }
+.quote-aside .bar > span.design  { background: color-mix(in oklab, var(--accent) 60%, var(--ink)); }
+.quote-aside .bar > span.addons  { background: color-mix(in oklab, var(--bg) 75%, transparent); }
+.quote-aside .bar > span.timing  { background: color-mix(in oklab, var(--bg) 45%, transparent); }
+.quote-aside .legend {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 12px;
+}
+.quote-aside .legend span {
+  font-family: var(--font-mono-family);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: color-mix(in oklab, var(--bg) 65%, transparent);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.quote-aside .legend span::before {
+  content: "";
+  width: 8px; height: 8px; border-radius: 2px;
+  background: currentColor;
+  opacity: 0.6;
+}
+.quote-aside .legend span.base    { color: color-mix(in oklab, var(--accent) 75%, white); }
+.quote-aside .legend span.design  { color: color-mix(in oklab, var(--accent) 60%, var(--ink)); }
+.quote-aside .legend span.addons  { color: color-mix(in oklab, var(--bg) 75%, transparent); }
+.quote-aside .legend span.timing  { color: color-mix(in oklab, var(--bg) 45%, transparent); }
+@media (max-width: 900px) {
+  .quote-aside { position: static; }
+}
+
+/* "Why this number" breakdown panel */
+.breakdown {
+  margin-top: 24px;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 20px;
+  background: var(--bg);
+}
+.breakdown .title {
+  font-family: var(--font-mono-family);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.breakdown ul {
+  list-style: none;
+  padding: 0;
+  margin: 14px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.breakdown li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: var(--ink-soft);
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--bg-elev);
+  opacity: 0;
+  transform: translateY(6px);
+  animation: breakdown-in 0.35s ease-out forwards;
+}
+.breakdown li:nth-child(1) { animation-delay: 0.04s; }
+.breakdown li:nth-child(2) { animation-delay: 0.12s; }
+.breakdown li:nth-child(3) { animation-delay: 0.20s; }
+.breakdown li:nth-child(4) { animation-delay: 0.28s; }
+.breakdown li:nth-child(5) { animation-delay: 0.36s; }
+.breakdown li:nth-child(6) { animation-delay: 0.44s; }
+.breakdown li .v {
+  font-family: var(--font-mono-family);
+  color: var(--ink);
+}
+@keyframes breakdown-in {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quote-shell::before,
+  .quote-shell::after,
+  .opt-card.on::after,
+  .estimate-big::after,
+  .panel.on,
+  .breakdown li {
+    animation: none !important;
+  }
+  .breakdown li { opacity: 1; transform: none; }
+}
+
+/* =============================================================
+   Blog (/blog and /blog/[slug])
+   ============================================================= */
+
+.blog-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.blog-list-item {
+  border-top: 1px solid var(--rule);
+}
+.blog-list-item:last-child { border-bottom: 1px solid var(--rule); }
+.blog-list-link {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  padding: clamp(28px, 4vw, 44px) 0;
+  transition: background 160ms ease, padding 160ms ease;
+}
+.blog-list-link:hover {
+  background: var(--bg-elev);
+  padding-left: 12px;
+  padding-right: 12px;
+}
+.blog-list-meta {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.blog-list-title {
+  font-family: var(--font-display-family);
+  font-size: clamp(28px, 3.5vw, 44px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: var(--ink);
+}
+.blog-list-desc {
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  max-width: 70ch;
+  margin: 0;
+}
+.blog-list-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+.blog-list-compact .blog-list-link { padding: 24px 0; }
+.blog-list-compact .blog-list-title { font-size: clamp(22px, 2.4vw, 30px); }
+
+.post-byline {
+  margin-top: 24px;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+.post-byline strong { color: var(--ink); font-weight: 600; }
+
+.post-body {
+  max-width: 70ch;
+  margin: 0 auto;
+  padding: clamp(24px, 5vw, 56px) 0;
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--ink);
+}
+.post-body > * + * { margin-top: 1.1em; }
+.post-body h2 {
+  font-family: var(--font-display-family);
+  font-size: clamp(26px, 3vw, 36px);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  margin-top: 2em;
+}
+.post-body h3 {
+  font-family: var(--font-display-family);
+  font-size: clamp(20px, 2.2vw, 26px);
+  line-height: 1.3;
+  margin-top: 1.6em;
+}
+.post-body p { margin: 0; }
+.post-body .lede {
+  font-size: 22px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+.post-body ul,
+.post-body ol {
+  padding-left: 1.4em;
+}
+.post-body li + li { margin-top: 0.5em; }
+.post-body a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.post-body a:hover { text-decoration-thickness: 2px; }
+.post-body strong { font-weight: 600; }
+.post-body em { font-style: italic; }
+.post-body code {
+  background: var(--bg-elev);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  font-size: 0.92em;
+}
+
+.post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: 70ch;
+  margin: 0 auto;
+  padding-bottom: 24px;
+}
+

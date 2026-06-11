@@ -10,6 +10,7 @@ const links: { href: string; label: string; match: (p: string) => boolean }[] = 
   { href: "/services", label: "Services", match: (p) => p.startsWith("/services") },
   { href: "/work", label: "Work", match: (p) => p.startsWith("/work") },
   { href: "/pricing", label: "Pricing", match: (p) => p.startsWith("/pricing") },
+  { href: "/blog", label: "Notes", match: (p) => p.startsWith("/blog") },
   { href: "/about", label: "About", match: (p) => p.startsWith("/about") },
 ];
 

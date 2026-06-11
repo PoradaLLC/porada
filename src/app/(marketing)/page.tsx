@@ -1,7 +1,11 @@
 import Link from "next/link";
 import { HeroCanvas } from "@/components/site/HeroCanvas";
-import { RunningLine } from "@/components/site/RunningLine";
 import { ArrowIcon } from "@/components/site/ArrowIcon";
+import { TextGenerateEffect } from "@/components/ui/aceternity/text-generate-effect";
+import { InfiniteMovingCards } from "@/components/ui/aceternity/infinite-moving-cards";
+import { HoverEffect } from "@/components/ui/aceternity/hover-effect";
+import { CardSpotlight } from "@/components/ui/aceternity/card-spotlight";
+import { HeroHighlight } from "@/components/ui/aceternity/hero-highlight";
 
 const services = [
   {
@@ -89,16 +93,16 @@ export default function HomePage() {
             <span>Porada Solutions · A small tech studio · Since 2026</span>
           </div>
           <h1 className="display">
-            We build <em>useful</em>
+            We build <HeroHighlight delay={0.3}>useful</HeroHighlight>
             <br />
-            websites and untangle
+            websites and <HeroHighlight delay={0.9}>untangle</HeroHighlight>
             <br />
             the tech behind them.
           </h1>
-          <p className="hero-sub">
-            A three-person studio helping small businesses and local organizations ship sites that actually work - and
-            the systems that keep them running. No buzzwords, no framework cosplay.
-          </p>
+          <TextGenerateEffect
+            className="hero-sub"
+            words="A three-person studio helping small businesses and local organizations ship sites that actually work — and the systems that keep them running. No buzzwords, no framework cosplay."
+          />
           <div className="hero-ctas">
             <Link href="/quote" className="btn btn-primary">
               Start a project <ArrowIcon />
@@ -124,7 +128,17 @@ export default function HomePage() {
         </div>
       </section>
 
-      <RunningLine />
+      <div className="border-y border-[var(--rule)]" aria-hidden="true">
+        <InfiniteMovingCards
+          speed="slow"
+          items={[
+            { quote: "Websites that load in under a second" },
+            { quote: "Migrations without the all-nighter" },
+            { quote: "Design that reads like a good email" },
+            { quote: "Hosting we can explain to your parents" },
+          ]}
+        />
+      </div>
 
       {/* SERVICES */}
       <section className="section">
@@ -152,21 +166,7 @@ export default function HomePage() {
             </Link>
           </header>
 
-          <div className="svc-grid">
-            {services.map((s) => (
-              <article key={s.num} className="svc">
-                <div className="svc-num">{s.num}</div>
-                <div>
-                  <h3>{s.title}</h3>
-                  <p style={{ marginTop: 14 }}>{s.desc}</p>
-                </div>
-                <div className="svc-foot">
-                  <span>{s.from}</span>
-                  <span>{s.span}</span>
-                </div>
-              </article>
-            ))}
-          </div>
+          <HoverEffect items={services} />
         </div>
       </section>
 
@@ -226,17 +226,19 @@ export default function HomePage() {
 
           <div>
             {workPreview.map((w) => (
-              <Link key={w.id} href={`/work#${w.id}`} className="work-row">
-                <div className="idx">{w.idx}</div>
-                <div className="ttl">{w.title}</div>
-                <div className="sum">{w.sum}</div>
-                <div className="meta">{w.meta}</div>
-                <div className="arrow-wrap">
-                  <svg width="20" height="20" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                    <path d="M4 4l8 8M12 4v8H4" stroke="currentColor" strokeWidth="1.5" />
-                  </svg>
-                </div>
-              </Link>
+              <CardSpotlight key={w.id}>
+                <Link href={`/work#${w.id}`} className="work-row">
+                  <div className="idx">{w.idx}</div>
+                  <div className="ttl">{w.title}</div>
+                  <div className="sum">{w.sum}</div>
+                  <div className="meta">{w.meta}</div>
+                  <div className="arrow-wrap">
+                    <svg width="20" height="20" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path d="M4 4l8 8M12 4v8H4" stroke="currentColor" strokeWidth="1.5" />
+                    </svg>
+                  </div>
+                </Link>
+              </CardSpotlight>
             ))}
           </div>
         </div>
