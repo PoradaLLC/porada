@@ -1,5 +1,6 @@
 import { SiteNav } from "@/components/site/SiteNav";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { CookieConsent } from "@/components/site/CookieConsent";
 
 export default function MarketingLayout({
   children,
@@ -11,6 +12,7 @@ export default function MarketingLayout({
       <SiteNav />
       <main className="flex-1">{children}</main>
       <SiteFooter />
+      <CookieConsent />
     </>
   );
 }

@@ -22,7 +22,7 @@ export function SiteFooter() {
     <footer className="footer">
       <div className="wrap">
         <div className="footer-wordmark">Porada Solutions</div>
-        <div className="footer-grid footer-grid-3">
+        <div className="footer-grid">
           <div>
             <h4>Based in</h4>
             <address style={{ color: "var(--ink-soft)", fontSize: 14, lineHeight: 1.7, fontStyle: "normal" }}>
@@ -76,6 +76,15 @@ export function SiteFooter() {
                 <IconInstagram />
               </a>
             </div>
+          </div>
+          <div>
+            <h4>Legal</h4>
+            <ul>
+              <li><Link href="/privacy">Privacy Policy</Link></li>
+              <li><Link href="/terms">Terms of Use</Link></li>
+              <li><Link href="/accessibility">Accessibility</Link></li>
+              <li><Link href="/disclaimer">Disclaimer</Link></li>
+            </ul>
           </div>
         </div>
         <div className="footer-bottom">
