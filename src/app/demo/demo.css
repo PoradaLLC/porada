@@ -1,0 +1,803 @@
+/*
+ * Lantern & Lock demo theme — fully self-contained under .demo-root.
+ * All venue styling is scoped here so the module renders identically whether it's
+ * full-screen, inside a browser frame, or inside a before/after slider.
+ * Tailwind utilities handle layout; these tokens carry the atmosphere.
+ */
+
+.demo-root {
+  /* Palette: deep ink + candle-glow brass */
+  --ink-900: #0b0d12;
+  --ink-800: #0f1218;
+  --ink-700: #141823;
+  --surface: #161b27;
+  --surface-2: #1c2230;
+  --surface-3: #232a3a;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.14);
+  --brass: #c7a35a;
+  --brass-bright: #e4c078;
+  --parchment: #ece6d8;
+  --muted: #9aa3b2;
+  --muted-2: #6f7888;
+  --good: #5fb98e;
+  --glow: rgba(199, 163, 90, 0.22);
+
+  /* default accent (overridden per-room via inline --accent) */
+  --accent: var(--brass);
+  --accent-soft: var(--glow);
+
+  color-scheme: dark;
+  background-color: var(--ink-900);
+  color: var(--parchment);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+  min-height: 100%;
+}
+
+/* Display type — gives the premium, "real venue" feel */
+.demo-root .font-display {
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia,
+    serif;
+  letter-spacing: -0.01em;
+}
+
+/* Atmospheric background wash for the page shell */
+.demo-bg {
+  background-color: var(--ink-900);
+  background-image:
+    radial-gradient(900px 500px at 75% -8%, var(--accent-soft), transparent 60%),
+    radial-gradient(700px 500px at -5% 5%, rgba(155, 123, 212, 0.06), transparent 55%),
+    linear-gradient(180deg, var(--ink-900), var(--ink-800));
+}
+
+/* Surfaces */
+.demo-card {
+  background: linear-gradient(180deg, var(--surface), var(--surface-2));
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+}
+.demo-card:hover {
+  border-color: var(--line-strong);
+}
+
+/* Buttons */
+.demo-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  border-radius: 0.625rem;
+  transition: transform 0.12s ease, box-shadow 0.2s ease, background-color 0.2s ease,
+    border-color 0.2s ease, opacity 0.2s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.demo-btn:active {
+  transform: translateY(1px);
+}
+.demo-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.demo-btn-primary {
+  background: linear-gradient(180deg, var(--brass-bright), var(--brass));
+  color: #2a1f06;
+  box-shadow: 0 8px 24px -10px var(--glow), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+.demo-btn-primary:hover:not(:disabled) {
+  box-shadow: 0 12px 30px -10px var(--glow), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+.demo-btn-ghost {
+  background: transparent;
+  color: var(--parchment);
+  border: 1px solid var(--line-strong);
+}
+.demo-btn-ghost:hover:not(:disabled) {
+  border-color: var(--brass);
+  color: var(--brass-bright);
+}
+
+/* Small pill / badge */
+.demo-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.28rem 0.7rem;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Image placeholder — looks intentional, never an empty box (TODO: real photos) */
+.demo-photo {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--surface);
+  background-image:
+    radial-gradient(120% 80% at 70% 0%, var(--accent-soft), transparent 60%),
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.015) 0px,
+      rgba(255, 255, 255, 0.015) 2px,
+      transparent 2px,
+      transparent 9px
+    ),
+    linear-gradient(160deg, var(--surface-2), var(--ink-800));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.demo-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 120px rgba(0, 0, 0, 0.55);
+  pointer-events: none;
+}
+.demo-photo-glyph {
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  filter: saturate(0.8) drop-shadow(0 6px 18px rgba(0, 0, 0, 0.5));
+  opacity: 0.92;
+}
+
+/* Difficulty pips */
+.demo-pip {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--line-strong);
+}
+.demo-pip-on {
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent-soft);
+}
+
+/* Inputs */
+.demo-input {
+  width: 100%;
+  background: var(--ink-800);
+  border: 1px solid var(--line-strong);
+  border-radius: 0.625rem;
+  color: var(--parchment);
+  padding: 0.7rem 0.85rem;
+  font-size: 0.95rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.demo-input:focus {
+  outline: none;
+  border-color: var(--brass);
+  box-shadow: 0 0 0 3px var(--glow);
+}
+.demo-input::placeholder {
+  color: var(--muted-2);
+}
+
+/* Focus ring for interactive demo elements (accessibility) */
+.demo-root :focus-visible {
+  outline: 2px solid var(--brass-bright);
+  outline-offset: 2px;
+}
+
+/* Booking overlay */
+.demo-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(5, 7, 11, 0.72);
+  backdrop-filter: blur(6px);
+  padding: 0;
+}
+@media (min-width: 640px) {
+  .demo-overlay {
+    align-items: center;
+    padding: 1.5rem;
+  }
+}
+
+@keyframes demo-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.demo-rise {
+  animation: demo-rise 0.28s ease both;
+}
+
+@keyframes demo-pop {
+  0% {
+    transform: scale(0.96);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.demo-pop {
+  animation: demo-pop 0.3s ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-rise,
+  .demo-pop {
+    animation: none;
+  }
+}
+
+/* Highlight a freshly inserted leaderboard row */
+@keyframes demo-flash {
+  0% {
+    background-color: var(--accent-soft);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+.demo-flash {
+  animation: demo-flash 2.4s ease both;
+}
+
+/* Thin scrollbar inside the booking panel */
+.demo-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.demo-scroll::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border-radius: 999px;
+}
+
+/* ----------------------------------------------------------------------------
+ * Two-column checkout (booking flow): progress rail + form + live order summary.
+ * ------------------------------------------------------------------------- */
+.demo-checkout {
+  background: linear-gradient(180deg, var(--ink-800), var(--ink-900));
+  border: 1px solid var(--line);
+  box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.75);
+}
+.demo-checkout-head {
+  background: linear-gradient(180deg, var(--surface), var(--surface-2));
+  border-color: var(--line);
+}
+
+/* Labeled progress rail */
+.demo-rail {
+  padding-top: 0.85rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.015);
+}
+.demo-rail-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  flex-shrink: 0;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  border: 1px solid var(--line-strong);
+  background: var(--surface-3);
+  color: var(--muted-2);
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.demo-rail-dot[data-state="active"] {
+  background: var(--accent);
+  color: #221a06;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+.demo-rail-dot[data-state="done"] {
+  background: var(--accent-soft);
+  color: var(--brass-bright);
+  border-color: var(--accent);
+}
+.demo-rail-line {
+  flex: 1;
+  height: 1px;
+  margin: 0 0.6rem;
+  background: var(--line-strong);
+}
+.demo-rail-line[data-state="done"] {
+  background: var(--accent);
+}
+
+/* Order-summary column */
+.demo-summary {
+  background: rgba(255, 255, 255, 0.018);
+  border-top: 1px solid var(--line);
+}
+@media (min-width: 1024px) {
+  .demo-summary {
+    border-top: 0;
+    border-left: 1px solid var(--line);
+  }
+}
+
+.demo-divider {
+  height: 1px;
+  background: var(--line);
+}
+
+/* Demo-only payment notice — deliberately visible, never hidden */
+.demo-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.75rem 0.85rem;
+  border-radius: 0.7rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--parchment);
+  background: rgba(199, 163, 90, 0.1);
+  border: 1px solid var(--brass);
+}
+.demo-note strong {
+  color: var(--brass-bright);
+}
+
+/* Applied promo chip */
+.demo-promo-applied {
+  padding: 0.5rem 0.7rem;
+  border-radius: 0.6rem;
+  background: rgba(95, 185, 142, 0.1);
+  border: 1px solid rgba(95, 185, 142, 0.35);
+}
+
+/* Confirmation code chip */
+.demo-conf-code {
+  display: inline-block;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  border: 1px dashed var(--line-strong);
+  background: rgba(255, 255, 255, 0.02);
+}
+.demo-conf-code strong {
+  color: var(--brass-bright);
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  letter-spacing: 0.06em;
+}
+
+/* On-brand checkbox (cancellation policy) */
+.demo-check {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 1.05rem;
+  height: 1.05rem;
+  flex-shrink: 0;
+  border-radius: 0.3rem;
+  border: 1px solid var(--line-strong);
+  background: var(--ink-800);
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+.demo-check:checked {
+  background: var(--brass);
+  border-color: var(--brass);
+}
+.demo-check:checked::after {
+  content: "";
+  position: absolute;
+  left: 0.32rem;
+  top: 0.12rem;
+  width: 0.28rem;
+  height: 0.55rem;
+  border: solid #221a06;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.demo-check:focus-visible {
+  outline: 2px solid var(--brass-bright);
+  outline-offset: 2px;
+}
+
+/* ----------------------------------------------------------------------------
+ * Intentional EMPTY photo/media frames.
+ * There is no real imagery in this demo on purpose — these are polished, on-brand
+ * placeholders so a prospect pictures their own photos here. Deliberately framed,
+ * never looking broken.
+ * ------------------------------------------------------------------------- */
+.demo-slot {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.85rem;
+  background-color: var(--ink-800);
+  background-image:
+    radial-gradient(120% 90% at 50% 0%, var(--accent-soft), transparent 62%),
+    linear-gradient(160deg, var(--surface-2), var(--ink-800));
+  box-shadow: inset 0 0 0 1px var(--line), inset 0 0 70px rgba(0, 0, 0, 0.45);
+}
+/* dashed inner frame so it reads as a deliberate placeholder, not a missing image */
+.demo-slot::before {
+  content: "";
+  position: absolute;
+  inset: 0.6rem;
+  border: 1px dashed var(--line-strong);
+  border-radius: 0.6rem;
+  pointer-events: none;
+}
+.demo-slot-label {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.75rem;
+  text-align: center;
+  color: var(--muted-2);
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.demo-slot-hint {
+  color: var(--muted);
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.78rem;
+}
+
+/* Payment plug-in stand-in — reuses the intentional-frame treatment so the
+ * checkout's payment step reads as a deliberate hand-off, never a broken form. */
+.demo-payment-slot {
+  min-height: 12rem;
+}
+.demo-payment-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 999px;
+  color: var(--brass-bright);
+  background: var(--accent-soft);
+  border: 1px solid var(--brass);
+}
+
+/* Availability plug-in stand-in — compact horizontal sibling of the payment
+ * panel. Same intentional plug-in family, sized as a caption for the time step. */
+.demo-availability-note {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  padding: 0.8rem 0.9rem;
+  border-radius: 0.7rem;
+  background: var(--surface-2);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.demo-availability-badge {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 999px;
+  color: var(--brass-bright);
+  background: var(--accent-soft);
+  border: 1px solid var(--brass);
+}
+.demo-availability-text {
+  font-size: 0.74rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.demo-availability-text strong {
+  display: block;
+  margin-bottom: 0.15rem;
+  color: var(--parchment);
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+/* Subtle expandable build-tier caption on the Booking details step. */
+.demo-tier-note {
+  font-size: 0.72rem;
+}
+.demo-tier-note > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  color: var(--muted);
+  list-style: none;
+  user-select: none;
+  transition: color 0.15s ease;
+}
+.demo-tier-note > summary::-webkit-details-marker {
+  display: none;
+}
+.demo-tier-note > summary:hover,
+.demo-tier-note[open] > summary {
+  color: var(--parchment);
+}
+.demo-tier-note .demo-tier-body {
+  display: grid;
+  gap: 0.3rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.demo-tier-note .demo-tier-body strong {
+  color: var(--brass);
+  font-weight: 600;
+}
+
+/* The single tasteful homepage motion accent: a slow breathing glow. Accent only,
+ * never a load gate, and fully disabled for reduced-motion users. */
+@keyframes demo-breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+.demo-breathe {
+  animation: demo-breathe 6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .demo-breathe {
+    animation: none;
+  }
+}
+
+/* ----------------------------------------------------------------------------
+ * Additions: honesty badge, social links, Porada ribbon, FAQ, owner offer.
+ * ------------------------------------------------------------------------- */
+
+/* Small "Demo — not saved" style chip (leaderboard submit, etc.). */
+.demo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--brass-bright);
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--brass);
+  background: var(--accent-soft);
+  white-space: nowrap;
+}
+
+/* Footer social links — now real anchors. */
+.demo-social-link {
+  color: var(--muted);
+  transition: color 0.15s ease;
+}
+.demo-social-link:hover {
+  color: var(--brass-bright);
+}
+
+/* The always-present, quiet door back to Porada. Fixed, thin pill — never a
+ * banner. Sits below the booking overlay (z-60). */
+.demo-porada-pill {
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  z-index: 45;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: calc(100vw - 24px);
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  color: var(--parchment);
+  background: rgba(11, 13, 18, 0.82);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--line-strong);
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.7);
+  transition: border-color 0.18s ease, transform 0.18s ease, background-color 0.18s ease;
+}
+.demo-porada-pill:hover {
+  border-color: var(--brass);
+  background: rgba(11, 13, 18, 0.92);
+}
+.demo-porada-pill > svg:first-child {
+  color: var(--brass-bright);
+  flex: none;
+}
+.demo-porada-pill > svg:last-child {
+  color: var(--muted);
+  flex: none;
+}
+.demo-porada-pill-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.demo-porada-pill-text strong {
+  color: var(--brass-bright);
+  font-weight: 600;
+}
+.demo-porada-pill-sep {
+  margin: 0 0.4rem;
+  color: var(--muted-2);
+}
+@media (max-width: 520px) {
+  .demo-porada-pill {
+    left: 12px;
+    right: 12px;
+    transform: none;
+    justify-content: center;
+  }
+}
+
+/* One-time entrance so the "this is a Porada demo" signal is legible on arrival,
+ * then settles back to its quiet resting state. No transform (keeps the mobile
+ * full-width layout intact); pulses the brass border/glow only. */
+@keyframes porada-pill-intro {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  18%, 52% {
+    border-color: var(--brass);
+    box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.7), 0 0 0 4px rgba(230, 162, 60, 0.22);
+  }
+  100% {
+    border-color: var(--line-strong);
+    box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.7), 0 0 0 0 rgba(230, 162, 60, 0);
+  }
+}
+.demo-porada-pill {
+  animation: porada-pill-intro 3.4s ease-out 0.4s both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .demo-porada-pill { animation: none; }
+}
+
+/* Calm, always-present return link in the footer brand column — a redundant
+ * door back to Porada so the floating pill isn't the only one. */
+.demo-footer-porada {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  line-height: 1.35;
+  color: var(--brass-bright);
+  border: 1px solid var(--line-strong);
+  border-radius: 0.6rem;
+  padding: 0.5rem 0.7rem;
+  transition: border-color 0.18s ease, background-color 0.18s ease;
+}
+.demo-footer-porada:hover {
+  border-color: var(--brass);
+  background: var(--glow);
+}
+.demo-footer-porada > svg { flex: none; color: var(--brass-bright); }
+
+/* FAQ accordion — native <details>, on-brand. */
+.demo-faq-item {
+  background: linear-gradient(180deg, var(--surface), var(--surface-2));
+  border: 1px solid var(--line);
+  border-radius: 0.85rem;
+  overflow: hidden;
+}
+.demo-faq-item[open] {
+  border-color: var(--line-strong);
+}
+.demo-faq-item > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.05rem 1.25rem;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+.demo-faq-item > summary::-webkit-details-marker {
+  display: none;
+}
+.demo-faq-q {
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--parchment);
+}
+.demo-faq-chevron {
+  flex: none;
+  color: var(--brass);
+  transition: transform 0.2s ease;
+}
+.demo-faq-item[open] .demo-faq-chevron {
+  transform: rotate(180deg);
+}
+.demo-faq-a {
+  padding: 0 1.25rem 1.15rem;
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--muted);
+}
+@media (prefers-reduced-motion: reduce) {
+  .demo-faq-chevron {
+    transition: none;
+  }
+}
+
+/* Owner offer (shown on the booking confirmation) — the Porada CTA. */
+.demo-offer {
+  border-top: 1px dashed var(--line-strong);
+  padding-top: 1.5rem;
+}
+.demo-offer-head {
+  text-align: center;
+}
+.demo-tier-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+@media (min-width: 640px) {
+  .demo-tier-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.demo-tier-card {
+  padding: 0.95rem 1rem;
+  border-radius: 0.75rem;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+}
+.demo-tier-card-name {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brass);
+  margin-bottom: 0.35rem;
+}
+.demo-tier-card p {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+/* Step dots for the owner two-step capture. */
+.demo-form-steps {
+  display: flex;
+  gap: 0.4rem;
+}
+.demo-form-dot {
+  flex: 1;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--line-strong);
+}
+.demo-form-dot.on {
+  background: var(--brass);
+}
